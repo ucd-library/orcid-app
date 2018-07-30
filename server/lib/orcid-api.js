@@ -66,6 +66,15 @@ class OrcidApi {
     return JSON.parse(response.body);
   }
 
+  /**
+   * @method get
+   * @description get a member by id
+   * 
+   * @param {String} id 
+   * @param {String} token Optional
+   * 
+   * @returns {Promise} resolves to JSON
+   */
   async get(id, token) {
     let response = await this._request(
       `${config.orcid.api.baseUrl}/${id}/record`,
@@ -73,7 +82,64 @@ class OrcidApi {
         headers : {
           accept : 'application/vnd.orcid+json'
         }
-      }
+      },
+      token
+    );
+
+    return JSON.parse(response.body);
+  }
+
+  /**
+   * @method addEmployment
+   * @description Add employment entry to user record.  User access token required
+   * 
+   * http://members.orcid.org/api/tutorial/update-orcid-records#3add
+   * https://github.com/ORCID/ORCID-Source/blob/master/orcid-model/src/main/resources/record_2.0/samples/write_sample/employment-2.0.xml
+   * 
+   * @param {Object} data employment object
+   * @param {String} token Required (from Oauth dance)
+   * 
+   * @returns {Promise} resolves to JSON
+   */
+  async addEmployment(data, token) {
+    let response = await this._request(
+      `${config.orcid.api.baseUrl}/${id}/employment`,
+      {
+        method : 'POST',
+        headers : {
+          'content-type' : 'application/json'
+        },
+        body : JSON.stringify(data)
+      },
+      token
+    );
+
+    return JSON.parse(response.body);
+  }
+
+  /**
+   * @method updateEmployment
+   * @description Add employment entry to user record.  User access token required
+   * 
+   * http://members.orcid.org/api/tutorial/update-orcid-records#4update
+   * 
+   * @param {String} putCode from existing employment object
+   * @param {Object} data new employment object
+   * @param {String} token Required (from Oauth dance)
+   * 
+   * @returns {Promise} resolves to JSON
+   */
+  async updateEmployment(putCode, data, token) {
+    let response = await this._request(
+      `${config.orcid.api.baseUrl}/${id}/employment/${putCode}`,
+      {
+        method : 'PUT',
+        headers : {
+          'content-type' : 'application/json'
+        },
+        body : JSON.stringify(data)
+      },
+      token
     );
 
     return JSON.parse(response.body);
