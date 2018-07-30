@@ -1,0 +1,21 @@
+{
+  "name": "@ucd-lib/orcid-app-server",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "jrmerz@ucdavis.edu",
+  "license": "MIT",
+  "dependencies": {
+    "@ucd-lib/spa-router-middleware": "0.0.2",
+    "bunyan": "^1.8.12",
+    "cas-authentication": "0.0.8",
+    "compression": "^1.7.3",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.3",
+    "express-session": "^1.15.6",
+    "request": "^2.87.0"
+  }
+}
