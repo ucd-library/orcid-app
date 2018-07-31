@@ -13,6 +13,15 @@ if( process.env.NODE_ENV !== 'prod' ) {
 const PORT = 8000;
 let clientPackage = require('../client/public/package.json');
 
+const CAS = {
+  dev : {
+    url : process.env.CAS_URL || 'https://ssodev.ucdavis.edu/cas'
+  },
+  prod : {
+    url : process.env.CAS_URL || 'https://cas.ucdavis.edu/cas'
+  }
+}
+
 module.exports = {
 
   env,
@@ -36,10 +45,13 @@ module.exports = {
     clientId : secrets.orcid[env].clientId,
     clientSecret : secrets.orcid[env].clientSecret,
     accessToken : secrets.orcid[env].accessToken,
+    sessionName : 'orcid-session',
     api : {
       baseUrl : `https://${baseApiUrl}.orcid.org/v2.1`
     }
   },
+
+  cas : CAS[env],
 
   google : {}
 

@@ -1,10 +1,11 @@
 const CASAuthentication = require('cas-authentication');
+const express = require('express');
 const config = require('../../config');
 const router = express.Router();
 
 const cas = new CASAuthentication({
   cas_url     : config.cas.url,
-  service_url : config.server.url
+  service_url : config.server.host
 });
 
 router.get('/login', (req, res) => {

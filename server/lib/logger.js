@@ -1,4 +1,5 @@
 const bunyan = require('bunyan');
+const fs = require('fs');
 const config = require('../config');
 
 const streams = [

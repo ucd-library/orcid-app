@@ -3,6 +3,8 @@ logger.info('Starting server');
 
 const express = require('express');
 const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const config = require('./config');
 
 // global catch alls for errors
 // TODO: kill app on error
@@ -23,12 +25,11 @@ app.use(session({
 
 // parse cookies and add compression
 app.use(cookieParser()); 
-app.use(compression());
+// app.use(compression());
 
 // require custom endpoints
 app.use(require('./controllers'));
-
-
+require('./controllers/static')(app);
 
 app.listen(config.server.port, () => {
   logger.info(`Server ready on port ${config.server.port}`);

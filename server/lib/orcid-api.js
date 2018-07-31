@@ -18,28 +18,34 @@ class OrcidApi {
    * 
    * http://members.orcid.org/api/tutorial/read-orcid-records#gettoken
    * 
-   * @returns {Promise} resolves to JSON response
+   * @param {Object} options
+   * @param {String} options.scope Oauth scope. Options: /read-public, /person/update, /activities/update
+   * @param {String} options.code if verify code returned from Oauth dance
+   * 
+   * @returns {Promise} resolves to response
    */
-  async generateToken() {
-    let response = await request(
+  generateToken(options) {
+    let form = {
+      client_id : config.orcid.clientId,
+      client_secret : config.orcid.clientSecret,
+      grant_type : 'client_credentials'
+    }
+
+    if( options.code ) form.code = options.code;
+    if( options.scope ) form.scope = options.scope;
+
+    return request(
       config.env === 'prod' ? 'https://orcid.org/oauth/token' : 'https://sandbox.orcid.org/oauth/token',
       {
         method : 'POST',
         headers : {
           accept : 'application/json'
         },
-        form : {
-          client_id : config.orcid.clientId,
-          client_secret : config.orcid.clientSecret,
-          grant_type : 'client_credentials',
-          scope : '/read-public'
-        }
+        form
       }
     );
-
-    return JSON.parse(response.body);
   }
-
+ 
   /**
    * @method search
    * @description search ORCID registry
@@ -49,10 +55,10 @@ class OrcidApi {
    * @param {Number} start
    * @param {Number} rows
    * 
-   * @returns {Promise} resolves to JSON
+   * @returns {Promise} resolves to response
    */
-  async search(q='', start=0, rows=10, token) {
-    let response = await this._request(
+  search(q='', start=0, rows=10, token) {
+    return this._request(
       config.orcid.api.baseUrl+'/search',
       {
         headers : {
@@ -62,8 +68,6 @@ class OrcidApi {
       },
       token
     );
-
-    return JSON.parse(response.body);
   }
 
   /**
@@ -73,10 +77,10 @@ class OrcidApi {
    * @param {String} id 
    * @param {String} token Optional
    * 
-   * @returns {Promise} resolves to JSON
+   * @returns {Promise} resolves to response
    */
-  async get(id, token) {
-    let response = await this._request(
+  get(id, token) {
+    return this._request(
       `${config.orcid.api.baseUrl}/${id}/record`,
       {
         headers : {
@@ -85,8 +89,6 @@ class OrcidApi {
       },
       token
     );
-
-    return JSON.parse(response.body);
   }
 
   /**
@@ -99,10 +101,10 @@ class OrcidApi {
    * @param {Object} data employment object
    * @param {String} token Required (from Oauth dance)
    * 
-   * @returns {Promise} resolves to JSON
+   * @returns {Promise} resolves to response
    */
-  async addEmployment(data, token) {
-    let response = await this._request(
+  addEmployment(data, token) {
+    return this._request(
       `${config.orcid.api.baseUrl}/${id}/employment`,
       {
         method : 'POST',
@@ -113,8 +115,6 @@ class OrcidApi {
       },
       token
     );
-
-    return JSON.parse(response.body);
   }
 
   /**
@@ -127,10 +127,10 @@ class OrcidApi {
    * @param {Object} data new employment object
    * @param {String} token Required (from Oauth dance)
    * 
-   * @returns {Promise} resolves to JSON
+   * @returns {Promise} resolves to response
    */
-  async updateEmployment(putCode, data, token) {
-    let response = await this._request(
+  updateEmployment(putCode, data, token) {
+    return this._request(
       `${config.orcid.api.baseUrl}/${id}/employment/${putCode}`,
       {
         method : 'PUT',
@@ -141,8 +141,6 @@ class OrcidApi {
       },
       token
     );
-
-    return JSON.parse(response.body);
   }
 
   /**
