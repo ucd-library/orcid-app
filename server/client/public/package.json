@@ -7,7 +7,14 @@
   "flat": true,
   "private": false,
   "dependencies": {
+    "@polymer/iron-pages": "^3.0.0-pre.21",
     "@polymer/polymer": "^3.0.5",
+    "@ucd-lib/cork-app-load": "^0.0.4",
+    "@ucd-lib/cork-app-state": "^0.1.1",
+    "@ucd-lib/cork-app-utils": "^3.2.1",
     "@webcomponents/webcomponentsjs": "^2.0.3"
+  },
+  "resolutions": {
+    "@ucd-lib/cork-app-utils": "3.2.1"
   }
 }

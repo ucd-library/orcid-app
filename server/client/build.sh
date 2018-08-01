@@ -1,6 +1,6 @@
 #! /bin/bash
 
-ROOT_DIR=../dist
+ROOT_DIR=dist
 
 rm -rf $ROOT_DIR
 mkdir $ROOT_DIR

@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "cd client && webpack",
+    "watch": "cd client && webpack --watch"
   },
   "author": "jrmerz@ucdavis.edu",
   "license": "MIT",

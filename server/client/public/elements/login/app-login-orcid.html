@@ -1,0 +1,16 @@
+<style>
+    :host {
+      display: block;
+    }
+  </style>
+  
+  <h2>ORCiD</h2>
+  
+  <div hidden$="[[loggedIn]]">
+    <a href="/auth/orcid/oauth-login">Login</a>
+  </div>
+  
+  <div hidden$="[[!loggedIn]]">
+    <div>Logged in as: [[username]]</div>
+    <div><b>[[orcid]]</b></div>
+  </div>

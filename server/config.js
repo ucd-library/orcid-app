@@ -11,7 +11,7 @@ if( process.env.NODE_ENV !== 'prod' ) {
 }
 
 const PORT = 8000;
-let clientPackage = require('../client/public/package.json');
+let clientPackage = require('./client/public/package.json');
 
 const CAS = {
   dev : {
@@ -29,15 +29,17 @@ module.exports = {
   server : {
     host : process.env.SERVER_HOST || `http://localhost:${PORT}`,
     port : PORT, 
+    assets : (env === 'prod') ? 'dist' : 'public',
     loglevel : process.env.SERVER_LOG_LEVEL || 'info',
     cookieSecret : process.env.SERVER_COOKIE_SECRET || 'changeme',
     cookieMaxAge : process.env.SERVER_COOKIE_MAX_AGE ? parseInt(process.env.SERVER_COOKIE_MAX_AGE) : (1000 * 60 * 60 * 24 * 7),
+    appRoutes : ['main', 'app']
   },
 
   client : {
     versions : {
-      // bundle : clientPackage.version,
-      // loader : clientPackage.dependencies['@ucd-lib/cork-app-load'].replace(/^\D/, '')
+      bundle : clientPackage.version,
+      loader : clientPackage.dependencies['@ucd-lib/cork-app-load'].replace(/^\D/, '')
     }
   },
 
@@ -51,7 +53,9 @@ module.exports = {
     }
   },
 
-  cas : CAS[env],
+  cas : Object.assign(CAS[env], {
+    sessionName : 'cas-session'
+  }),
 
   google : {}
 

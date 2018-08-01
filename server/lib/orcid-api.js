@@ -28,7 +28,7 @@ class OrcidApi {
     let form = {
       client_id : config.orcid.clientId,
       client_secret : config.orcid.clientSecret,
-      grant_type : 'client_credentials'
+      grant_type : options.grant_type || 'client_credentials'
     }
 
     if( options.code ) form.code = options.code;

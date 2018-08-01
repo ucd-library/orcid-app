@@ -1,0 +1,34 @@
+<style>
+  :host {
+    display: block;
+  }
+
+  .login-panels {
+    display: flex
+  }
+
+  .login-panels > * {
+    flex: 1;
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #ccc;
+  }
+</style>
+
+<app-route app-routes="[[appRoutes]]"></app-route>
+
+<iron-pages selected="[[page]]" attr-for-selected="id" selected-attribute="active">
+  
+  <app-home id="home"></app-home>
+  
+  <div id="main">
+    <div class="login-panels">
+        <app-login-cas></app-login-cas>
+        <app-login-orcid></app-login-orcid>
+    </div>
+    <div style="text-align: center">
+      <a href="/auth/logout">Logout</a>
+    </div>
+  </div>
+
+</iron-pages>

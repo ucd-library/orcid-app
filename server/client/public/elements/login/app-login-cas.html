@@ -1,0 +1,15 @@
+<style>
+  :host {
+    display: block;
+  }
+</style>
+
+<h2>UC Davis</h2>
+
+<div hidden$="[[loggedIn]]">
+  <a href="/auth/cas/login">Login</a>
+</div>
+
+<div hidden$="[[!loggedIn]]">
+  <div>Logged in as: [[username]]</div>
+</div>

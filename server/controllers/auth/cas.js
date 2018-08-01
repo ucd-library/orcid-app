@@ -5,13 +5,14 @@ const router = express.Router();
 
 const cas = new CASAuthentication({
   cas_url     : config.cas.url,
-  service_url : config.server.host
+  service_url : config.server.host+'/auth/cas',
+  session_name : config.cas.sessionName
 });
 
 router.get('/login', (req, res) => {
   // logger.info('CAS Service: starting CAS redirection');
 
-  // req.query.returnTo = config.server.url;
+  req.query.returnTo = config.server.host+'/auth/cas/login';
 
   cas.bounce(req, res, async () => {
     // logger.info('CAS Service: CAS redirection complete');
@@ -23,7 +24,7 @@ router.get('/login', (req, res) => {
 
     if( username ) {
       // logger.info('CAS Service: CAS login success: '+username);
-      res.redirect('/');
+      res.redirect('/main');
     } else {
       // logger.info('CAS Service: CAS login failure');
       res.status(401).send();

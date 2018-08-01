@@ -1,7 +1,7 @@
 import {PolymerElement, html} from "@polymer/polymer"
-import template from "./orcid-app.html"
+import template from "./app-home.html"
 
-export default class OrcidApp extends PolymerElement {
+export default class AppHome extends PolymerElement {
 
   static get template() {
     return html([template]);
@@ -15,4 +15,4 @@ export default class OrcidApp extends PolymerElement {
 
 }
 
-customElements.define('orcid-app', OrcidApp);
+customElements.define('app-home', AppHome);
