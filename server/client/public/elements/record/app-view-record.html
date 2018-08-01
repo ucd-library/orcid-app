@@ -1,0 +1,15 @@
+<style>
+  :host {
+    display: none;
+  }
+  :host([active]) {
+    display: block;
+  }
+</style>
+
+
+<h2>ORCiD Employment</h2>
+<template is="dom-repeat" items="[[employments]]">
+  <div>[[item.organization.name]] - [[item.department-name]]</div>
+  <div>[[item.role-title]]</div>
+</template>

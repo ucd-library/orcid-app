@@ -26,6 +26,7 @@ export default class AppLoginOrcid extends PolymerElement {
 
   constructor() {
     super();
+    
     if( APP_CONFIG.user.orcid ) {
       this.username = APP_CONFIG.user.orcid.name;
       this.orcid = APP_CONFIG.user.orcid.orcid;

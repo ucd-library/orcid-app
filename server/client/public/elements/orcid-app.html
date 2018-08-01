@@ -7,11 +7,14 @@
     display: flex
   }
 
-  .login-panels > * {
-    flex: 1;
+  .panel {
     padding: 10px;
     margin: 10px;
     border: 1px solid #ccc;
+  }
+
+  .login-panels > * {
+    flex: 1;
   }
 </style>
 
@@ -23,12 +26,14 @@
   
   <div id="main">
     <div class="login-panels">
-        <app-login-cas></app-login-cas>
-        <app-login-orcid></app-login-orcid>
+        <app-login-cas class="panel"></app-login-cas>
+        <app-login-orcid class="panel"></app-login-orcid>
     </div>
     <div style="text-align: center">
       <a href="/auth/logout">Logout</a>
     </div>
+    
+    <app-view-record class="panel"></app-view-record>
   </div>
 
 </iron-pages>

@@ -7,6 +7,14 @@ class AppStateModelImpl extends AppStateModel {
     super();
 
     this.store = AppStateStore;
+
+    if( APP_CONFIG.user.orcid ) {
+      this.select(APP_CONFIG.user.orcid.orcid);
+    }
+  }
+
+  select(id) {
+    this.store.select(id);
   }
 
 }
