@@ -2,7 +2,8 @@ const secrets = require('./secrets');
 const env = process.env.NODE_ENV || 'dev';
 
 
-let baseApiUrl = 'pub';
+// let baseApiUrl = 'pub';
+let baseApiUrl = 'api';
 if( process.env.ORCID_API === 'member' ) {
   baseApiUrl = 'api';
 }

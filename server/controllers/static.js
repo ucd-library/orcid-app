@@ -29,7 +29,8 @@ module.exports = (app) => {
     getConfig : async (req, res) => ({
         user : authUtils.getUserFromRequest(req),
         appRoutes : config.server.appRoutes,
-        env : config.env
+        env : config.env,
+        baseApiUrl : config.orcid.api.baseUrl
     }),
     template : async (req, res) => ({bundle})
   });

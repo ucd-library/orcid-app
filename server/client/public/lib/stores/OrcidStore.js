@@ -6,10 +6,12 @@ class OrcidStore extends BaseStore {
     super();
 
     this.data = {
-      records : {}
+      records : {},
+      saving : {}
     };
     this.events = {
-      USER_RECORD_UPDATE : 'user-record-update'
+      USER_RECORD_UPDATE : 'user-record-update',
+      USER_RECORD_SAVING : 'user-record-saving'
     };
   }
 
@@ -18,7 +20,7 @@ class OrcidStore extends BaseStore {
       state : this.STATE.LOADING, 
       request
     }
-    this._userRecordUpdate();
+    this._userRecordUpdate(id);
   }
 
   setUserRecordLoaded(id, data) {
@@ -26,7 +28,7 @@ class OrcidStore extends BaseStore {
       state : this.STATE.LOADED,
       data
     }
-    this._userRecordUpdate();
+    this._userRecordUpdate(id);
   }
 
   setUserRecordError(id, error) {
@@ -34,7 +36,7 @@ class OrcidStore extends BaseStore {
       state : this.STATE.ERROR,
       error
     }
-    this._userRecordUpdate();
+    this._userRecordUpdate(id);
   }
 
   _userRecordUpdate(id) {
@@ -44,7 +46,37 @@ class OrcidStore extends BaseStore {
   getUserRecord(id) {
     return this.data.records[id];
   }
-  
+
+  setUserRecordSaving(putCode, id, data, request) {
+    this.data.saving[putCode] = {
+      state : this.STATE.SAVING,
+      data, request, id
+    }
+  }
+
+  setUserRecordSaved(putCode, id, data) {
+    this.data.saving[putCode] = {
+      state : this.STATE.LOADED,
+      id, data
+    }
+  }
+
+  setUserRecordSaveError(putCode, id, error) {
+    this.data.saving[putCode] = {
+      state : this.STATE.SAVE_ERROR,
+      error, id
+    }
+  }
+
+  getRecordSaveState(putCode) {
+    return this.data.saving[putCode];
+  }
+
+  _onRecordSave(putCode) {
+    this.emit(this.events.USER_RECORD_SAVING, this.data.saving[putCode]);
+  }
+
+
 }
 
 module.exports = new OrcidStore();

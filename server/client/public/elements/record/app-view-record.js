@@ -42,12 +42,63 @@ export default class AppViewRecord extends Mixin(PolymerElement)
     this._loadRecord();
   }
 
-  async _loadRecord() {
-    this.record = await this.OrcidModel.get(this.selectedId);
+  _loadRecord(force=false) {
+    this.OrcidModel.get(this.selectedId,force);
+  }
+
+  _onUserRecordUpdate(e) {
+    if( e.state !== 'loaded' ) return;
+
+    this.record = e;
     this.active = true;
     this.employments = this.record.data['activities-summary'].employments['employment-summary'];
-    console.log(this.employments);
   }
+
+  async _save(e) {
+    let index = parseInt(e.currentTarget.getAttribute('index'));
+   
+    let role = this.shadowRoot.querySelector(`.role[index="${index}"]`).value;
+    let dept = this.shadowRoot.querySelector(`.dept[index="${index}"]`).value;
+    if( !role && !dept ) return;
+
+    e = this.employments[index];
+    let putCode = e['put-code'];
+    let data = {
+      'put-code' : putCode,
+      'start-date' : e['start-date'],
+      'end-date' : e['end-date'],
+      organization : e.organization
+    }
+    
+    if( role ) {
+      data['role-title'] = role;
+    }
+    if( dept ) {
+      data['department-name'] = dept;
+    }
+
+    let resp = await this.OrcidModel.updateEmployment(putCode, this.selectedId, data);
+    if( resp.error ) {
+      return alert('error');
+    } else {
+      alert('success')
+    }
+
+    this._loadRecord(true);
+  }
+
+  async _delete(e) {
+    let index = parseInt(e.currentTarget.getAttribute('index'));
+    let putCode = this.employments[index]['put-code'];
+
+    let resp = await this.OrcidModel.deleteEmployment(putCode, this.selectedId);
+    if( resp.error ) {
+      return alert('error');
+    }
+
+    this._loadRecord(true);
+  }
+
 
 }
 

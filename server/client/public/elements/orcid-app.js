@@ -10,6 +10,7 @@ import "./pages/app-home"
 import "./login/app-login-cas"
 import "./login/app-login-orcid"
 import "./record/app-view-record"
+import "./record/app-edit-record"
 
 import AppStateInterface from "./interfaces/AppStateInterface"
 

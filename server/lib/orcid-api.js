@@ -103,13 +103,13 @@ class OrcidApi {
    * 
    * @returns {Promise} resolves to response
    */
-  addEmployment(data, token) {
+  addEmployment(id, data, token) {
     return this._request(
       `${config.orcid.api.baseUrl}/${id}/employment`,
       {
         method : 'POST',
         headers : {
-          'content-type' : 'application/json'
+          'content-type' : 'application/vnd.orcid+json'
         },
         body : JSON.stringify(data)
       },
@@ -124,20 +124,44 @@ class OrcidApi {
    * http://members.orcid.org/api/tutorial/update-orcid-records#4update
    * 
    * @param {String} putCode from existing employment object
+   * @param {String} id user orcid
    * @param {Object} data new employment object
    * @param {String} token Required (from Oauth dance)
    * 
    * @returns {Promise} resolves to response
    */
-  updateEmployment(putCode, data, token) {
+  updateEmployment(putCode, id, data, token) {
     return this._request(
       `${config.orcid.api.baseUrl}/${id}/employment/${putCode}`,
       {
         method : 'PUT',
         headers : {
-          'content-type' : 'application/json'
+          'Accept' : 'application/json',
+          'Content-type' : 'application/vnd.orcid+json'
         },
         body : JSON.stringify(data)
+      },
+      token
+    );
+  }
+
+    /**
+   * @method deleteEmployment
+   * @description Delete employment entry to user record.  User access token required
+   * 
+   * http://members.orcid.org/api/tutorial/update-orcid-records#5delete
+   * 
+   * @param {String} putCode from existing employment object
+   * @param {String} id user orcid
+   * @param {String} token Required (from Oauth dance)
+   * 
+   * @returns {Promise} resolves to response
+   */
+  deleteEmployment(putCode, id, token) {
+    return this._request(
+      `${config.orcid.api.baseUrl}/${id}/employment/${putCode}`,
+      {
+        method : 'DELETE'
       },
       token
     );

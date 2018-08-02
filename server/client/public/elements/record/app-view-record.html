@@ -5,11 +5,22 @@
   :host([active]) {
     display: block;
   }
+  .panel {
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid blue;
+  }
 </style>
 
 
 <h2>ORCiD Employment</h2>
 <template is="dom-repeat" items="[[employments]]">
-  <div>[[item.organization.name]] - [[item.department-name]]</div>
-  <div>[[item.role-title]]</div>
+  <div class="panel">
+    <div>[[item.organization.name]] - <input value$="[[item.department-name]]" class="dept" index$="[[index]]" /> 
+      <button on-click="_save" index$="[[index]]">Update</button>
+      <button on-click="_delete" index$="[[index]]">Delete</button>
+    </div>
+    <div>Role: <input value$="[[item.role-title]]" class="role" index$="[[index]]" /></div>
+    <div>Source: [[item.sourceName]]</div>
+  </div>
 </template>

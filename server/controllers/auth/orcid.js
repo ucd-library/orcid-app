@@ -8,7 +8,7 @@ router.get('/oauth-login', (req, res) => {
   let params = {
     client_id : config.orcid.clientId,
     response_type : 'code',
-    scope : '/authenticate',
+    scope : '/authenticate /activities/update',
     redirect_uri : config.server.host+'/auth/orcid/oauth-callback'
     // redirect_uri : 'http://localhost'
   }

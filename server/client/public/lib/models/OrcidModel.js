@@ -13,16 +13,63 @@ class OrcidModel extends BaseModel {
     this.register('OrcidModel');
   }
 
-  async get(id) {
+  async get(id, force=false) {
     let record = this.store.getUserRecord(id);
 
-    if( record && record.request ) {
-      await record.request;
-    } else {
-      await this.service.get(id);
-    }
+    try {
+      if( record && record.request ) {
+        await record.request;
+      } else if( !force && record && record.state === 'loaded' ) {
+        return record;
+      } else {
+        await this.service.get(id);
+      }
+    } catch(e) {}
+    
 
     return this.store.getUserRecord(id);
+  }
+
+  async updateEmployment(putCode, id, data) {
+    let state = this.store.getRecordSaveState(putCode);
+
+    if( state && state.request ) {
+      try {
+        await record.request;
+      } catch(e) {}
+    }
+
+    try {
+      await this.service.updateEmployment(putCode, id, data);
+    } catch(e) {}
+
+    return this.store.getRecordSaveState(putCode);
+  }
+
+  async deleteEmployment(putCode, id) {
+    let state = this.store.getRecordSaveState(putCode);
+    
+    try {
+      return await this.service.deleteEmployment(putCode, id);
+    } catch(e) {
+      return e;
+    }
+  }
+
+  async addEmployment(id, data) {
+    let state = this.store.getRecordSaveState(id);
+
+    if( state && state.request ) {
+      try {
+        await record.request;
+      } catch(e) {}
+    }
+
+    try {
+      await this.service.addEmployment(id, data);
+    } catch(e) {}
+
+    return this.store.getRecordSaveState(id);
   }
 
 }

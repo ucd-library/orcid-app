@@ -4,6 +4,7 @@ logger.info('Starting server');
 const express = require('express');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const config = require('./config');
 
 // global catch alls for errors
@@ -26,6 +27,8 @@ app.use(session({
 // parse cookies and add compression
 app.use(cookieParser()); 
 // app.use(compression());
+app.use(bodyParser.json()); // for parsing application/json
+
 
 // require custom endpoints
 app.use(require('./controllers'));

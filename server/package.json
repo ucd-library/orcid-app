@@ -12,6 +12,7 @@
   "license": "MIT",
   "dependencies": {
     "@ucd-lib/spa-router-middleware": "0.0.2",
+    "body-parser": "^1.18.3",
     "bunyan": "^1.8.12",
     "cas-authentication": "0.0.8",
     "compression": "^1.7.3",
