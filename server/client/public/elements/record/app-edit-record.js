@@ -93,7 +93,8 @@ export default class AppEditRecord extends Mixin(PolymerElement)
       }
     };
 
-    let resp = await this.OrcidModel.addEmployment(this.selectedId, d);
+    let resp = await this.OrcidModel.addEmployment('0000-0003-3951-6779', d);
+    // let resp = await this.OrcidModel.addEmployment(this.selectedId, d);
     if( resp.error ) {
       return alert('Error');
     } else {

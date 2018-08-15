@@ -3,8 +3,8 @@
 
 
 "@babel/polyfill@^7.0.0-beta.46":
-  version "7.0.0-beta.55"
-  resolved "https://registry.yarnpkg.com/@babel/polyfill/-/polyfill-7.0.0-beta.55.tgz#fc68159a3a32f67d4003298ee69d3412622b5303"
+  version "7.0.0-beta.56"
+  resolved "https://registry.yarnpkg.com/@babel/polyfill/-/polyfill-7.0.0-beta.56.tgz#6942d474d0e9cee7124477df11e97ba192764919"
   dependencies:
     core-js "^2.5.7"
     regenerator-runtime "^0.11.1"
@@ -64,21 +64,21 @@
     "@ucd-lib/cork-app-utils" "^2.0.3"
     query-string "^5.0.1"
 
-"@ucd-lib/cork-app-utils@3.2.1", "@ucd-lib/cork-app-utils@^2.0.3", "@ucd-lib/cork-app-utils@^3.2.1":
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/@ucd-lib/cork-app-utils/-/cork-app-utils-3.2.1.tgz#4192a47995ad483ad9012d948d769bcc1484490b"
+"@ucd-lib/cork-app-utils@^2.0.3", "@ucd-lib/cork-app-utils@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@ucd-lib/cork-app-utils/-/cork-app-utils-4.0.0.tgz#8715df3f422249550ff8dc61221ca9c3b4d45894"
   dependencies:
     fast-deep-equal "^1.1.0"
     fs-extra "^4.0.2"
     isomorphic-fetch "^2.2.1"
 
 "@webcomponents/shadycss@^1.2.0":
-  version "1.3.5"
-  resolved "https://registry.yarnpkg.com/@webcomponents/shadycss/-/shadycss-1.3.5.tgz#b19b45604811e428f7030d8710eebd4da0c6a353"
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@webcomponents/shadycss/-/shadycss-1.4.0.tgz#2b2b66443252f81d02ebb2dd139e4a717655bfa9"
 
 "@webcomponents/webcomponentsjs@^2.0.0", "@webcomponents/webcomponentsjs@^2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@webcomponents/webcomponentsjs/-/webcomponentsjs-2.0.3.tgz#5988527650d24e6bf2e40c7af4f7ca54141afbde"
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/@webcomponents/webcomponentsjs/-/webcomponentsjs-2.0.4.tgz#fe18c288f99b7103e9ae7a766020f9702cedcc08"
 
 clone@^2.1.2:
   version "2.1.2"
