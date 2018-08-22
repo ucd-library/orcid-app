@@ -1,0 +1,37 @@
+<style>
+  :host {
+    display: block;
+  }
+
+  canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .text {
+    z-index: 5;
+    position: absolute;
+    text-align: center;
+    top: 75px;
+    left: 0;
+    right: 0;
+  }
+  h1 {
+    z-index: 5;
+    font-size: 50px;
+    margin: 0 0 5px 0;
+  }
+  h3 {
+    margin: 0;
+    padding: 0;
+  }
+</style>
+
+<div style="position: relative; height: [[height]]px; width: [[width]]px">
+  <canvas id="canvas" height$="[[height]]" width$="[[width]]"></canvas>
+  <div class="text">
+    <h1>[[percent]]%</h1>
+    <h3>optimized</h3>
+  </div>
+</div>

@@ -26,7 +26,7 @@ class OrcidModel extends BaseModel {
       }
     } catch(e) {}
     
-
+    console.log(this.store.getUserRecord(id));
     return this.store.getUserRecord(id);
   }
 

@@ -1,0 +1,28 @@
+<style>
+  :host {
+    display: block;
+  }
+
+  .layout {
+    display: flex;
+    align-items: center;
+  }
+
+  iron-icon {
+    color: var(--medium-background-color);
+  }
+  iron-icon[checked] {
+    color: var(--default-primary-color);
+  }
+  iron-icon[icon="error"] {
+    color: var(--color-red);
+  }
+</style>
+
+<div class="layout">
+  <div>
+    <iron-icon icon="check-circle" checked$="[[checked]]" hidden$="[[error]]"></iron-icon>
+    <iron-icon icon="error" hidden$="[[!error]]"></iron-icon>
+  </div>
+  <div>[[text]]</div>
+</div>

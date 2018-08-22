@@ -1,0 +1,25 @@
+<style>
+  :host {
+    display: inline-block;
+  }
+  #popup {
+    position: absolute;
+    width: 300px;
+    padding: 10px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 6px;
+    display: none;
+    z-index: 1000;
+  }
+  paper-icon-button {
+    color: black;
+  }
+</style>
+
+<paper-icon-button id="icon" icon="help" on-click="_onBtnClicked"></paper-icon-button>
+<div style="position: relative">
+  <div id="popup" on-click="_onPopupClicked">
+    <slot></slot>
+  </div>
+</div>

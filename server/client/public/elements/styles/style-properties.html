@@ -1,0 +1,42 @@
+<custom-style>
+  <style>
+    html {
+      --default-primary-color : #97c144;
+      --light-primary-color   : #9cc732;
+      
+      --default-secondary-color : #2d81a6;
+      --medium-background-color : #c2c2c3;
+    
+      --text-primary-color      : #000000;
+      --primary-text-color      : var(--text-primary-color);
+      --secondary-text-color    : var(--default-secondary-color);
+      --inverse-text-color      : white;
+
+      --text-disabled           : var(--medium-background-color);
+      --max-width               : 1200px;
+      --max-text-width          : 650px;
+      --font-size               : 16px;
+      --font-size-sm            : 14px;
+      --font-weight             : 400;
+      --font-weight-heavy       : 700;
+      --layout-sm               : 768px;
+      --grid-cell-width         : 250px;
+      --default-outline         : 2px dotted var(--default-secondary-color);
+      --color-red               : #ed1c24;
+
+      --paper-icon-button-ink-color : transparent;
+    }
+    body, html {
+      /* @apply --paper-font-common-base; */
+      font-family      : proxima-nova,"Lucida Grande","Lucida Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+      font-size        : var(--font-size);
+      font-weight      : var(--font-weight);
+      line-height      : calc(var(--font-size) * 1.625);
+      margin           : 0;
+      padding          : 0;
+      background-color : var(--default-background-color);
+      color            : var(--text-primary-color);
+      max-width        : 100vw;
+    }
+  </style>
+</custom-style>

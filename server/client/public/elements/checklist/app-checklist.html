@@ -1,0 +1,51 @@
+<style>
+  :host {
+    display: block;
+  }
+
+  .layout {
+    display: flex;
+  }
+
+  .item-layout {
+    display: flex;
+    align-items: center;
+  }
+</style>
+
+<div class="layout">
+  <div>
+    <app-completed-chart id="chart"></app-completed-chart>
+    <a on-click="_onReloadClicked">Reload the iD score</a>
+  </div>
+
+  <div style="flex:1">
+    <h2>Improve Your iD with Key Features</h2>
+
+    <dom-repeat items="[[checklist]]">
+      <template>
+        <div class="item-layout">
+          <app-checklist-mark text="[[item.text]]" checked$="[[item.checked]]"></app-checklist-mark>
+          <app-checklist-help>
+            <div>[[item.help]]</div>
+          </app-checklist-help>
+        </div>
+      </template>
+    </dom-repeat>
+
+    <div hidden$="[[!errors.length]]">
+      <h2>Errors Detected</h2>
+      <dom-repeat items="[[errors]]">
+        <template>
+          <div class="item-layout">
+            <app-checklist-mark text="[[item.text]]" error></app-checklist-mark>
+            <app-checklist-help>
+              <div>[[item.help]]</div>
+            </app-checklist-help>
+          </div>
+        </template>
+      </dom-repeat>
+    </div>
+  </div>
+</div>
+

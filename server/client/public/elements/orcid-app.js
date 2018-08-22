@@ -6,11 +6,14 @@ import "../lib/models"
 import "@polymer/iron-pages"
 import "@ucd-lib/cork-app-state/elements/app-route"
 
+import "./styles/style-properties"
+
 import "./pages/app-home"
 import "./login/app-login-cas"
 import "./login/app-login-orcid"
 import "./record/app-view-record"
 import "./record/app-edit-record"
+import "./checklist/app-checklist"
 
 import AppStateInterface from "./interfaces/AppStateInterface"
 
