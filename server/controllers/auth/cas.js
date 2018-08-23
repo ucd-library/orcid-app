@@ -24,7 +24,7 @@ router.get('/login', (req, res) => {
 
     if( username ) {
       // logger.info('CAS Service: CAS login success: '+username);
-      res.redirect('/main');
+      res.redirect('/');
     } else {
       // logger.info('CAS Service: CAS login failure');
       res.status(401).send();

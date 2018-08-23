@@ -1,4 +1,4 @@
-<style>
+<style include="shared-styles">
   :host {
     display: block;
   }
@@ -10,33 +10,160 @@
   .panel {
     padding: 10px;
     margin: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--medium-background-color);
+    border-radius: 6px;
+    min-width: 350px;
+    text-align: center;
   }
 
   .login-panels > * {
     flex: 1;
   }
+
+  #topbar {
+    padding: 15px 0;
+    background-repeat: no-repeat;
+    background-image: url(/images/bkg_topbar.png);
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-position: center center;
+    margin-bottom: -1px;
+    display: flex;
+    align-items: center;
+  }
+
+  #topbar > div {
+    flex: 1;
+    text-align: right;
+    margin-right: 25px;
+  }
+
+  #topbar > img {
+    height: 25px; 
+    padding: 2px 0 0 25px;
+  }
+
+  .orcid-header {
+    margin: 25px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .checklist {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .orcid-header-text {
+    margin-left: 98px;
+    margin-right: 10px;
+    margin-top: 5px;
+    color: #939498;
+    width: 130px;
+    font-size: 12px;
+    font-style: normal;
+    line-height: 17px;
+    font-weight: 100;
+    font-family: noto sans,sans-serif;
+  }
+
+  .break-line {
+    height: 1px;
+    background-color: var(--medium-background-color);
+    margin-bottom: 25px;
+  }
+
+  .main-layout {
+    display: flex;
+    justify-content: center;
+  }
+
+  .main-layout > div {
+    max-width: 1200px;
+    margin: 0 15px;
+  }
+  [hidden] {
+    display: none;
+  }
+  a[logout] {
+    color: white;
+    text-decoration: none;
+  }
+
+  h1.thin {
+    font-weight: 100;
+    margin-bottom: 55px;
+    text-align: center;
+  }
+
+  .username {
+    font-size: 20px;
+    color: var(--default-primary-color);
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .btn {
+    font-size: 16px;
+  }
 </style>
 
 <app-route app-routes="[[appRoutes]]"></app-route>
 
-<iron-pages selected="[[page]]" attr-for-selected="id" selected-attribute="active">
-  
-  <app-home id="home"></app-home>
-  
-  <div id="main">
-    <div class="login-panels">
+<div id="topbar">
+  <img src="/images/logo.png" />  
+  <div><a href="/auth/logout" logout>
+    <iron-icon icon="input"></iron-icon> Logout</a>
+  </div>
+</div>
+<div class="orcid-header">
+  <div>
+    <div><img src="/images/orcid-logo.png" /></div>
+    <div class="orcid-header-text">
+      Connecting Research and Researchers
+    </div>
+  </div>
+</div>
+
+
+<div class="main-layout">
+  <div>
+    <div class="break-line"></div>
+
+    <div hidden$="[[loggedIn]]">
+      <div class="login-panels">
         <app-login-cas class="panel"></app-login-cas>
         <app-login-orcid class="panel"></app-login-orcid>
+      </div>
     </div>
-    <div style="text-align: center">
-      <a href="/auth/logout">Logout</a>
-    </div>
-    
-    <app-view-record class="panel"></app-view-record>
-    <app-edit-record class="panel"></app-edit-record>
 
-    <app-checklist></app-checklist>
+    <div hidden$="[[!loggedIn]]">
+      <div class="username">
+        <div>Hello [[username]]!</div>
+        <div style="font-size: 12px; font-weight:normal">[[orcid]]</div>
+      </div>
+      <h1 class="thin">Optimizing your iD will imprive its accuracy and usefulness.</h1>
+      <div class="checklist">
+        <app-checklist></app-checklist>
+      </div>
+
+      <div class="break-line" style="margin-top:35px"></div>
+
+      <div style="text-align: right">
+        <a class="btn" href="https://orcid.org/my-orcid" target="_blank">
+          Complete your iD
+          <iron-icon icon="chevron-right"></iron-icon>
+        </a>
+      </div>
+    </div>
   </div>
+</div>
 
-</iron-pages>
+    
+    <!-- <app-view-record class="panel"></app-view-record>
+    <app-edit-record class="panel"></app-edit-record> -->
+   

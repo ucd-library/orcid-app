@@ -38,10 +38,7 @@ export default class AppChecklistHelp extends PolymerElement {
     this.showing = false;
   }
 
-  _onBtnClicked(e) {
-    // e.preventDefault();
-    // e.stopPropagation();
-    
+  _onBtnClicked(e) {    
     if( this.showing ) this.hide();
     else this.show();
   }

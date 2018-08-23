@@ -5,7 +5,7 @@ router.use('/orcid', require('./orcid'));
 
 router.get('/logout', (req, res) => {
   req.session.destroy();
-  res.redirect('/main');
+  res.redirect('/');
 });
 
 module.exports = router;

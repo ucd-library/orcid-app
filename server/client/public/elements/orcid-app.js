@@ -3,10 +3,11 @@ import template from "./orcid-app.html"
 
 import "../lib/models"
 
-import "@polymer/iron-pages"
+// import "@polymer/iron-pages"
 import "@ucd-lib/cork-app-state/elements/app-route"
 
 import "./styles/style-properties"
+import "./styles/shared-styles"
 
 import "./pages/app-home"
 import "./login/app-login-cas"
@@ -33,7 +34,28 @@ export default class OrcidApp extends Mixin(PolymerElement)
       page : {
         type : String,
         value : 'home'
+      },
+      loggedIn : {
+        type : Boolean,
+        value : (APP_CONFIG.user.cas && APP_CONFIG.user.orcid) ? true : false
+      },
+      username : {
+        type : String,
+        value : ''
+      },
+      orcid : {
+        type : String,
+        value : ''
       }
+    }
+  }
+
+  constructor() {
+    super();
+
+    if( APP_CONFIG.user.orcid ) {
+      this.username = APP_CONFIG.user.orcid.name;
+      this.orcid = APP_CONFIG.user.orcid.orcid;
     }
   }
 
@@ -50,6 +72,8 @@ export default class OrcidApp extends Mixin(PolymerElement)
     window.scrollTo(0, 0);
     this.page = page;
   }
+
+
 
 }
 

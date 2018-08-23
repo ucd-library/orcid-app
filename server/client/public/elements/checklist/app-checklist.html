@@ -11,15 +11,25 @@
     display: flex;
     align-items: center;
   }
+
+  a {
+    cursor: pointer;
+    color: var(--default-secondary-color);
+  }
+
+  h2 {
+    margin-bottom: 5px;
+    font-size: 20px;
+  }
 </style>
 
 <div class="layout">
-  <div>
+  <div style="margin-right: 35px; text-align: center">
     <app-completed-chart id="chart"></app-completed-chart>
     <a on-click="_onReloadClicked">Reload the iD score</a>
   </div>
 
-  <div style="flex:1">
+  <div style="flex:1; max-width: 450px">
     <h2>Improve Your iD with Key Features</h2>
 
     <dom-repeat items="[[checklist]]">

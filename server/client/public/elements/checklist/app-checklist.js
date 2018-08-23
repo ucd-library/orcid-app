@@ -36,6 +36,7 @@ export default class AppChecklist extends Mixin(PolymerElement)
 
   _onSelectedRecordUpdate(id) {
     this.selectedId = id;
+    this.OrcidModel.get(this.selectedId, true);
   }
 
   _onUserRecordUpdate(e) {

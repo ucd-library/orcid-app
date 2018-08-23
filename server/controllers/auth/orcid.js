@@ -36,7 +36,7 @@ router.get('/oauth-callback', async (req, res) => {
   try {
     response = JSON.parse(response.body);
     req.session[config.orcid.sessionName] = response; 
-    res.redirect('/main');
+    res.redirect('/');
   } catch(e) {
     res.status(400).send('Unable to parse Oauth body');
   }
