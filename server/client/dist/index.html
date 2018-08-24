@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>UCD Library ORCiD Webapp</title>
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1">
+    <meta name="theme-color" content="#FFFFFF">
+
+    {{bundle}}
+    
+    <!-- from spa-router-middleware -->
+    {{config}}
+  </head>
+
+  <body>
+    <noscript>
+      The UC Davis Library Digital Collections requires JavaScript to
+      be enabled to view.  You have either disabled JavaScript or your
+      browser does not support it.
+    </noscript>
+
+    <orcid-app></orcid-app>
+
+    <script>
+      console.log(APP_CONFIG.user);
+    </script>
+  </body>
+</html>

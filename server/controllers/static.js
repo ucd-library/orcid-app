@@ -3,7 +3,8 @@ const path = require('path');
 const fs = require('fs');
 const spaMiddleware = require('@ucd-lib/spa-router-middleware');
 const config = require('../config');
-const authUtils = require('../lib/auth');
+const authUtils = require('../lib/auth');0
+const logger = require('../lib/logger');
 
 const bundle = `
   <script>
@@ -16,7 +17,7 @@ const bundle = `
 `;
 
 module.exports = (app) => {
-  let assetsDir = path.join(__dirname, '..', 'client', config.server.assets);
+  let assetsDir = path.join(__dirname, '..', 'client', config.client.assets);
 
   /**
    * Setup SPA app routes
@@ -29,7 +30,7 @@ module.exports = (app) => {
     getConfig : async (req, res) => ({
         user : authUtils.getUserFromRequest(req),
         appRoutes : config.server.appRoutes,
-        env : config.env,
+        env : config.client.env,
         baseApiUrl : config.orcid.api.baseUrl
     }),
     template : async (req, res) => ({bundle})
@@ -42,4 +43,6 @@ module.exports = (app) => {
     immutable: true,
     maxAge: '1y'
   }));
+
+  logger.info('Client ENV='+config.client.env, 'Serving '+assetsDir, 'Bundle Info:', config.client.versions);
 }

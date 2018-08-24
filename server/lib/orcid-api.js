@@ -35,7 +35,7 @@ class OrcidApi {
     if( options.scope ) form.scope = options.scope;
 
     return request(
-      config.env === 'prod' ? 'https://orcid.org/oauth/token' : 'https://sandbox.orcid.org/oauth/token',
+      config.apiEnv === 'prod' ? 'https://orcid.org/oauth/token' : 'https://sandbox.orcid.org/oauth/token',
       {
         method : 'POST',
         headers : {
