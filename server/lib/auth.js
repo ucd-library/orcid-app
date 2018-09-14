@@ -13,7 +13,7 @@ class AuthUtils {
    */
   getUserFromRequest(req) {
     return {
-      cas : req.session[config.cas.sessionName],
+      cas : req.session[config.ucd.cas.sessionName],
       orcid : req.session[config.orcid.sessionName]
     }
   }

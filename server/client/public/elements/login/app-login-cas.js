@@ -11,11 +11,11 @@ export default class AppLoginCas extends PolymerElement {
     return {
       loggedIn : {
         type : Boolean,
-        value : APP_CONFIG.user.cas ? true : false
+        value : APP_CONFIG.user.session.cas ? true : false
       },
       username : {
         type : String,
-        value : APP_CONFIG.user.cas
+        value : APP_CONFIG.user.session.cas
       }
     }
   }

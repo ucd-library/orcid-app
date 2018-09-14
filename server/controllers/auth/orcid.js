@@ -2,13 +2,15 @@ const express = require('express');
 const router = express.Router();
 const api = require('../../lib/orcid-api');
 const config = require('../../config');
+const firestore = require('../../lib/firestore');
+const usersModel = require('../../lib/users');
 
 router.get('/oauth-login', (req, res) => {
   let url = 'https://sandbox.orcid.org/oauth/authorize';
   let params = {
     client_id : config.orcid.clientId,
     response_type : 'code',
-    scope : '/authenticate /activities/update',
+    scope : config.orcid.api.scopes,
     redirect_uri : config.server.host+'/auth/orcid/oauth-callback'
     // redirect_uri : 'http://localhost'
   }
@@ -35,7 +37,10 @@ router.get('/oauth-callback', async (req, res) => {
 
   try {
     response = JSON.parse(response.body);
-    req.session[config.orcid.sessionName] = response; 
+    req.session[config.orcid.sessionName] = response;
+
+    await usersModel.updateOrcidInfo(response.orcid, response.access_token);
+
     res.redirect('/');
   } catch(e) {
     res.status(400).send('Unable to parse Oauth body');

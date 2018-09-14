@@ -1,4 +1,6 @@
 const secrets = require('./secrets');
+const path = require('path');
+const fs = require('fs');
 
 const apiEnv = process.env.API_ENV || 'dev';
 
@@ -23,8 +25,16 @@ const CAS = {
   }
 }
 
-module.exports = {
+const GOOGLE_ENV = process.env.GOOGLE_CLOUD_PROJECT ? true : false;
+if( !GOOGLE_ENV ) {
+  let keyPath = path.join(__dirname, 'service-account.json');
+  if( fs.existsSync(keyPath) ) {
+    secrets.google = require(keyPath);
+  }
+}
 
+module.exports = {
+  GOOGLE_ENV,
   apiEnv,
 
   server : {
@@ -33,7 +43,8 @@ module.exports = {
     loglevel : process.env.SERVER_LOG_LEVEL || 'info',
     cookieSecret : process.env.SERVER_COOKIE_SECRET || 'changeme',
     cookieMaxAge : process.env.SERVER_COOKIE_MAX_AGE ? parseInt(process.env.SERVER_COOKIE_MAX_AGE) : (1000 * 60 * 60 * 24 * 7),
-    appRoutes : ['main', 'app']
+    appRoutes : ['main', 'app'],
+    sessionName : 'app-session'
   },
 
   client : {
@@ -51,14 +62,31 @@ module.exports = {
     accessToken : secrets.orcid[apiEnv].accessToken,
     sessionName : 'orcid-session',
     api : {
-      baseUrl : `https://${baseApiUrl}.orcid.org/v2.1`
+      baseUrl : `https://${baseApiUrl}.orcid.org/v2.1`,
+      scopes : '/authenticate /read-limited /activities/update'
     }
   },
 
-  cas : Object.assign(CAS[apiEnv], {
-    sessionName : 'cas-session'
-  }),
+  firestore : {
+    collections : {
+      users : 'users',
+      sessions : 'sessions'
+    }
+  },
 
-  google : {}
+  ucd : {
+    api : {
+      baseUrl : 'https://iet-ws.ucdavis.edu/api/iam/',
+      key : secrets.ucd.key,
+      version : '1.0'
+    },
+    cas : Object.assign(CAS[apiEnv], {
+      sessionName : 'cas-session'
+    }),
+  },
+
+  google : {
+    key : secrets.google
+  }
 
 }

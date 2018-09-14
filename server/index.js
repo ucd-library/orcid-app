@@ -2,7 +2,7 @@ const logger = require('./lib/logger');
 logger.info('Starting server');
 
 const express = require('express');
-const session = require('express-session');
+
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const config = require('./config');
@@ -16,13 +16,7 @@ process.on('unhandledRejection', (e) => logger.fatal(e));
 const app = express();
 
 // setup sessions
-app.use(session({
-  name              : 'ucd-orcid-app',
-  secret            : config.server.cookieSecret,
-  resave            : false,
-  maxAge            : config.server.cookieMaxAge,
-  saveUninitialized : true
-}));
+app.use(require('./lib/sessions'));
 
 // parse cookies and add compression
 app.use(cookieParser()); 

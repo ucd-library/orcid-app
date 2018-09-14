@@ -1,3 +1,4 @@
 node_modules
 secrets.json
+service-account.json
 server/client/public/js/*bundle.js

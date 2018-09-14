@@ -3,6 +3,7 @@ const router = express.Router();
 const authUtils = require('../../lib/auth');
 const api = require('../../lib/orcid-api');
 const config = require('../../config');
+const firestore = require('../../lib/firestore');
 
 router.get('/:id', async (req, res) => {
   let id = req.params.id;
@@ -16,7 +17,12 @@ router.get('/:id', async (req, res) => {
   }
 
   let response = await api.get(id, accessToken);
-  handleApiResponse(response, res, tokenType);
+  response = handleApiResponse(response, res, tokenType);
+
+  firestore.setUser({
+    id: user.orcid.orcid,
+    orcid : response
+  });
 });
 
 router.put('/:id/employment/:putCode', async (req, res) => {
@@ -62,7 +68,8 @@ router.post('/:id/employment', async (req, res) => {
 
 function handleApiResponse(api, exp, tokenType) {
   if( api.statusCode !== 200 ) {
-    return exp.status(api.statusCode).send(api.body);
+    exp.status(api.statusCode).send(api.body);
+    return api.body;
   }
 
   try {
@@ -75,6 +82,8 @@ function handleApiResponse(api, exp, tokenType) {
     tokenType,
     result : api 
   });
+
+  return api;
 }
 
 module.exports = router;

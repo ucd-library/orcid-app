@@ -3,8 +3,9 @@ const path = require('path');
 const fs = require('fs');
 const spaMiddleware = require('@ucd-lib/spa-router-middleware');
 const config = require('../config');
-const authUtils = require('../lib/auth');0
+const authUtils = require('../lib/auth');
 const logger = require('../lib/logger');
+const userModel = require('../lib/users');
 
 const bundle = `
   <script>
@@ -27,12 +28,23 @@ module.exports = (app) => {
     htmlFile : path.join(assetsDir, 'index.html'),
     isRoot : true,
     appRoutes : config.server.appRoutes,
-    getConfig : async (req, res) => ({
-        user : authUtils.getUserFromRequest(req),
+    getConfig : async (req, res) => {
+      let user = {
+        session : authUtils.getUserFromRequest(req),
+        data : null
+      }
+      
+      if( user.session.orcid ) {
+        user.data = await userModel.getUser(user.session.orcid.orcid)
+      }
+
+      return {
+        user,
         appRoutes : config.server.appRoutes,
         env : config.client.env,
         baseApiUrl : config.orcid.api.baseUrl
-    }),
+      }
+    },
     template : async (req, res) => ({bundle})
   });
 

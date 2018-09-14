@@ -167,6 +167,16 @@ class OrcidApi {
     );
   }
 
+  getResultObject(response) {  
+    try {
+      response = JSON.parse(response.body);
+    } catch(e) {
+      response = response.body;
+    }
+
+    return response;
+  }
+
   /**
    * @method _request
    * @description private wrapper around request to append Bearer authorization
