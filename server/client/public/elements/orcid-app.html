@@ -46,10 +46,9 @@
   }
 
   .orcid-header {
-    margin: 25px 0;
+    margin: 20px 0;
     display: flex;
     align-items: center;
-    justify-content: center;
   }
 
   .checklist {
@@ -59,22 +58,31 @@
   }
 
   .orcid-header-text {
-    margin-left: 98px;
-    margin-right: 10px;
-    margin-top: 5px;
-    color: #939498;
+    color: var(--orcid-grey);
     width: 130px;
-    font-size: 12px;
+    font-size: 11px;
     font-style: normal;
-    line-height: 17px;
+    line-height: 14px;
     font-weight: 100;
     font-family: noto sans,sans-serif;
+  }
+
+  .orcid-header h1 {
+    font-size: 28px;
+    margin: 0;
+    padding: 0;
+    color: var(--orcid-grey);
+    flex: 1;
+    padding-left: 15px;
+  }
+
+  .orcid-header .logo img {
+    height: 64px;
   }
 
   .break-line {
     height: 1px;
     background-color: var(--medium-background-color);
-    margin-bottom: 25px;
   }
 
   .main-layout {
@@ -120,26 +128,32 @@
     <iron-icon icon="input"></iron-icon> Logout</a>
   </div>
 </div>
-<div class="orcid-header">
-  <div>
-    <div><img src="/images/orcid-logo.png" /></div>
-    <div class="orcid-header-text">
-      Connecting Research and Researchers
-    </div>
-  </div>
-</div>
 
 
 <div class="main-layout">
   <div>
+    <div class="orcid-header">
+      <img src="/images/orcid-vector-logo.svg" style="height: 48px; width: 48px" />
+      
+      <h1 class="orcid-header-title">
+        Optimization Meter
+      </h1>
+    
+      <div class="logo">
+        <img src="/images/orcid-vector-member-logo.svg" />
+      </div>
+    </div>
+
     <div class="break-line"></div>
 
-    <div hidden$="[[loggedIn]]">
+    <app-login></app-login>
+
+    <!-- <div hidden$="[[loggedIn]]">
       <div class="login-panels">
         <app-login-cas class="panel"></app-login-cas>
         <app-login-orcid class="panel"></app-login-orcid>
       </div>
-    </div>
+    </div> -->
 
     <div hidden$="[[!loggedIn]]">
       <div class="username">

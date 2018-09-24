@@ -5,7 +5,6 @@ const users = require('../../lib/users');
 const config = require('../../config');
 
 router.get('/link', async (req, res) => {
-  let id = req.params.id;
   let user = authUtils.getUserFromRequest(req);
 
   if( !user.orcid || !user.cas ) {
