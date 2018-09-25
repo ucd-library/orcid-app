@@ -1,6 +1,7 @@
 const models = {
   AppStateModel : require('./AppStateModel'),
-  OrcidModel : require('./OrcidModel')
+  OrcidModel : require('./OrcidModel'),
+  UcdModel : require('./UcdModel')
 }
 
 if( typeof window !== 'undefined' ) {

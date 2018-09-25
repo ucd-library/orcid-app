@@ -7,6 +7,12 @@
     display: flex;
   }
 
+  @media(max-width: 525px) {
+    .layout {
+      display: block;
+    }
+  }
+
   .item-layout {
     display: flex;
     align-items: center;
@@ -21,11 +27,17 @@
     margin-bottom: 5px;
     font-size: 20px;
   }
+
+  #chart {
+    display: inline-block;
+  }
 </style>
 
 <div class="layout">
   <div style="margin-right: 35px; text-align: center">
-    <app-completed-chart id="chart"></app-completed-chart>
+    <div>
+      <app-completed-chart id="chart"></app-completed-chart>
+    </div>
     <a on-click="_onReloadClicked">Reload the iD score</a>
   </div>
 

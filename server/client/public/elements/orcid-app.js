@@ -47,6 +47,14 @@ export default class OrcidApp extends Mixin(PolymerElement)
       orcid : {
         type : String,
         value : ''
+      },
+      hideLogout : {
+        type : Boolean,
+        value : true
+      },
+      linked : {
+        type : Boolean,
+        value : false
       }
     }
   }
@@ -54,9 +62,15 @@ export default class OrcidApp extends Mixin(PolymerElement)
   constructor() {
     super();
 
-    if( APP_CONFIG.user.orcid ) {
-      this.username = APP_CONFIG.user.orcid.name;
-      this.orcid = APP_CONFIG.user.orcid.orcid;
+    if( APP_CONFIG.user.session.orcid ) {
+      this.username = APP_CONFIG.user.session.orcid.name;
+      this.orcid = APP_CONFIG.user.session.orcid.orcid;
+    }
+
+    this.hideLogout = (Object.keys(APP_CONFIG.user.session || {}).length === 0);
+
+    if( APP_CONFIG.user.data ) {
+      this.linked = APP_CONFIG.user.data.linked;
     }
   }
 

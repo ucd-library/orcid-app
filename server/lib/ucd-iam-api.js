@@ -1,6 +1,9 @@
 const request = require('./request');
 const config = require('../config');
 
+// console.log(config.ucd.api);
+
+// https://ucdavis.jira.com/wiki/spaces/IETP/pages/132808721/Web+Service+API
 class UcdiamApi {
 
   /**
@@ -16,7 +19,7 @@ class UcdiamApi {
       `${config.ucd.api.baseUrl}/people/prikerbacct/search`, 
       {
         headers : {
-          Accept : 'application/javascript'
+          Accept : 'application/json'
         },
         qs : {
           userId : casId,
@@ -26,7 +29,8 @@ class UcdiamApi {
       } 
     );
 
-    return this._getResponse(response, 'userId', casId);
+    response = this._getResponse(response, 'userId', casId);
+    return response.iamId;
   }
 
   /**
@@ -37,12 +41,12 @@ class UcdiamApi {
    * 
    * @returns {Promise} resolves to object or null
    */
-  getContactInfo(iamId) {
-    let response = request(
+  async getContactInfo(iamId) {
+    let response = await request(
       `${config.ucd.api.baseUrl}/people/contactinfo/${iamId}`, 
       {
         headers : {
-          Accept : 'application/javascript'
+          Accept : 'application/json'
         },
         qs : {
           key : config.ucd.api.key,
@@ -68,7 +72,7 @@ class UcdiamApi {
       `${config.ucd.api.baseUrl}/people/search`, 
       {
         headers : {
-          Accept : 'application/javascript'
+          Accept : 'application/json'
         },
         qs : {
           iamId : iamId,
@@ -89,12 +93,15 @@ class UcdiamApi {
    * 
    * @returns {Promise} resolves to Object or null
    */
-  getDepartmentInfo(iamId) {
-    let response = request(
-      `${config.ucd.api.baseUrl}/associations/odr/${iamId}`, 
+  async getDepartmentInfo(iamId) {
+    // quinn had below but can't find docs and doesn't seem to return for jrmerz
+    // /associations/odr/
+
+    let response = await request(
+      `${config.ucd.api.baseUrl}/associations/pps/${iamId}`, 
       {
         headers : {
-          Accept : 'application/javascript'
+          Accept : 'application/json'
         },
         qs : {
           key : config.ucd.api.key,
@@ -108,9 +115,11 @@ class UcdiamApi {
 
   _getResponse(response, idParam, id) {
     if( response.statusCode !== 200 ) {
-      throw new Error('Error accessing UCD iam API');
+      throw new Error(`Error accessing UCD iam API (${response.statusCode}): ${response.body}`);
     }
+
     let body = JSON.parse(response.body);
+    if( !body.responseData.results ) return null;
 
     for( let result of body.responseData.results ) {
       if( result[idParam] === id ) {

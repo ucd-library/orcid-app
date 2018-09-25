@@ -14,7 +14,8 @@ if( apiEnv !== 'prod' ) {
 }
 
 const PORT = process.env.PORT || 8000;
-let clientPackage = require('./client/public/package.json');
+let assetsDir = (process.env.CLIENT_ENV === 'prod') ? 'dist' : 'public';
+let clientPackage = require(`./client/${assetsDir}/package.json`);
 
 const CAS = {
   dev : {
@@ -49,7 +50,7 @@ module.exports = {
 
   client : {
     env :  process.env.CLIENT_ENV || 'dev',
-    assets : (process.env.CLIENT_ENV === 'prod') ? 'dist' : 'public',
+    assets : assetsDir,
     versions : {
       bundle : clientPackage.version,
       loader : clientPackage.dependencies['@ucd-lib/cork-app-load'].replace(/^\D/, '')
@@ -61,6 +62,7 @@ module.exports = {
     clientSecret : secrets.orcid[apiEnv].clientSecret,
     accessToken : secrets.orcid[apiEnv].accessToken,
     sessionName : 'orcid-session',
+    url : apiEnv === 'prod' ? 'https://orcid.org' : 'https://sandbox.orcid.org',
     api : {
       baseUrl : `https://${baseApiUrl}.orcid.org/v2.1`,
       scopes : '/authenticate /read-limited /activities/update'
@@ -76,7 +78,7 @@ module.exports = {
 
   ucd : {
     api : {
-      baseUrl : 'https://iet-ws.ucdavis.edu/api/iam/',
+      baseUrl : 'https://iet-ws.ucdavis.edu/api/iam',
       key : secrets.ucd.key,
       version : '1.0'
     },

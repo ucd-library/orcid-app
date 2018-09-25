@@ -34,15 +34,16 @@ export default class AppChecklist extends Mixin(PolymerElement)
     this._injectModel('OrcidModel');
   }
 
-  _onSelectedRecordUpdate(id) {
-    this.selectedId = id;
-    this.OrcidModel.get(this.selectedId, true);
+  ready() {
+    super.ready();
+    
+    if( APP_CONFIG.user.data && APP_CONFIG.user.data.linked ) {
+      this._render(APP_CONFIG.user.data.orcid);
+    }
   }
 
-  _onUserRecordUpdate(e) {
-    if( e.state !== 'loaded' ) return;
-
-    this.record = e.data;
+  _render(record) {
+    this.record = record;
     let results = validator.analyze(this.record);
 
     this.$.chart.percent = results.total;
@@ -51,9 +52,12 @@ export default class AppChecklist extends Mixin(PolymerElement)
   }
 
   async _onReloadClicked() {
-    this.style.opacity = 0.5;
-    await this.OrcidModel.get(this.selectedId, true);
-    this.style.opacity = 1;
+    if( APP_CONFIG.user.session.orcid && APP_CONFIG.user.session.orcid.orcid ) {
+      this.style.opacity = 0.5;
+      let result = await this.OrcidModel.get(APP_CONFIG.user.session.orcid.orcid, true);
+      this._render(result.data);
+      this.style.opacity = 1;
+    }
   }
 
 }

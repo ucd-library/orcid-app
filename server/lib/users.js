@@ -14,17 +14,23 @@ class Users {
   }
 
   async linkAccounts(casId, orcid) {
+    let ucdInfo = await this.getUcdInfo(casId);
+
+    return firestore.setUser({
+      id: orcid,
+      linked : true,
+      ucd : ucdInfo
+    });
+  }
+
+  async getUcdInfo(casId) {
     let iamId = await ucdApi.getIamId(casId);
 
     let name = await ucdApi.getNameInfo(iamId);
     let contact = await ucdApi.getContactInfo(iamId);
     let department = await ucdApi.getDepartmentInfo(iamId);
 
-    return firestore.setUser({
-      id: orcid,
-      linked : true,
-      ucd : {name, iamId, contact, department}
-    });
+    return {name, iamId, contact, department};
   }
 
   async updateOrcidInfo(orcid, userToken) {

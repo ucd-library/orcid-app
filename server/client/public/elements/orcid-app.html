@@ -1,6 +1,7 @@
 <style include="shared-styles">
   :host {
     display: block;
+    margin-bottom: 100px;
   }
 
   .login-panels {
@@ -51,6 +52,13 @@
     align-items: center;
   }
 
+  @media(max-width: 525px) {
+    .orcid-header {
+      display: block;
+      text-align: center;
+    }
+  }
+
   .checklist {
     display: flex;
     align-items: center;
@@ -76,6 +84,12 @@
     padding-left: 15px;
   }
 
+    @media(max-width: 525px) {
+      .orcid-header h1 {
+        margin-bottom: 15px;
+      }
+    }
+
   .orcid-header .logo img {
     height: 64px;
   }
@@ -92,8 +106,17 @@
 
   .main-layout > div {
     max-width: 1200px;
+    flex: 1;
     margin: 0 15px;
   }
+
+  @media(min-width: 1200px) {
+    .main-layout > div {
+      width: 1200px;
+      flex: auto;
+    }
+  }
+
   [hidden] {
     display: none;
   }
@@ -113,6 +136,13 @@
     color: var(--default-primary-color);
     text-align: center;
     font-weight: bold;
+    margin-top: 30px;
+  }
+
+  .orcid {
+    font-size: 12px; 
+    font-weight: normal;
+    color: var(--default-secondary-color);
   }
 
   .btn {
@@ -124,8 +154,9 @@
 
 <div id="topbar">
   <img src="/images/logo.png" />  
-  <div><a href="/auth/logout" logout>
-    <iron-icon icon="input"></iron-icon> Logout</a>
+  <div hidden$="[[hideLogout]]">
+    <a href="/auth/logout" logout>
+    Logout <iron-icon icon="input"></iron-icon></a>
   </div>
 </div>
 
@@ -133,12 +164,11 @@
 <div class="main-layout">
   <div>
     <div class="orcid-header">
-      <img src="/images/orcid-vector-logo.svg" style="height: 48px; width: 48px" />
-      
       <h1 class="orcid-header-title">
+        <img src="/images/orcid-vector-logo.svg" style="vertical-align: middle; height: 48px; width: 48px" />
         Optimization Meter
       </h1>
-    
+      
       <div class="logo">
         <img src="/images/orcid-vector-member-logo.svg" />
       </div>
@@ -146,7 +176,7 @@
 
     <div class="break-line"></div>
 
-    <app-login></app-login>
+    <app-login hidden$="[[linked]]"></app-login>
 
     <!-- <div hidden$="[[loggedIn]]">
       <div class="login-panels">
@@ -155,19 +185,22 @@
       </div>
     </div> -->
 
-    <div hidden$="[[!loggedIn]]">
+    <div hidden$="[[!linked]]">
       <div class="username">
-        <div>Hello [[username]]!</div>
-        <div style="font-size: 12px; font-weight:normal">[[orcid]]</div>
+        <div>Hello [[username]]</div>
+        <div class="orcid">
+          <img src="/images/orcid-vector-logo.svg" style="height: 18px; width: 18px; vertical-align: middle" />
+          [[orcid]]
+        </div>
       </div>
-      <h1 class="thin">Optimizing your iD will improve its accuracy and usefulness.</h1>
+      <h2 class="thin" style="text-align:center; margin: 25px 0; font-weight: 100">Optimizing your iD will improve its accuracy and usefulness.</h2>
       <div class="checklist">
         <app-checklist></app-checklist>
       </div>
 
       <div class="break-line" style="margin-top:35px"></div>
 
-      <div style="text-align: right">
+      <div style="text-align: right; padding: 20px">
         <a class="btn" href="https://sandbox.orcid.org/my-orcid" target="_blank">
           Complete your iD
           <iron-icon icon="chevron-right"></iron-icon>

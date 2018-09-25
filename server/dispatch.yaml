@@ -1,4 +1,4 @@
 dispatch:
   # Default service serves simple hostname request.
-  - url: "library-3d.justinmerz.net/*"
-    service: library-3d
+  # - url: "library-3d.justinmerz.net/*"
+  #   service: library-3d

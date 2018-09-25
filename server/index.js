@@ -16,7 +16,7 @@ process.on('unhandledRejection', (e) => logger.fatal(e));
 const app = express();
 
 // setup sessions
-app.use(require('./lib/sessions'));
+app.use(require('./lib/session'));
 
 // parse cookies and add compression
 app.use(cookieParser()); 

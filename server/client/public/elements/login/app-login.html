@@ -49,6 +49,47 @@
     padding: 35px;
   }
 
+  [section="link-approval"] .title {
+    font-size: 28px;
+    margin: 50px 0 10px 0;
+    font-weight: bold;
+    color: var(--default-primary-color);
+    text-align: center;
+  }
+  [section="link-approval"] .description {
+    font-size: 20px;
+    padding: 20px 0;
+    text-align: center;
+  }
+  [section="link-approval"] .review {
+    display: flex;
+    margin: 30px 0;
+  }
+  [section="link-approval"] .review > div {
+    flex: 1;
+    padding: 40px;
+  }
+
+  table {
+    border-spacing: 5px;
+    border-collapse: separate;
+  }
+
+  .ucd-credentials {
+    display: flex;
+    justify-content: center;
+  }
+
+  .ucd-credentials > div {
+    padding: 30px;
+    border-radius: 30px;
+    background-color: #e1e6ed;
+  }
+
+  .ucd-credentials .btn {
+    margin: 25px 0 0 0;
+  }
+
   a.btn > img {
     vertical-align: middle; 
     height: 30px;
@@ -106,15 +147,72 @@
     <div class="description">Connect your ORCiD iD to your UC Davis account by logging in with your CAS credentials</div>
 
     <div class="ucd-credentials">
-      <div></div>
-      <div><a class="btn">Login</a></div>
+      <div>
+        <div><img src="/images/ucd-vector-logo-blue.svg" style="height: 46px" /></div>
+        <div><a href="/auth/cas/login" class="btn">Login</a></div>
+      </div>
     </div>
 
-    <div>You will only need to do this once.</div>
+    <div style="margin-top: 50px">You will only need to do this once.</div>
   </div>
   
   <div section="link-approval">
+    <div class="title">Link Accounts</div>
 
+    <div class="description">Review account information below is correct.</div>
+
+    <div class="review">
+      <div>
+        <div><img src="/images/ucd-vector-logo-blue.svg" style="height: 46px" /></div>
+        <table>
+          <tr>
+            <td>Name:</td>
+            <td>[[ucdName]]</td>
+          </tr>
+          <tr>
+            <td>Email:</td>
+            <td>[[ucdEmail]]</td>
+          </tr>
+          <tr>
+            <td>Title:</td>
+            <td>[[ucdTitle]]</td>
+          </tr>
+          <tr>
+            <td>Department:</td>
+            <td>[[ucdDept]]</td>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <div>
+          <img src="/images/orcid-logo.png" />
+        </div>
+        <table>
+          <tr>
+            <td>Name:</td>
+            <td>[[orcidName]]</td>
+          </tr>
+          <tr>
+            <td>ORCiD:</td>
+            <td>
+              <img src="/images/orcid-vector-logo.svg" style="height: 18px; width: 18px; vertical-align: middle" />
+              <a href="[[orcidUrl]]" target="_blank">[[orcid]]</a>
+            </td>
+          </tr>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div style="text-align:center">
+      <a class="btn" style="cursor:pointer" on-click="_linkAccounts" disabled$="[[linking]]">
+        Link UCD & ORCiD Accounts
+      </a>
+
+      <a href="/auth/logout" class="btn inverse" style="margin-left: 40px" disabled$="[[linking]]">
+        Cancel
+      </a>
+    </div>
   </div>
 </iron-pages>
 

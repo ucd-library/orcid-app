@@ -35,13 +35,18 @@ module.exports = (app) => {
       }
       
       if( user.session.orcid ) {
-        user.data = await userModel.getUser(user.session.orcid.orcid)
+        user.data = await userModel.getUser(user.session.orcid.orcid);
+
+        if( !user.data.linked && user.session.cas ) {
+          user.unlinkedUcd = await userModel.getUcdInfo(user.session.cas);
+        } 
       }
 
       return {
         user,
         appRoutes : config.server.appRoutes,
         env : config.client.env,
+        orcidUrl : config.orcid.url,
         baseApiUrl : config.orcid.api.baseUrl
       }
     },
