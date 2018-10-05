@@ -73,4 +73,48 @@ router.get('/sync', async (req, res) => {
   }
 });
 
+router.get('/get-user-cas/:casId', async (req, res) => {
+  let user = authUtils.getUserFromRequest(req);
+
+  if( !user.orcid ) {
+    return res.status(401).json({error: true, message: 'not logged in'});
+  }
+  if( !(await authUtils.isAdmin(user.orcid.orcid)) ) {
+    return res.status(401).json({error: true, message: 'nope.'});
+  }
+
+  try {
+    res.json(await users.getUcdInfo(req.params.casId));
+  } catch(e) {
+    res.status(400).json({
+      error: true,
+      message : e.message,
+      stack : e.stack
+    });
+  }
+
+});
+
+router.get('/get-user-iam/:iamId', async (req, res) => {
+  let user = authUtils.getUserFromRequest(req);
+
+  if( !user.orcid ) {
+    return res.status(401).json({error: true, message: 'not logged in'});
+  }
+  if( !(await authUtils.isAdmin(user.orcid.orcid)) ) {
+    return res.status(401).json({error: true, message: 'nope.'});
+  }
+
+  try {
+    res.json(await users.getUcdInfo(req.params.iamId, true));
+  } catch(e) {
+    res.status(400).json({
+      error: true,
+      message : e.message,
+      stack : e.stack
+    });
+  }
+
+});
+
 module.exports = router;

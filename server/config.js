@@ -72,7 +72,8 @@ module.exports = {
   firestore : {
     collections : {
       users : 'users',
-      sessions : 'sessions'
+      sessions : 'sessions',
+      admins : 'admins'
     }
   },
 

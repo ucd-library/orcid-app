@@ -49,6 +49,18 @@ class Firestore {
       .set(user, options);
   }
 
+  async getAdmins() {
+    let admins = [];
+    let snapshot = await this.db
+      .collection(this.config.collections.admins)
+      .get();
+
+    snapshot.forEach(function(doc) {
+      admins.push(doc.data().orcid);
+    });
+    return admins;
+  }
+
   /**
    * @method getUser
    * @description get username by orcid

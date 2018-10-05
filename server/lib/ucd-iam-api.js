@@ -149,11 +149,15 @@ class UcdiamApi {
     let body = JSON.parse(response.body);
     if( !body.responseData.results ) return null;
 
+    let results = [];
     for( let result of body.responseData.results ) {
       if( result[idParam] === id ) {
-        return result;
+        results.push(result);
       }
     }
+
+    if( results.length > 1 ) return results;
+    if( results.length === 1 ) return results[0];
 
     return null;
   }

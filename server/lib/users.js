@@ -60,9 +60,15 @@ class Users {
   }
 
   async _addEmployment(user, messages, token) {
-    let startDate = new Date(user.ucd.department.assocStartDate);
-    let roleTitle = user.ucd.department.titleDisplayName;
-    let deptName = user.ucd.department.deptDisplayName;
+    let department = user.ucd.department;
+    if( Array.isArray(department) ) department = department[0];
+    if( user.ucd.departmentOdr )  {
+      department.titleDisplayName = user.ucd.departmentOdr.titleDisplayName;
+    }
+
+    let startDate = new Date(department.assocStartDate);
+    let roleTitle = department.titleDisplayName;
+    let deptName = department.deptDisplayName;
 
     let employmentSummary = user.orcid['activities-summary'].employments['employment-summary'];
 
@@ -119,15 +125,17 @@ class Users {
     }
   }
 
-  async getUcdInfo(casId) {
-    let iamId = await ucdApi.getIamId(casId);
+  async getUcdInfo(casId, isIamId=false) {
+    let iamId = isIamId ? casId : await ucdApi.getIamId(casId);
 
     let name = await ucdApi.getNameInfo(iamId);
     let contact = await ucdApi.getContactInfo(iamId);
     let department = await ucdApi.getDepartmentInfo(iamId);
     let departmentOdr = await ucdApi.getDepartmentInfoOdr(iamId);
 
-    return {name, iamId, casId, contact, department, departmentOdr};
+    let data = {name, iamId, contact, department, departmentOdr};
+    if( !isIamId ) data.casId = casId;
+    return data;
   }
 
   async updateOrcidInfo(orcid, userToken) {
