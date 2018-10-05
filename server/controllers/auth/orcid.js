@@ -14,8 +14,8 @@ router.get('/oauth-login', (req, res) => {
     client_id : config.orcid.clientId,
     response_type : 'code',
     scope : config.orcid.api.scopes,
-    redirect_uri : config.server.host+'/auth/orcid/oauth-callback',
-    prompt : 'login'
+    redirect_uri : config.server.host+'/auth/orcid/oauth-callback'
+    // prompt : 'login'
   }
 
   let parr = [];

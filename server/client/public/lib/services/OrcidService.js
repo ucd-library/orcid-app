@@ -13,7 +13,6 @@ class OrcidService extends BaseService {
       }
       this.baseUrl = APP_CONFIG.baseApiUrl
     }
-
   }
 
   get(id) {

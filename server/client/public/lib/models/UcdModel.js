@@ -18,6 +18,12 @@ class UcdModel extends BaseModel {
     return this.store.data.link;
   }
 
+
+  async autoUpdate() {
+    await this.service.autoUpdate();
+    return this.store.data.autoUpdate;
+  }
+
 }
 
 module.exports = new UcdModel();

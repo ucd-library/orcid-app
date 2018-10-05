@@ -1,6 +1,7 @@
 const {BaseModel} = require('@ucd-lib/cork-app-utils');
 const OrcidService = require('../services/OrcidService');
 const OrcidStore = require('../stores/OrcidStore');
+const UcdStore = require('../stores/UcdStore');
 
 class OrcidModel extends BaseModel {
 
@@ -11,6 +12,14 @@ class OrcidModel extends BaseModel {
     this.service = OrcidService;
       
     this.register('OrcidModel');
+
+    this.EventBus.on(UcdStore.events.UCD_AUTO_UPDATE_UPDATE, (e) => {
+      if( e.state !== UcdStore.STATE.LOADED ) return;
+      if( (e.payload.updates || []).length === 0 ) return;
+      this.store.setUserRecordLoaded(
+        e.payload.id, e.payload.record
+      );
+    });
   }
 
   async get(id, force=false) {

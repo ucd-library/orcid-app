@@ -23,10 +23,10 @@ class OrcidStore extends BaseStore {
     this._userRecordUpdate(id);
   }
 
-  setUserRecordLoaded(id, data) {
+  setUserRecordLoaded(id, payload) {
     this.data.records[id] = {
       state : this.STATE.LOADED,
-      data
+      payload
     }
     this._userRecordUpdate(id);
   }
@@ -47,17 +47,17 @@ class OrcidStore extends BaseStore {
     return this.data.records[id];
   }
 
-  setUserRecordSaving(putCode, id, data, request) {
+  setUserRecordSaving(putCode, id, payload, request) {
     this.data.saving[putCode] = {
       state : this.STATE.SAVING,
-      data, request, id
+      payload, request, id
     }
   }
 
-  setUserRecordSaved(putCode, id, data) {
+  setUserRecordSaved(putCode, id, payload) {
     this.data.saving[putCode] = {
       state : this.STATE.LOADED,
-      id, data
+      id, payload
     }
   }
 

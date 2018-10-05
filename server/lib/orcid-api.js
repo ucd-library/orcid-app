@@ -167,6 +167,27 @@ class OrcidApi {
     );
   }
 
+  /**
+   * @method dateToOrcidDate
+   * @description convert JavaScript Date object to orcid date object
+   * 
+   * @param {Object} date JavaScript Date
+   * 
+   * @returns {Object} orcid date format
+   */
+  dateToOrcidDate(date) {
+    let day = date.getDate();
+    if( day < 10 ) day = '0'+day;
+    let month = date.getMonth()+1;
+    if( month < 10 ) month = '0'+month;
+
+    return {
+      day : {value : day+''},
+      month : {value : month+''},
+      year : {value : date.getFullYear()+''}
+    }
+  }
+
   getResultObject(response) {  
     try {
       response = JSON.parse(response.body);

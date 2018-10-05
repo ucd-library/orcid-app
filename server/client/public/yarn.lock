@@ -170,9 +170,9 @@
     "@ucd-lib/cork-app-utils" "^2.0.3"
     query-string "^5.0.1"
 
-"@ucd-lib/cork-app-utils@4.0.1", "@ucd-lib/cork-app-utils@^2.0.3":
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/@ucd-lib/cork-app-utils/-/cork-app-utils-4.0.1.tgz#7994af43c27f96d3d90b015a9dc6998793028955"
+"@ucd-lib/cork-app-utils@4.1.2", "@ucd-lib/cork-app-utils@^2.0.3":
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/@ucd-lib/cork-app-utils/-/cork-app-utils-4.1.2.tgz#fd87cb02b0c96530f28bb6191d452c8c116e858c"
   dependencies:
     fast-deep-equal "^1.1.0"
     fs-extra "^4.0.2"

@@ -1,0 +1,6 @@
+service: default
+runtime: nodejs8
+env_variables:
+  API_ENV: "dev"
+  CLIENT_ENV: "prod"
+  SERVER_HOST: "https://orcid.library.ucdavis.edu"

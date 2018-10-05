@@ -9,7 +9,7 @@
     "build": "cd client && webpack",
     "watch": "cd client && webpack --watch",
     "dist": "cd client && ./build.sh",
-    "deploy": "gcloud app deploy --project orcid-app-216021"
+    "deploy-dev": "gcloud app deploy --project orcid-app-216021 app-dev.yaml"
   },
   "author": "jrmerz@ucdavis.edu",
   "license": "MIT",

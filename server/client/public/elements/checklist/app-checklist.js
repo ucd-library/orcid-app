@@ -31,6 +31,7 @@ export default class AppChecklist extends Mixin(PolymerElement)
   constructor() {
     super();
     this._injectModel('AppStateModel');
+    this._injectModel('UcdModel');
     this._injectModel('OrcidModel');
   }
 
@@ -39,6 +40,7 @@ export default class AppChecklist extends Mixin(PolymerElement)
     
     if( APP_CONFIG.user.data && APP_CONFIG.user.data.linked ) {
       this._render(APP_CONFIG.user.data.orcid);
+      this.UcdModel.autoUpdate();
     }
   }
 
@@ -54,10 +56,14 @@ export default class AppChecklist extends Mixin(PolymerElement)
   async _onReloadClicked() {
     if( APP_CONFIG.user.session.orcid && APP_CONFIG.user.session.orcid.orcid ) {
       this.style.opacity = 0.5;
-      let result = await this.OrcidModel.get(APP_CONFIG.user.session.orcid.orcid, true);
-      this._render(result.data);
-      this.style.opacity = 1;
+      this.OrcidModel.get(APP_CONFIG.user.session.orcid.orcid, true); 
     }
+  }
+
+  _onUserRecordUpdate(e) {
+    if( e.state !== 'loaded' ) return;
+    this._render(e.payload);
+    this.style.opacity = 1;
   }
 
 }

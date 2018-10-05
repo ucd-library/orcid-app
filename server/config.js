@@ -89,6 +89,17 @@ module.exports = {
 
   google : {
     key : secrets.google
+  },
+
+  ringgold : {
+    sourceName : 'UC Davis',
+    sourceId : null, // TODO
+    ucd : {
+      '8789' : {
+        value : 'University of California Davis',
+        ucdDeptCode : ''
+      }
+    }
   }
 
 }

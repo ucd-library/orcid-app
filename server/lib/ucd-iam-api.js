@@ -113,6 +113,34 @@ class UcdiamApi {
     return this._getResponse(response, 'iamId', iamId);
   }
 
+  /**
+   * @method getDepartmentInfoOdr
+   * @description given ucd iam id return department information
+   * 
+   * @param {String} iamId
+   * 
+   * @returns {Promise} resolves to Object or null
+   */
+  async getDepartmentInfoOdr(iamId) {
+    // quinn had below but can't find docs and doesn't seem to return for jrmerz
+    // /associations/odr/
+
+    let response = await request(
+      `${config.ucd.api.baseUrl}/associations/odr/${iamId}`, 
+      {
+        headers : {
+          Accept : 'application/json'
+        },
+        qs : {
+          key : config.ucd.api.key,
+          v : config.ucd.api.version
+        }
+      } 
+    );
+
+    return this._getResponse(response, 'iamId', iamId);
+  }
+
   _getResponse(response, idParam, id) {
     if( response.statusCode !== 200 ) {
       throw new Error(`Error accessing UCD iam API (${response.statusCode}): ${response.body}`);
