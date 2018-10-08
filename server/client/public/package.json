@@ -12,13 +12,14 @@
     "@polymer/iron-pages": "^3.0.0-pre.21",
     "@polymer/paper-icon-button": "^3.0.0-pre.21",
     "@polymer/polymer": "^3.0.5",
-    "@ucd-lib/cork-app-load": "^0.0.4",
+    "@ucd-lib/cork-app-load": "0.1.2",
     "@ucd-lib/cork-app-state": "^0.1.1",
     "@ucd-lib/cork-app-utils": "4.1.2",
     "@webcomponents/webcomponentsjs": "^2.0.3",
     "clone": "^2.1.2"
   },
   "resolutions": {
-    "@ucd-lib/cork-app-utils": "4.1.2"
+    "@ucd-lib/cork-app-utils": "4.1.2",
+    "@webcomponents/webcomponentsjs": "2.1.3"
   }
 }

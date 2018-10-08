@@ -34,6 +34,32 @@ class UcdiamApi {
   }
 
   /**
+   * @method getCasId
+   * @description given a users IAM id, return their cas id
+   * 
+   * @param {String} iamId
+   * 
+   * @returns {Promise} resolves to String or null
+   */
+  async getCasId(iamId) {
+    let response = await request(
+      `${config.ucd.api.baseUrl}/people/prikerbacct/${iamId}`, 
+      {
+        headers : {
+          Accept : 'application/json'
+        },
+        qs : {
+          key : config.ucd.api.key,
+          v : config.ucd.api.version
+        }
+      } 
+    );
+
+    response = this._getResponse(response, 'iamId', iamId);
+    return response.userId;
+  }
+
+  /**
    * @method getContactInfo
    * @description given a users ucd iam id, return their contact info
    * 
@@ -56,6 +82,58 @@ class UcdiamApi {
     );
 
     return this._getResponse(response, 'iamId', iamId);
+  }
+  
+  /**
+   * @method getOrgInfo
+   * @description 
+   * 
+   * @param {String} iamId
+   * 
+   * @returns {Promise} resolves to object or null
+   */
+  async getOrgInfo(orgId) {
+    console.log(`${config.ucd.api.baseUrl}/orginfo/pps/depts/${orgId}`);
+    let response = await request(
+      `${config.ucd.api.baseUrl}/orginfo/pps/depts/${orgId}`, 
+      {
+        headers : {
+          Accept : 'application/json'
+        },
+        qs : {
+          key : config.ucd.api.key,
+          v : config.ucd.api.version
+        }
+      } 
+    );
+
+    console.log(response.body);
+
+    return this._getResponse(response, 'iamId', orgId);
+  }
+
+  /**
+   * @method getColleges
+   * @description 
+   * 
+   * @returns {Promise} resolves to object or null
+   */
+  async getColleges(orgId) {
+    console.log(`${config.ucd.api.baseUrl}/orginfo/pps/depts/${orgId}`);
+    let response = await request(
+      `${config.ucd.api.baseUrl}/orginfo/sis/colleges`, 
+      {
+        headers : {
+          Accept : 'application/json'
+        },
+        qs : {
+          key : config.ucd.api.key,
+          v : config.ucd.api.version
+        }
+      } 
+    );
+
+    return JSON.parse(response.body).responseData.results;
   }
 
   /**

@@ -133,8 +133,11 @@ class Users {
     let department = await ucdApi.getDepartmentInfo(iamId);
     let departmentOdr = await ucdApi.getDepartmentInfoOdr(iamId);
 
+    // let dept = Array.isArray(department) ? department[0] : '';
+    // let organization = await ucdApi.getOrgInfo(dept.bouOrgOId);
+
     let data = {name, iamId, contact, department, departmentOdr};
-    if( !isIamId ) data.casId = casId;
+    if( isIamId ) data.casId = await ucdApi.getCasId(iamId);
     return data;
   }
 

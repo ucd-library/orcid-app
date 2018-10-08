@@ -16,6 +16,7 @@ import "./login/app-login-orcid"
 import "./record/app-view-record"
 import "./record/app-edit-record"
 import "./checklist/app-checklist"
+import "./app-auto-edit"
 
 import AppStateInterface from "./interfaces/AppStateInterface"
 

@@ -9,6 +9,9 @@ function classSupport() {
   let version = '';
   if( window.CORK_LOADER_VERSIONS ) {
     version = '?_='+CORK_LOADER_VERSIONS.loader;
+    console.log(`Using loader version: ${version}`);
+  } else {
+    console.warn(`No loader version specified`);
   }
 
   document.open();
@@ -27,12 +30,15 @@ function addScript(src) {
 }
 
 function load() {
+  console.log('Webcomponents ready');
+
   let version = '';
   if( window.CORK_LOADER_VERSIONS ) {
     version = '?_='+CORK_LOADER_VERSIONS.bundle;
+    console.log(`Using client bundle version: ${version}`);
+  } else {
+    console.warn(`No client bundle version specified`);
   }
-
-  console.log('Webcomponents ready.');
 
   if( classSupport() ) addScript('/js/bundle.js'+version);
   else addScript('/js/ie-bundle.js'+version);

@@ -40,7 +40,6 @@ export default class AppChecklist extends Mixin(PolymerElement)
     
     if( APP_CONFIG.user.data && APP_CONFIG.user.data.linked ) {
       this._render(APP_CONFIG.user.data.orcid);
-      this.UcdModel.autoUpdate();
     }
   }
 

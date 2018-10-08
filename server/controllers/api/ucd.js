@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const authUtils = require('../../lib/auth');
 const users = require('../../lib/users');
-const config = require('../../config');
+const ucdApi = require('../../lib/ucd-iam-api');
 const logger = require('../../lib/logger');
 const firestore = require('../../lib/firestore');
 
@@ -107,6 +107,28 @@ router.get('/get-user-iam/:iamId', async (req, res) => {
 
   try {
     res.json(await users.getUcdInfo(req.params.iamId, true));
+  } catch(e) {
+    res.status(400).json({
+      error: true,
+      message : e.message,
+      stack : e.stack
+    });
+  }
+
+});
+
+router.get('/get-colleges', async (req, res) => {
+  let user = authUtils.getUserFromRequest(req);
+
+  if( !user.orcid ) {
+    return res.status(401).json({error: true, message: 'not logged in'});
+  }
+  if( !(await authUtils.isAdmin(user.orcid.orcid)) ) {
+    return res.status(401).json({error: true, message: 'nope.'});
+  }
+
+  try {
+    res.json(await ucdApi.getColleges());
   } catch(e) {
     res.status(400).json({
       error: true,
