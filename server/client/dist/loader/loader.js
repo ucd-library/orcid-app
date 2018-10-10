@@ -9,7 +9,7 @@ function classSupport() {
   let version = '';
   if( window.CORK_LOADER_VERSIONS ) {
     version = '?_='+CORK_LOADER_VERSIONS.loader;
-    console.log(`Using loader version: ${version}`);
+    console.log(`Using loader version: ${CORK_LOADER_VERSIONS.loader}`);
   } else {
     console.warn(`No loader version specified`);
   }
@@ -35,7 +35,7 @@ function load() {
   let version = '';
   if( window.CORK_LOADER_VERSIONS ) {
     version = '?_='+CORK_LOADER_VERSIONS.bundle;
-    console.log(`Using client bundle version: ${version}`);
+    console.log(`Using client bundle version: ${CORK_LOADER_VERSIONS.bundle}`);
   } else {
     console.warn(`No client bundle version specified`);
   }

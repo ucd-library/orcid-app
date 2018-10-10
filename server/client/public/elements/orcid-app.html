@@ -132,11 +132,11 @@
   }
 
   .username {
-    font-size: 20px;
+    font-size: 28px;
     color: var(--default-primary-color);
     text-align: center;
     font-weight: bold;
-    margin-top: 30px;
+    margin-top: 50px;
   }
 
   .orcid {
@@ -156,7 +156,7 @@
   <img src="/images/logo.png" />  
   <div hidden$="[[hideLogout]]">
     <a href="/auth/logout" logout>
-    Logout <iron-icon icon="input"></iron-icon></a>
+    Logout <iron-icon icon="exit-to-app" style="vertical-align: bottom"></iron-icon></a>
   </div>
 </div>
 
@@ -193,12 +193,14 @@
           [[orcid]]
         </div>
       </div>
-      <h2 class="thin" style="text-align:center; margin: 25px 0; font-weight: 100">Optimizing your iD will improve its accuracy and usefulness.</h2>
+      <div style="font-size: 22px; text-align:center; margin: 30px 0 50px 0; font-weight: 100">
+        Optimizing your iD will improve its accuracy and usefulness.
+      </div>
       <div class="checklist">
         <app-checklist></app-checklist>
       </div>
 
-      <div class="break-line" style="margin-top:35px"></div>
+      <div class="break-line" style="margin-top:50px"></div>
 
       <div style="text-align: right; padding: 20px">
         <a class="btn" href="https://sandbox.orcid.org/my-orcid" target="_blank">

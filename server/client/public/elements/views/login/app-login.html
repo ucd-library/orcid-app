@@ -7,19 +7,22 @@
     color: var(--default-primary-color);
   }
 
-  [section="orcid-login"] {
-    text-align: center;
-  }
-  [section="orcid-login"] .title {
+  .title {
     font-size: 28px;
-    margin: 50px 0;
+    margin: 50px 0 20px 0;
     font-weight: bold;
     color: var(--default-primary-color);
   }
-  [section="orcid-login"] .description {
-    font-size: 24px;
-    padding: 0 15px;
+
+  .description {
+    font-size: 22px;
+    margin-bottom: 30px;
   }
+
+  [section="orcid-login"] {
+    text-align: center;
+  }
+
   [section="orcid-login"] .about {
     padding: 20px; 
     margin-top: 20px;
@@ -34,9 +37,6 @@
     text-align: center;
   }
   [section="cas-login"] .title {
-    font-size: 28px;
-    margin: 50px 0 10px 0;
-    font-weight: bold;
     color: var(--default-primary-color);
   }
   [section="cas-login"] .orcid a,
@@ -44,30 +44,31 @@
     text-decoration: none;
     color: var(--default-secondary-color);
   }
-  [section="cas-login"] .description  {
-    font-size: 24px;
-    padding: 35px;
-  }
 
   [section="link-approval"] .title {
-    font-size: 28px;
-    margin: 50px 0 10px 0;
-    font-weight: bold;
     color: var(--default-primary-color);
     text-align: center;
   }
   [section="link-approval"] .description {
-    font-size: 20px;
-    padding: 20px 0;
     text-align: center;
   }
   [section="link-approval"] .review {
     display: flex;
-    margin: 30px 0;
+    justify-content: center;
+    margin-bottom: 15px;
   }
-  [section="link-approval"] .review > div {
+  /* [section="link-approval"] .review > div {
     flex: 1;
-    padding: 40px;
+  } */
+
+  .review-card {
+    min-width: 325px;
+    padding: 20px;
+    margin: 0 20px;
+    display: inline-block;
+    text-align: left;
+    border: 1px solid var(--medium-background-color);
+    border-radius: 10px;
   }
 
   @media(max-width: 768px) {
@@ -87,8 +88,8 @@
   }
 
   .ucd-credentials > div {
-    padding: 30px;
-    border-radius: 30px;
+    padding: 50px;
+    border-radius: 25px;
     background-color: #e1e6ed;
   }
 
@@ -111,9 +112,16 @@
     color: var(--orcid-grey);
   }
 
-  .no-id a, .no-id a:visited {
+  .no-id a, .no-id a:visited, a.orcid, a.orcid:visited {
     text-decoration: none;
     color: var(--default-secondary-color);
+  }
+
+  .info-label {
+    color: var(--orcid-grey);
+    font-size: 14px;
+    line-height: 16px;
+    margin-top: 10px;
   }
 </style>
 
@@ -145,10 +153,10 @@
   </div>
   
   <div section="cas-login">
-    <div class="title">Hello [[orcidName]]</div>
-    <div class="orcid">
+    <div class="title" style="margin-bottom:0">Hello [[orcidName]]</div>
+    <div class="orcid" style="margin-bottom: 30px">
       <img src="/images/orcid-vector-logo.svg" style="height: 18px; width: 18px; vertical-align: middle" />
-      <a href="[[orcidUrl]]" target="_blank">[[orcid]]</a>
+      <a href="[[orcidUrl]]" class="orcid" target="_blank">[[orcid]]</a>
     </div>
     <div class="description">Connect your ORCiD iD to your UC Davis account by logging in with your CAS credentials</div>
 
@@ -159,56 +167,44 @@
       </div>
     </div>
 
-    <div style="margin-top: 50px">You will only need to do this once.</div>
+    <div style="margin-top: 30px">You will only need to do this once.</div>
   </div>
   
   <div section="link-approval">
     <div class="title">Link Accounts</div>
 
-    <div class="description">Review account information below is correct.</div>
+    <div class="description">Check that the correct accounts are displayed below.</div>
 
     <div class="review">
-      <div>
-        <div><img src="/images/ucd-vector-logo-blue.svg" style="height: 46px" /></div>
-        <table>
-          <tr>
-            <td>Name:</td>
-            <td>[[ucdName]]</td>
-          </tr>
-          <tr>
-            <td>Email:</td>
-            <td>[[ucdEmail]]</td>
-          </tr>
-          <tr>
-            <td>Title:</td>
-            <td>[[ucdTitle]]</td>
-          </tr>
-          <tr>
-            <td>Department:</td>
-            <td>[[ucdDept]]</td>
-          </tr>
-        </table>
-      </div>
-      <div>
-        <div>
-          <img src="/images/orcid-logo.png" />
+      
+        <div class="review-card">
+          <div><img src="/images/ucd-vector-logo-blue.svg" style="height: 38px; margin-top: 7px;" /></div>
+          
+          <div class="info-label">Name</div>
+          <div>[[ucdName]]</div>
+          <div class="info-label">Email</div>
+          <div>[[ucdEmail]]</div>
+          <div class="info-label">Title</div>
+          <div>[[ucdTitle]]</div>
+          <div class="info-label">Department</div>
+          <div>[[ucdDept]]</div>
+
         </div>
-        <table>
-          <tr>
-            <td>Name:</td>
-            <td>[[orcidName]]</td>
-          </tr>
-          <tr>
-            <td>ORCiD:</td>
-            <td>
-              <img src="/images/orcid-vector-logo.svg" style="height: 18px; width: 18px; vertical-align: middle" />
-              <a href="[[orcidUrl]]" target="_blank">[[orcid]]</a>
-            </td>
-          </tr>
-          </tr>
-        </table>
+
+        <div class="review-card">
+          <div>
+            <img src="/images/orcid-logo.png" />
+          </div>
+
+          <div class="info-label">Name</div>
+          <div>[[orcidName]]</div>
+          <div class="info-label">iD Number</div>
+          <div>
+            <img src="/images/orcid-vector-logo.svg" style="height: 18px; width: 18px; vertical-align: middle" />
+            <a href="[[orcidUrl]]" class="orcid" target="_blank">[[orcid]]</a>
+          </div>
+        </div>
       </div>
-    </div>
 
     <div style="text-align:center">
       <a class="btn" style="cursor:pointer" on-click="_linkAccounts" disabled$="[[linking]]">
