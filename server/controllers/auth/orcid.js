@@ -1,8 +1,10 @@
+/**
+ * ORCiD Oauth Login.  Both login and oauth callback endpoints set here.
+ */
 const express = require('express');
 const router = express.Router();
 const api = require('../../lib/orcid-api');
 const config = require('../../config');
-const firestore = require('../../lib/firestore');
 const usersModel = require('../../lib/users');
 const logger = require('../../lib/logger');
 
@@ -15,6 +17,7 @@ router.get('/oauth-login', (req, res) => {
     response_type : 'code',
     scope : config.orcid.api.scopes,
     redirect_uri : config.server.host+'/auth/orcid/oauth-callback'
+    // Would be nice if ORCiD supported this...
     // prompt : 'login'
   }
 

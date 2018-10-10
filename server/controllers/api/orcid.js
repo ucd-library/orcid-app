@@ -5,19 +5,18 @@ const api = require('../../lib/orcid-api');
 const config = require('../../config');
 const firestore = require('../../lib/firestore');
 
-router.get('/:id', async (req, res) => {
-  let id = req.params.id;
+/**
+ * Get a users record
+ */
+router.get('/', async (req, res) => {
   let user = authUtils.getUserFromRequest(req);
 
-  let accessToken = config.orcid.accessToken;
-  let tokenType = 'server';
-  if( user.orcid && user.orcid.access_token ) {
-    tokenType = 'user';
-    accessToken = user.orcid.access_token;
+  if( !user.orcid ) {
+    return res.status(401).json({error: true, message: 'not logged in'});
   }
 
-  let response = await api.get(id, accessToken);
-  response = handleApiResponse(response, res, tokenType);
+  let response = await api.get(user.orcid.orcid, config.orcid.accessToken);
+  response = handleApiResponse(response, res, 'server');
 
   firestore.setUser({
     id: user.orcid.orcid,
@@ -25,46 +24,47 @@ router.get('/:id', async (req, res) => {
   });
 });
 
-router.put('/:id/employment/:putCode', async (req, res) => {
-  let id = req.params.id;
-  let putCode = req.params.putCode;
-  let user = authUtils.getUserFromRequest(req);
+// Testing
+// router.put('/:id/employment/:putCode', async (req, res) => {
+//   let id = req.params.id;
+//   let putCode = req.params.putCode;
+//   let user = authUtils.getUserFromRequest(req);
   
-  if( !user.orcid || !user.orcid.access_token ) {
-    return res.status(403).send();
-  }
-  let access_token = user.orcid.access_token;
+//   if( !user.orcid || !user.orcid.access_token ) {
+//     return res.status(403).send();
+//   }
+//   let access_token = user.orcid.access_token;
 
-  let response = await api.updateEmployment(putCode, id, req.body, access_token);
-  handleApiResponse(response, res, 'user');
-});
+//   let response = await api.updateEmployment(putCode, id, req.body, access_token);
+//   handleApiResponse(response, res, 'user');
+// });
 
-router.delete('/:id/employment/:putCode', async (req, res) => {
-  let id = req.params.id;
-  let putCode = req.params.putCode;
-  let user = authUtils.getUserFromRequest(req);
+// router.delete('/:id/employment/:putCode', async (req, res) => {
+//   let id = req.params.id;
+//   let putCode = req.params.putCode;
+//   let user = authUtils.getUserFromRequest(req);
   
-  if( !user.orcid || !user.orcid.access_token ) {
-    return res.status(403).send();
-  }
-  let access_token = user.orcid.access_token;
+//   if( !user.orcid || !user.orcid.access_token ) {
+//     return res.status(403).send();
+//   }
+//   let access_token = user.orcid.access_token;
 
-  let response = await api.deleteEmployment(putCode, id, access_token);
-  handleApiResponse(response, res, 'user');
-});
+//   let response = await api.deleteEmployment(putCode, id, access_token);
+//   handleApiResponse(response, res, 'user');
+// });
 
-router.post('/:id/employment', async (req, res) => {
-  let id = req.params.id;
-  let user = authUtils.getUserFromRequest(req);
+// router.post('/:id/employment', async (req, res) => {
+//   let id = req.params.id;
+//   let user = authUtils.getUserFromRequest(req);
   
-  if( !user.orcid || !user.orcid.access_token ) {
-    return res.status(403).send();
-  }
-  let access_token = user.orcid.access_token;
+//   if( !user.orcid || !user.orcid.access_token ) {
+//     return res.status(403).send();
+//   }
+//   let access_token = user.orcid.access_token;
 
-  let response = await api.addEmployment(id, req.body, access_token);
-  handleApiResponse(response, res, 'user');
-});
+//   let response = await api.addEmployment(id, req.body, access_token);
+//   handleApiResponse(response, res, 'user');
+// });
 
 function handleApiResponse(api, exp, tokenType) {
   if( api.statusCode !== 200 ) {

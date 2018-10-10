@@ -23,6 +23,8 @@ app.use(cookieParser());
 // app.use(compression());
 app.use(bodyParser.json()); // for parsing application/json
 
+// set the user session object
+app.use(require('./controllers/middleware').setUser);
 
 // require custom endpoints
 app.use(require('./controllers'));

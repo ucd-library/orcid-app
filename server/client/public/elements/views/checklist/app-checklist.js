@@ -6,7 +6,7 @@ import "./app-checklist-help"
 import "./app-checklist-mark"
 import "./app-completed-chart"
 
-import validator from "../../lib/models/ValidatorModel"
+import validator from "../../../lib/models/ValidatorModel"
 
 export default class AppChecklist extends Mixin(PolymerElement)
   .with(EventInterface) {

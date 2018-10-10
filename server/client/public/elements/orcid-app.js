@@ -1,27 +1,23 @@
 import {PolymerElement, html} from "@polymer/polymer"
 import template from "./orcid-app.html"
 
+// import models
 import "../lib/models"
 
-// import "@polymer/iron-pages"
+// add route element, though not used at the moment
 import "@ucd-lib/cork-app-state/elements/app-route"
 
+// import styles
 import "./styles/style-properties"
 import "./styles/shared-styles"
 
-import "./pages/app-home"
-import "./login/app-login"
-import "./login/app-login-cas"
-import "./login/app-login-orcid"
-import "./record/app-view-record"
-import "./record/app-edit-record"
-import "./checklist/app-checklist"
+// import views
+import "./views/login/app-login"
+import "./views/checklist/app-checklist"
 import "./app-auto-edit"
 
-import AppStateInterface from "./interfaces/AppStateInterface"
-
 export default class OrcidApp extends Mixin(PolymerElement)
-  .with(EventInterface, AppStateInterface) {
+  .with(EventInterface) {
 
   static get template() {
     return html([template]);
@@ -29,13 +25,10 @@ export default class OrcidApp extends Mixin(PolymerElement)
 
   static get properties() {
     return {
+      // allowed page routes, currently just /
       appRoutes : {
         type : Array,
         value : () => APP_CONFIG.appRoutes
-      },
-      page : {
-        type : String,
-        value : 'home'
       },
       loggedIn : {
         type : Boolean,
@@ -74,22 +67,6 @@ export default class OrcidApp extends Mixin(PolymerElement)
       this.linked = APP_CONFIG.user.data.linked;
     }
   }
-
-  /**
-   * @method _onAppStateUpdate
-   * @description AppStateInterface
-   */
-  _onAppStateUpdate(e) {
-    let page = e.location.path ? e.location.path[0] : 'home';
-    if( !page ) page = 'home'
-
-    if( page === this.page ) return;
-    
-    window.scrollTo(0, 0);
-    this.page = page;
-  }
-
-
 
 }
 

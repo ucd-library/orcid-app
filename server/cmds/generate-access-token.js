@@ -1,3 +1,6 @@
+/**
+ * Generate server access token
+ */
 const api = require('../lib/orcid-api');
 
 (async function(){

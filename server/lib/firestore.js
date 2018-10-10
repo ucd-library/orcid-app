@@ -3,20 +3,20 @@ const config = require('../config');
 
 // running in google env
 if( config.GOOGLE_ENV ) {
-  
   admin.initializeApp({
     credential: admin.credential.applicationDefault()
   });
-
 // running elsewhere
-} else {
-  
+} else {  
   admin.initializeApp({
     credential: admin.credential.cert(config.google.key)
   });
-
 }
 
+/**
+ * @class Firestore
+ * @description static class wrapper for access to firestore
+ */
 class Firestore {
 
   constructor() {
@@ -30,10 +30,10 @@ class Firestore {
    * @description write user data to firestore
    * 
    * @param {Object} user
-   * @param {String} user.id required. orcid
+   * @param {String} user.id Required. Must be users ORCiD id
    * @param {Object} user.ucd
    * @param {Object} user.orcid
-   * @param {Object} user.session
+   * @param
    * 
    * @returns {Promise} 
    */
@@ -49,6 +49,12 @@ class Firestore {
       .set(user, options);
   }
 
+  /**
+   * @method getAdmins
+   * @description return the list of admins
+   * 
+   * @return {Promise} resolves to {Array}
+   */
   async getAdmins() {
     let admins = [];
     let snapshot = await this.db

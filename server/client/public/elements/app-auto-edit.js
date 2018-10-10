@@ -1,6 +1,5 @@
 import {PolymerElement, html} from "@polymer/polymer"
 import template from "./app-auto-edit.html"
-import { join } from "path";
 
 export default class AppAutoEdit extends Mixin(PolymerElement)
   .with(EventInterface) {
@@ -10,9 +9,7 @@ export default class AppAutoEdit extends Mixin(PolymerElement)
   }
 
   static get properties() {
-    return {
-      
-    }
+    return {}
   }
 
   constructor() {
@@ -23,15 +20,23 @@ export default class AppAutoEdit extends Mixin(PolymerElement)
   ready() {
     super.ready();
     
+    // if the user is logged in and has a linked account, attempt 
+    // to auto update account
     if( APP_CONFIG.user.data && APP_CONFIG.user.data.linked ) {
       this.UcdModel.autoUpdate();
     }
   }
 
+  /**
+   * @method _onUcdAutoUpdateUpdate
+   * @description bound to UcdModel ucd-auto-update-update event
+   * 
+   * @param {Object} e event payload 
+   */
   _onUcdAutoUpdateUpdate(e) {
     if( e.state !== 'loaded' ) return;
 
-    console.log(e.payload.updates)
+    // if server performed updates, show toast message
     if( e.payload.updates.length > 0 ) {
       this.$.message.innerHTML = e.payload.updates.join('<br />');
       this.style.display = 'block';

@@ -1,9 +1,11 @@
 const request = require('./request');
 const config = require('../config');
 
-// console.log(config.ucd.api);
-
-// https://ucdavis.jira.com/wiki/spaces/IETP/pages/132808721/Web+Service+API
+/**
+ * @class UcdiamApi
+ * @description static class for calling UCD IAM API
+ * docs: https://ucdavis.jira.com/wiki/spaces/IETP/pages/132808721/Web+Service+API
+ */
 class UcdiamApi {
 
   /**
@@ -93,7 +95,6 @@ class UcdiamApi {
    * @returns {Promise} resolves to object or null
    */
   async getOrgInfo(orgId) {
-    console.log(`${config.ucd.api.baseUrl}/orginfo/pps/depts/${orgId}`);
     let response = await request(
       `${config.ucd.api.baseUrl}/orginfo/pps/depts/${orgId}`, 
       {
@@ -107,8 +108,6 @@ class UcdiamApi {
       } 
     );
 
-    console.log(response.body);
-
     return this._getResponse(response, 'iamId', orgId);
   }
 
@@ -119,7 +118,6 @@ class UcdiamApi {
    * @returns {Promise} resolves to object or null
    */
   async getColleges(orgId) {
-    console.log(`${config.ucd.api.baseUrl}/orginfo/pps/depts/${orgId}`);
     let response = await request(
       `${config.ucd.api.baseUrl}/orginfo/sis/colleges`, 
       {

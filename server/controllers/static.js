@@ -1,12 +1,17 @@
 const express = require('express');
 const path = require('path');
-const fs = require('fs');
 const spaMiddleware = require('@ucd-lib/spa-router-middleware');
 const config = require('../config');
 const authUtils = require('../lib/auth');
 const logger = require('../lib/logger');
 const userModel = require('../lib/users');
 
+/**
+ * How we load Webcomponent polyfills and Webpacked Polymer 3 application bundle.
+ * The loader script is from @ucd-load/cork-app-load and expects the global
+ * CORK_LOADER_VERSIONS which will load all required polyfills and application
+ * js bundles with cache breaking version flags.
+ */
 const bundle = `
   <script>
     var CORK_LOADER_VERSIONS = {
@@ -18,10 +23,11 @@ const bundle = `
 `;
 
 module.exports = (app) => {
+  // set assets dir depending on our server environment 
   let assetsDir = path.join(__dirname, '..', 'client', config.client.assets);
 
   /**
-   * Setup SPA app routes
+   * Setup SPA app routes and template rendering
    */
   spaMiddleware({
     app: app,

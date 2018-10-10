@@ -3,6 +3,9 @@ import template from "./app-login.html"
 
 import "@polymer/iron-pages"
 
+import "./app-login-cas"
+import "./app-login-orcid"
+
 export default class AppLogin extends Mixin(PolymerElement)
   .with(EventInterface) {
 

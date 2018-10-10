@@ -1,9 +1,10 @@
+/**
+ * UCD CAS Login
+ */
 const CASAuthentication = require('cas-authentication');
 const express = require('express');
 const config = require('../../config');
 const router = express.Router();
-const firestore = require('../../lib/firestore');
-const authUtils = require('../../lib/auth');
 
 const cas = new CASAuthentication({
   cas_url     : config.ucd.cas.url,
@@ -35,7 +36,6 @@ router.get('/login', (req, res) => {
   // if there is no ticket or complete parameter in the url, this is a fresh login, clear
   // the session variable to force the cas library to preform the auth flow.
   if( !req.query.ticket && !req.query.complete ) {
-    console.log('New cas login flow, clearing cas session token');
     req.session[cas.session_name] = null;
   }
 
