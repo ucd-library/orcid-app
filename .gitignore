@@ -4,3 +4,4 @@ service-account.json
 service-account-dev.json
 service-account-prod.json
 server/client/public/js/*bundle.js
+.DS_Store
