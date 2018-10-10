@@ -6,75 +6,75 @@ class OrcidStore extends BaseStore {
     super();
 
     this.data = {
-      records : {},
-      saving : {}
+      record : {}
+      // saving : {}
     };
     this.events = {
-      USER_RECORD_UPDATE : 'user-record-update',
-      USER_RECORD_SAVING : 'user-record-saving'
+      USER_RECORD_UPDATE : 'user-record-update'
+      // USER_RECORD_SAVING : 'user-record-saving'
     };
   }
 
-  setUserRecordLoading(id, request) {
-    this.data.records[id] = {
+  setUserRecordLoading(request) {
+    this.data.record = {
       state : this.STATE.LOADING, 
       request
     }
-    this._userRecordUpdate(id);
+    this._userRecordUpdate();
   }
 
-  setUserRecordLoaded(id, payload) {
-    this.data.records[id] = {
+  setUserRecordLoaded(payload) {
+    this.data.record = {
       state : this.STATE.LOADED,
       payload
     }
-    this._userRecordUpdate(id);
+    this._userRecordUpdate();
   }
 
-  setUserRecordError(id, error) {
-    this.data.records[id] = {
+  setUserRecordError(error) {
+    this.data.record = {
       state : this.STATE.ERROR,
       error
     }
-    this._userRecordUpdate(id);
+    this._userRecordUpdate();
   }
 
-  _userRecordUpdate(id) {
-    this.emit(this.events.USER_RECORD_UPDATE, this.data.records[id]);
+  _userRecordUpdate() {
+    this.emit(this.events.USER_RECORD_UPDATE, this.data.record);
   }
 
-  getUserRecord(id) {
-    return this.data.records[id];
+  getUserRecord() {
+    return this.data.record;
   }
 
-  setUserRecordSaving(putCode, id, payload, request) {
-    this.data.saving[putCode] = {
-      state : this.STATE.SAVING,
-      payload, request, id
-    }
-  }
+  // setUserRecordSaving(putCode, id, payload, request) {
+  //   this.data.saving[putCode] = {
+  //     state : this.STATE.SAVING,
+  //     payload, request, id
+  //   }
+  // }
 
-  setUserRecordSaved(putCode, id, payload) {
-    this.data.saving[putCode] = {
-      state : this.STATE.LOADED,
-      id, payload
-    }
-  }
+  // setUserRecordSaved(putCode, id, payload) {
+  //   this.data.saving[putCode] = {
+  //     state : this.STATE.LOADED,
+  //     id, payload
+  //   }
+  // }
 
-  setUserRecordSaveError(putCode, id, error) {
-    this.data.saving[putCode] = {
-      state : this.STATE.SAVE_ERROR,
-      error, id
-    }
-  }
+  // setUserRecordSaveError(putCode, id, error) {
+  //   this.data.saving[putCode] = {
+  //     state : this.STATE.SAVE_ERROR,
+  //     error, id
+  //   }
+  // }
 
-  getRecordSaveState(putCode) {
-    return this.data.saving[putCode];
-  }
+  // getRecordSaveState(putCode) {
+  //   return this.data.saving[putCode];
+  // }
 
-  _onRecordSave(putCode) {
-    this.emit(this.events.USER_RECORD_SAVING, this.data.saving[putCode]);
-  }
+  // _onRecordSave(putCode) {
+  //   this.emit(this.events.USER_RECORD_SAVING, this.data.saving[putCode]);
+  // }
 
 
 }

@@ -31,6 +31,10 @@ export default class AppCompletedChart extends PolymerElement {
     this._redraw();
   }
 
+  /**
+   * @method _redraw
+   * @description redraw the complete circle chart bases on percent property
+   */
   _redraw() {
     if( !this.ctx ) return;
 
@@ -63,10 +67,6 @@ export default class AppCompletedChart extends PolymerElement {
     this.ctx.arc(centerX, centerY, circleWidth, top, end, true);
     this.ctx.stroke();
     this.ctx.closePath();
-  }
-
-  _test(e) {
-    this.percent = parseInt(e.currentTarget.value);
   }
 
 }

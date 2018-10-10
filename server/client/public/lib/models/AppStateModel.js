@@ -1,6 +1,7 @@
 const {AppStateModel} = require('@ucd-lib/cork-app-state');
 const AppStateStore = require('../stores/AppStateStore');
 
+// not really used at the moment...
 class AppStateModelImpl extends AppStateModel {
 
   constructor() {

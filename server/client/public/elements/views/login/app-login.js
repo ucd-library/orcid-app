@@ -49,8 +49,6 @@ export default class AppLogin extends Mixin(PolymerElement)
 
     if( APP_CONFIG.user.data.linked ) {
       console.log('Account is linked!');
-      // this.AppStateModel.set();
-
     } else if ( session.orcid.orcid && APP_CONFIG.user.unlinkedUcd ) {
       this.section = 'link-approval';
 

@@ -43,6 +43,12 @@ export default class AppChecklist extends Mixin(PolymerElement)
     }
   }
 
+  /**
+   * @method _render
+   * @description render a users ORCiD record in checklist
+   * 
+   * @param {Object} record ORCiD record
+   */
   _render(record) {
     this.record = record;
     let results = validator.analyze(this.record);
@@ -52,13 +58,24 @@ export default class AppChecklist extends Mixin(PolymerElement)
     this.errors = results.errors;
   }
 
+  /**
+   * @method _onReloadClicked
+   * @description bound to click event on reload anchor tag.  Reload the user record.
+   */
   async _onReloadClicked() {
     if( APP_CONFIG.user.session.orcid && APP_CONFIG.user.session.orcid.orcid ) {
       this.style.opacity = 0.5;
-      this.OrcidModel.get(APP_CONFIG.user.session.orcid.orcid, true); 
+      this.OrcidModel.get(); 
     }
   }
 
+  /**
+   * @method _onUserRecordUpdate
+   * @description bound to user-record-update event from ORCiD model. If loaded re-render
+   * the element
+   * 
+   * @param {Object} e model event
+   */
   _onUserRecordUpdate(e) {
     if( e.state !== 'loaded' ) return;
     this._render(e.payload);

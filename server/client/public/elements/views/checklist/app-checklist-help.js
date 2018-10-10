@@ -22,9 +22,13 @@ export default class AppChecklistHelp extends PolymerElement {
     });
   }
 
+  /**
+   * @method show
+   * @description show checklist help popup
+   */
   show() {
-    let top = this.$.icon.offsetHeight + this.$.icon.offsetTop;
-    let left = this.$.icon.offsetLeft + (this.$.icon.offsetWidth / 2);
+    // let top = this.$.icon.offsetHeight + this.$.icon.offsetTop;
+    // let left = this.$.icon.offsetLeft + (this.$.icon.offsetWidth / 2);
 
     this.$.popup.style.top = (5)+'px';
     this.$.popup.style.right = (-1*20)+'px';
@@ -32,17 +36,29 @@ export default class AppChecklistHelp extends PolymerElement {
     this.showing = true;
   }
 
+  /**
+   * @method hide
+   * @description hide checklist help popup
+   */
   hide() {
     if( !this.showing ) return;
     this.$.popup.style.display = 'none';
     this.showing = false;
   }
 
-  _onBtnClicked(e) {    
+  /**
+   * @method _onBtnClicked
+   * @description bound to help icon click event
+   */
+  _onBtnClicked() {    
     if( this.showing ) this.hide();
     else this.show();
   }
 
+  /**
+   * @method _onPopupClicked
+   * @description bound to popup panel click event
+   */
   _onPopupClicked(e) {
     e.preventDefault();
     e.stopPropagation();

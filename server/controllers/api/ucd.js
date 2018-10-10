@@ -24,10 +24,21 @@ router.get('/link', hasOrcidAuth, hasUcdAuth, async (req, res) => {
 });
 
 // Run auto updates for verified UCD information
-router.get('/auto-update', hasOrcidAuth, hasUcdAuth, async (req, res) => {
+router.get('/auto-update', hasOrcidAuth, async (req, res) => {
   let user = req.user;
+  let cas = user.cas;
+  if( !cas ) {
+    let user = await users.getUser(user.orcid.orcid);
+    if( !user.ucd ) {
+      return res.status(400).json({error: true, message: 'You must first link account with UCD'});
+    } else if( !user.ucd.casId ) {
+      return res.status(400).json({error: true, message: 'You must first link account with UCD'});
+    }
+    cas = user.ucd.casId;
+  }
+
   try {
-    let {updates, record} = await users.addUcdInfo(user.orcid.orcid, user.cas, user.orcid.access_token);
+    let {updates, record} = await users.addUcdInfo(user.orcid.orcid, cas, user.orcid.access_token);
 
     if( updates.length === 0 ) { // no updates
       return res.json({updates});

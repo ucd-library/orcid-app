@@ -10,8 +10,8 @@ function hasOrcidAuth(req, res, next) {
     return res.status(401).json({error: true, message: 'not logged in'});
   }
 
-  if( !user.orcid ) {
-    return res.status(401).json({error: true, message: 'not logged in'});
+  if( !req.user.orcid ) {
+    return res.status(401).json({error: true, message: 'not logged in with ORCiD'});
   }
 
   next();
@@ -22,8 +22,8 @@ function hasUcdAuth(req, res, next) {
     return res.status(401).json({error: true, message: 'not logged in'});
   }
 
-  if( !user.cas ) {
-    return res.status(401).json({error: true, message: 'not logged in'});
+  if( !req.user.cas ) {
+    return res.status(401).json({error: true, message: 'not logged in with UCD'});
   }
 
   next();
@@ -34,11 +34,11 @@ async function isAdmin(req, res, next) {
     return res.status(401).json({error: true, message: 'not logged in'});
   }
 
-  if( !user.orcid ) {
-    return res.status(401).json({error: true, message: 'not logged in'});
+  if( !req.user.orcid ) {
+    return res.status(401).json({error: true, message: 'not logged in with ORCiD'});
   }
 
-  if( !(await authUtils.isAdmin(user.orcid.orcid)) ) {
+  if( !(await authUtils.isAdmin(req.user.orcid.orcid)) ) {
     return res.status(401).json({error: true, message: 'nope.'});
   }
 

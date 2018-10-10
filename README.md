@@ -1,5 +1,5 @@
 # orcid-app
-UC Davis Library - ORCiD Web Application
+UC Davis Library - ORCiD Web Application.  
 
 # Requirements
 
@@ -65,3 +65,14 @@ To deploy to production
 ```bash
 npm run deploy-prod
 ```
+
+# Tech Stack
+
+- Server
+  - [NodeJS](https://nodejs.org/en/)
+- Client
+  - [Polymer 3](https://www.polymer-project.org/3.0/docs/devguide/feature-overview) + [Webpack](https://webpack.js.org/)
+- Database
+  - [Google Firestore](https://firebase.google.com/docs/firestore/)
+- Deployment
+  - [Google AppEngine - NodeJS Standard Runtime](https://cloud.google.com/appengine/docs/standard/nodejs/)

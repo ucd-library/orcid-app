@@ -1,11 +1,20 @@
 const config = require('../config');
 
-let text = {
-  otherId : ''
-}
-
+/**
+ * @class ValidatorModel
+ * @description static class that exposes the analyze method which responds with data
+ * to render the checklist view
+ */
 class ValidatorModel {
 
+  /**
+   * @method analyze
+   * @description analyze a users ORCiD record, results can be used to render checklist view
+   * 
+   * @param {Object} record Users ORCiD record
+   * 
+   * @returns {Object}
+   */
   analyze(record) {
 
     let results = {
@@ -116,6 +125,14 @@ class ValidatorModel {
     return results;
   }
 
+  /**
+   * @method hasExternalId
+   * @description does the record have any external identifiers associated to it
+   * 
+   * @param {Object} record Orcid record
+   * 
+   * @returns {Boolean}
+   */
   hasExternalId(record) {
     if( !record.person ) return false;
     if( !record.person['external-identifiers'] ) return false;
@@ -124,6 +141,14 @@ class ValidatorModel {
     return false;
   }
 
+  /**
+   * @method hasEducation
+   * @description does the record have any education information associated to it
+   * 
+   * @param {Object} record Orcid record
+   * 
+   * @returns {Boolean}
+   */
   hasEducation(record) {
     if( !record['activities-summary'] ) return false;
     if( !record['activities-summary'].educations ) return false;
@@ -132,6 +157,14 @@ class ValidatorModel {
     return false;
   }
 
+  /**
+   * @method hasEmployment
+   * @description does the record have any employment information associated to it
+   * 
+   * @param {Object} record Orcid record
+   * 
+   * @returns {Boolean}
+   */
   hasEmployment(record) {
     if( !record['activities-summary'] ) return false;
     if( !record['activities-summary'].employments ) return false;
@@ -142,6 +175,14 @@ class ValidatorModel {
     return false;
   }
 
+  /**
+   * @method hasCorrectUcdEmployment
+   * @description does the record have ucd employment information associated to it
+   * 
+   * @param {Object} record Orcid record
+   * 
+   * @returns {Boolean}
+   */
   hasCorrectUcdEmployment(record) {
     let employments = this.hasEmployment(record);
     if( !employments ) return false;
@@ -158,6 +199,14 @@ class ValidatorModel {
     return false;
   }
 
+  /**
+   * @method hasFunding
+   * @description does the record have funding information associated to it
+   * 
+   * @param {Object} record Orcid record
+   * 
+   * @returns {Boolean}
+   */
   hasFunding(record) {
     if( !record['activities-summary'] ) return false;
     if( !record['activities-summary'].fundings ) return false;
@@ -166,6 +215,14 @@ class ValidatorModel {
     return false;
   }
 
+  /**
+   * @method hasWorks
+   * @description does the record have works information associated to it
+   * 
+   * @param {Object} record Orcid record
+   * 
+   * @returns {Boolean}
+   */
   hasWorks(record) {
     if( !record['activities-summary'] ) return false;
     if( !record['activities-summary'].works ) return false;
@@ -176,6 +233,15 @@ class ValidatorModel {
     return false;
   }
 
+  /**
+   * @method hasCrossRefEnabled
+   * @description attempts to see if any works have been added by cross ref.
+   * If so, we know cross ref has been enabled
+   * 
+   * @param {Object} record Orcid record
+   * 
+   * @returns {Boolean}
+   */
   hasCrossRefEnabled(record) {
     let works = this.hasWorks(record);
     if( !works ) return false;
@@ -194,6 +260,14 @@ class ValidatorModel {
     return false;
   }
 
+  /**
+   * @method hasKeywords
+   * @description does the record have keyword information associated to it
+   * 
+   * @param {Object} record Orcid record
+   * 
+   * @returns {Boolean}
+   */
   hasKeywords(record) {
     if( !record.person ) return false;
     if( !record.person.keywords ) return false;
@@ -202,6 +276,14 @@ class ValidatorModel {
     return false;
   }
 
+  /**
+   * @method hasWebsite
+   * @description does the record have website information associated to it
+   * 
+   * @param {Object} record Orcid record
+   * 
+   * @returns {Boolean}
+   */
   hasWebsite(record) {
     if( !record.person ) return false;
     if( !record.person['researcher-urls'] ) return false;
