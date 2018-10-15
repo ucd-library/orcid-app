@@ -12,15 +12,21 @@ class Users {
 
   /**
    * @method getUser
-   * @description given a user ORCiD return all information we have stored
+   * @description given a user casId return all information we have stored
    * from both ORCiD and UCD
    * 
-   * @param {String} orcid Users ORCiD
+   * @param {String} casId Users casId
    * 
    * @returns {Promise} resolves to {Object} 
    */
-  getUser(orcid) {
-    return firestore.getUser(orcid);
+  getUser(casId, includeToken=false) {
+    let user = firestore.getUser(casId);
+
+    if( includeToken === false && user.orcidAccessToken ) {
+      delete user.orcidAccessToken;
+    }
+
+    return user;
   }
 
   /**
@@ -31,8 +37,8 @@ class Users {
    * 
    * @returns {Promise} resolves to {Boolean}
    */
-  async isLinked(orcid) {
-    let user = await this.getUser(orcid);
+  async isLinked(casId) {
+    let user = await this.getUser(casId);
     return user.linked ? true : false;
   }
 
@@ -46,13 +52,12 @@ class Users {
    * 
    * @return {Promise} resolves to user information {Object}
    */
-  async linkAccounts(casId, orcid) {
-    let ucdInfo = await this.getUcdInfo(casId);
+  async linkAccounts(casId) {
+    // let ucdInfo = await this.getUcdInfo(casId);
 
     return firestore.setUser({
-      id: orcid,
-      linked : true,
-      ucd : ucdInfo
+      id: casId,
+      linked : true
     });
   }
 
@@ -60,15 +65,14 @@ class Users {
    * @method syncUcd
    * @description resync all UCD user data to firebase and return UCD user data
    * 
-   * @param {String} orcid users ORCiD
    * @param {String} casId users UCD CAS id
    * 
    * @returns {Promise} resolves to {Object}
    */
-  async syncUcd(orcid, casId) {
+  async syncUcd(casId) {
     let ucdInfo = await this.getUcdInfo(casId);
     await firestore.setUser({
-      id: orcid,
+      id: casId,
       ucd : ucdInfo
     });
     return ucdInfo;
@@ -95,20 +99,20 @@ class Users {
     let record = JSON.parse((await orcidApi.get(orcid, token)).body);
     let ucd = await this.getUcdInfo(casId);
     await firestore.setUser({
-      id : orcid, 
+      id : casId, 
       orcid : record,
       ucd : ucd
     });
 
     // run automatic updates
     // currently just employment
-    let user = await this.getUser(orcid);
+    let user = await this.getUser(casId);
     await this._addEmployment(user, updates, token);
 
     // if we changed something, set user
     if( updates.length > 0 ) {
       record = JSON.parse((await orcidApi.get(orcid, token)).body);
-      await firestore.setUser({id: orcid, orcid: record});
+      await firestore.setUser({id: casId, orcid: record});
     }
 
     return {updates, record};
@@ -232,18 +236,22 @@ class Users {
    * @description pull user record from ORCiD and store in db
    * 
    * @param {String} orcid Users ORCiD
+   * @param {String} casId Users CAS ID
    * @param {String} token Users ORCiD access token
    * 
    * @returns {Promise} resolves to user {Object}
    */
-  async updateOrcidInfo(orcid, token) {
+  async updateOrcidInfo(orcid, casId, token) {
     let info = orcidApi.getResultObject(
-      await orcidApi.get(orcid, token)
+      await orcidApi.get(orcid, token.access_token)
     );
 
+    // TODO: kill any access token user already has
+
     return firestore.setUser({
-      id: orcid,
-      orcid: info
+      id: casId,
+      orcid: info,
+      orcidAccessToken : token
     });
   }
 

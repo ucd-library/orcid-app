@@ -12,10 +12,13 @@ router.get('/oauth-login', (req, res) => {
   logger.info('Starting orcid auto flow');
 
   let url = config.orcid.url+'/oauth/authorize';
+
+
   let params = {
     client_id : config.orcid.clientId,
     response_type : 'code',
     scope : config.orcid.api.scopes,
+    grant_type : 'authorization_code',
     redirect_uri : config.server.host+'/auth/orcid/oauth-callback'
     // Would be nice if ORCiD supported this...
     // prompt : 'login'
@@ -31,8 +34,17 @@ router.get('/oauth-login', (req, res) => {
 
 router.get('/oauth-callback', async (req, res) => {
   let code = req.query.code;
+  let error = req.query.error;
+
+  if( error ) {
+    if( error === 'access_denied' ) res.redirect('/denied-orcid-oauth');
+    else res.status(400).send(error+': '+(req.query.error_description || ''))
+    return;
+  }
+
   if( !code ) return res.status(400).send('No code sent');
 
+  // TODO: don't generate new token unless scopes changes
   let response = await api.generateToken({
     code,
     grant_type: 'authorization_code'
@@ -48,11 +60,12 @@ router.get('/oauth-callback', async (req, res) => {
     req.session[config.orcid.sessionName] = response;
 
     logger.info('Updating user info from orcid auto flow for: '+response.orcid);
-    await usersModel.updateOrcidInfo(response.orcid, response.access_token);
+    await usersModel.updateOrcidInfo(response.orcid, req.session[config.ucd.cas.sessionName], response);
 
     res.redirect('/');
   } catch(e) {
-    res.status(400).send('Unable to parse Oauth body');
+    logger.error('Unable to parse ORCiD Oauth body', e);
+    res.status(400).send('Unable to parse ORCiD Oauth body');
   }
   
 });

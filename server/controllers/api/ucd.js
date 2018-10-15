@@ -12,8 +12,8 @@ router.get('/link', hasOrcidAuth, hasUcdAuth, async (req, res) => {
   logger.info('Linking accounts: ', user.cas, user.orcid.orcid);
   
   try {
-    await users.linkAccounts(user.cas, user.orcid.orcid);
-    res.json(await users.getUser(user.orcid.orcid));
+    await users.linkAccounts(user.cas);
+    res.json(await users.getUser(user.cas));
   } catch(e) {
     res.status(400).json({
       error: true,
@@ -38,7 +38,7 @@ router.get('/auto-update', hasOrcidAuth, async (req, res) => {
   }
 
   try {
-    let {updates, record} = await users.addUcdInfo(user.orcid.orcid, cas, user.orcid.access_token);
+    let {updates, record} = await users.addUcdInfo(user.orcid.orcid, cas, user.orcidAccessToken.access_token);
 
     if( updates.length === 0 ) { // no updates
       return res.json({updates});
@@ -62,7 +62,7 @@ router.get('/auto-update', hasOrcidAuth, async (req, res) => {
 router.get('/sync', hasOrcidAuth, hasUcdAuth, async (req, res) => {
   let user = req.user;
   try {
-    res.json(await users.syncUcd(user.orcid.orcid, user.cas));
+    res.json(await users.syncUcd(user.cas));
   } catch(e) {
     res.status(400).json({
       error: true,
