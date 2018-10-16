@@ -1,4 +1,4 @@
-<style>
+<style include="shared-styles">
   :host {
     display: block;
   }
@@ -35,43 +35,88 @@
   app-checklist-help {
     margin-bottom: 4px;
   }
+
+  .checklist {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .username {
+    text-align: center;
+    margin-top: 50px;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 30px;
+  }
+
 </style>
 
-<div class="layout">
-  <div style="margin-right: 35px; text-align: center">
-    <div>
-      <app-completed-chart id="chart"></app-completed-chart>
+<div class="username">
+  <div class="title">Hello [[username]]</div>
+  <app-orcid-label orcid="[[orcid]]"></app-orcid-label>
+</div>
+<div style="font-size: 22px; text-align:center; margin: 30px 0 50px 0; font-weight: 100">
+  Optimizing your iD will improve its accuracy and usefulness.
+</div>
+
+<div class="checklist">
+  <div class="layout">
+    <div style="margin-right: 35px; text-align: center">
+      <div>
+        <app-completed-chart id="chart"></app-completed-chart>
+      </div>
+      <a on-click="_onReloadClicked">Reload the iD score</a>
     </div>
-    <a on-click="_onReloadClicked">Reload the iD score</a>
-  </div>
 
-  <div style="flex:1; max-width: 450px">
-    <h2 style="margin-top: 0">Improve Your iD with Key Features</h2>
+    <div style="flex:1; max-width: 450px">
+      <h2 style="margin-top: 0">Improve Your iD with Key Features</h2>
 
-    <dom-repeat items="[[checklist]]">
-      <template>
-        <div class="item-layout">
-          <app-checklist-mark text="[[item.text]]" checked$="[[item.checked]]"></app-checklist-mark>
-          <app-checklist-help>
-            <div>[[item.help]]</div>
-          </app-checklist-help>
-        </div>
-      </template>
-    </dom-repeat>
-
-    <div hidden$="[[!errors.length]]">
-      <h2>Errors Detected</h2>
-      <dom-repeat items="[[errors]]">
+      <dom-repeat items="[[checklist]]">
         <template>
           <div class="item-layout">
-            <app-checklist-mark text="[[item.text]]" error></app-checklist-mark>
+            <app-checklist-mark text="[[item.text]]" checked$="[[item.checked]]"></app-checklist-mark>
             <app-checklist-help>
               <div>[[item.help]]</div>
             </app-checklist-help>
           </div>
+          <dom-if if="[[item.isEmployment]]">
+            <template>
+              <app-checklist-employments ></app-checklist-employments>
+            </template>
+          </dom-if>
         </template>
       </dom-repeat>
+
+      <div hidden$="[[!errors.length]]">
+        <h2>Errors Detected</h2>
+        <dom-repeat items="[[errors]]">
+          <template>
+            <div class="item-layout">
+              <app-checklist-mark text="[[item.text]]" error></app-checklist-mark>
+              <app-checklist-help>
+                <div>[[item.help]]</div>
+              </app-checklist-help>
+            </div>
+          </template>
+        </dom-repeat>
+      </div>
     </div>
   </div>
 </div>
 
+<div class="break-line" style="margin-top:50px"></div>
+  
+<div style="text-align: right; padding: 20px">
+  <a class="btn" href$="[[orcidUrl]]/my-orcid" target="_blank">
+    Complete your iD
+    <iron-icon icon="chevron-right"></iron-icon>
+  </a>
+</div>
+
+<div class="info-text footer">
+  <div>For technical help, email <a href="mailto:orcid@ucdavis.edu">orcid@ucdavis.edu</a>.</div>
+  <div>No longer want to use the iD Optimization Meter? <a href$="[[orcidUrl]]/account">Disconnect your accounts</a>.</div>
+</div>

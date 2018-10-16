@@ -5,6 +5,8 @@ import "@polymer/iron-icons/iron-icons"
 import "./app-checklist-help"
 import "./app-checklist-mark"
 import "./app-completed-chart"
+import "./app-checklist-employments"
+import "../../app-orcid-label"
 
 import validator from "../../../lib/models/ValidatorModel"
 
@@ -17,6 +19,10 @@ export default class AppChecklist extends Mixin(PolymerElement)
 
   static get properties() {
     return {
+      record : {
+        type : Object,
+        value : () => ({})
+      },
       checklist : {
         type: Array,
         value : () => []
@@ -51,9 +57,18 @@ export default class AppChecklist extends Mixin(PolymerElement)
    */
   _render(record) {
     this.record = record;
+
+    let name = record.person.name
+    this.username = name['given-names'].value + ' ' + name['family-name'].value;
+    this.orcid = record['orcid-identifier'].path;
+
     let results = validator.analyze(this.record);
 
     this.$.chart.percent = results.total;
+    
+    results.checklist.forEach(item => {
+      if( item.id === 'employment' ) item.isEmployment = true;
+    });
     this.checklist = results.checklist;
     this.errors = results.errors;
   }

@@ -1,7 +1,8 @@
 const models = {
   AppStateModel : require('./AppStateModel'),
   OrcidModel : require('./OrcidModel'),
-  UcdModel : require('./UcdModel')
+  UcdModel : require('./UcdModel'),
+  ValidatorModel : require('./ValidatorModel')
 }
 
 if( typeof window !== 'undefined' ) {

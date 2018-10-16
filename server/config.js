@@ -73,7 +73,9 @@ module.exports = {
     collections : {
       users : 'users',
       sessions : 'sessions',
-      admins : 'admins'
+      admins : 'admins',
+      // app defined department lists
+      userDepartments : 'user-departments'
     }
   },
 

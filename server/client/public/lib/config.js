@@ -2,6 +2,7 @@
 
 module.exports = {
 
+  ucdSource : 'UC Davis',
   ucdRinggoldId : '8789',
   crossRefSourceName : 'CrossRef Metadata Search',
   crossRefSourceId : '0000-0002-3054-1567',

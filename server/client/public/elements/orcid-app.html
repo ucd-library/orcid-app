@@ -59,12 +59,6 @@
     }
   }
 
-  .checklist {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
   .orcid-header-text {
     color: var(--orcid-grey);
     width: 130px;
@@ -84,19 +78,14 @@
     padding-left: 15px;
   }
 
-    @media(max-width: 525px) {
-      .orcid-header h1 {
-        margin-bottom: 15px;
-      }
+  @media(max-width: 525px) {
+    .orcid-header h1 {
+      margin-bottom: 15px;
     }
+  }
 
   .orcid-header .logo img {
     height: 64px;
-  }
-
-  .break-line {
-    height: 1px;
-    background-color: var(--medium-background-color);
   }
 
   .main-layout {
@@ -131,19 +120,6 @@
     text-align: center;
   }
 
-  .username {
-    font-size: 28px;
-    color: var(--default-primary-color);
-    text-align: center;
-    font-weight: bold;
-    margin-top: 50px;
-  }
-
-  .orcid {
-    font-size: 12px; 
-    font-weight: normal;
-    color: var(--default-secondary-color);
-  }
 
   .btn {
     font-size: 16px;
@@ -182,48 +158,8 @@
     <iron-pages selected$="[[page]]" attr-for-selected="page">
       <app-login page="login"></app-login>
       <denied-orcid-oauth page="denied-orcid-oauth"></denied-orcid-oauth>
-
-      <div page="scorecard">
-        <div class="username">
-          <div>Hello [[username]]</div>
-          <div class="orcid">
-            <img src="/images/orcid-vector-logo.svg" style="height: 18px; width: 18px; vertical-align: middle" />
-            [[orcid]]
-          </div>
-        </div>
-        <div style="font-size: 22px; text-align:center; margin: 30px 0 50px 0; font-weight: 100">
-          Optimizing your iD will improve its accuracy and usefulness.
-        </div>
-        <div class="checklist">
-          <app-checklist></app-checklist>
-        </div>
-  
-        <div class="break-line" style="margin-top:50px"></div>
-  
-        <div style="text-align: right; padding: 20px">
-          <a class="btn" href$="[[orcidUrl]]/my-orcid" target="_blank">
-            Complete your iD
-            <iron-icon icon="chevron-right"></iron-icon>
-          </a>
-        </div>
-
-        <div style="text-align:center">
-          <div>For technical help, email <a href="mailto:orcid@ucdavis.edu">orcid@ucdavis.edu</a>.</div>
-          <div>No longer want to use the iD Optimization Meter? <a href$="[[orcidUrl]]/account">Disconnect your accounts</a>.</div>
-        </div>
-        
-      </div>
+      <app-checklist page="scorecard"></app-checklist>
     </iron-pages>
-
-    
-
-    <!-- <div hidden$="[[loggedIn]]">
-      <div class="login-panels">
-        <app-login-cas class="panel"></app-login-cas>
-        <app-login-orcid class="panel"></app-login-orcid>
-      </div>
-    </div> -->
-
     
   </div>
 </div>

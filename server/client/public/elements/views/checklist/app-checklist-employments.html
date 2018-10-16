@@ -1,0 +1,36 @@
+<style include="shared-styles">
+  :host {
+    display: block;
+    margin-left: 34px;
+  }
+
+  a {
+    display: inline-block;
+    cursor: pointer;
+    color: var(--default-secondary-color);
+    text-overflow: ellipsis;
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  iron-icon {
+    color: var(--default-secondary-color);
+    cursor: pointer;
+    vertical-align: middle;
+    --iron-icon-height: 18px;
+    --iron-icon-width: 18px;
+  }
+
+  a.select {
+    font-style: italic;
+  }
+</style>
+
+<div hidden$="[[hasEmployment]]">
+  <a class="select" on-click="_onSelectClicked">Select from UC Davis records</a>
+</div>
+<div hidden$="[[!hasEmployment]]" style="display:flex; align-items: center">
+  <a class="edit" href="/edit-employment">Position [[position]] / Department [[department]]</a>
+  <iron-icon icon="create"></iron-icon>
+</div>

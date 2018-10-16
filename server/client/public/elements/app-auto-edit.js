@@ -23,7 +23,7 @@ export default class AppAutoEdit extends Mixin(PolymerElement)
     // if the user is logged in and has a linked account, attempt 
     // to auto update account
     if( APP_CONFIG.user.data && APP_CONFIG.user.data.linked ) {
-      this.UcdModel.autoUpdate();
+      // this.UcdModel.autoUpdate();
     }
   }
 
