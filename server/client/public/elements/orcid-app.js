@@ -83,11 +83,6 @@ export default class OrcidApp extends Mixin(PolymerElement)
 
     this.AppStateModel.setLocationElement(this.$.appRoute);
 
-    if( APP_CONFIG.user.session.orcid ) {
-      this.username = APP_CONFIG.user.session.orcid.name;
-      this.orcid = APP_CONFIG.user.session.orcid.orcid;
-    }
-
     this.hideLogout = (Object.keys(APP_CONFIG.user.session || {}).length === 0);
 
     if( this._userLoggedInAndLinked() ) {

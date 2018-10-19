@@ -1,5 +1,6 @@
 const admin = require('firebase-admin');
 const config = require('../config');
+const FieldValue = admin.firestore.FieldValue;
 
 // running in google env
 if( config.GOOGLE_ENV ) {
@@ -20,6 +21,7 @@ if( config.GOOGLE_ENV ) {
 class Firestore {
 
   constructor() {
+    this.FieldValue = FieldValue;
     this.db = admin.firestore();
     this.db.settings({timestampsInSnapshots: true});
     this.config = config.firestore;
@@ -47,6 +49,19 @@ class Firestore {
       .collection(this.config.collections.users)
       .doc(user.id)
       .set(user, options);
+  }
+
+  /**
+   * @method updateUser
+   * @description
+   * 
+   * @param {*} data 
+   */
+  updateUser(id, data) {
+    return this.db
+      .collection(this.config.collections.users)
+      .doc(id)
+      .set(data, {merge: true});
   }
 
   /**

@@ -48,10 +48,11 @@ export default class AppLogin extends Mixin(PolymerElement)
     let session = APP_CONFIG.user.session;
     if( !session.cas ) return;
 
+    let userData = APP_CONFIG.user.data || {};
 
-    if( APP_CONFIG.user.data.linked ) {
+    if( userData.linked ) {
       console.log('Account is linked!');
-    } else if ( session.orcid && session.orcid.orcid ) {
+    } else if ( userData.orcidAccessToken && userData.ucd && userData.orcid ) {
       this.section = 'link-approval';
 
       let ucd = APP_CONFIG.user.data.ucd;
@@ -62,8 +63,7 @@ export default class AppLogin extends Mixin(PolymerElement)
 
       this._setOrcidInfo();
 
-    } else if( session.cas ) {
-      // this._setOrcidInfo();
+    } else if( userData.ucd ) {
       this.section = 'orcid-login'
     }
   }

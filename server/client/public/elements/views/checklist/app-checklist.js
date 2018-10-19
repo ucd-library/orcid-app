@@ -104,6 +104,13 @@ export default class AppChecklist extends Mixin(PolymerElement)
     this.style.opacity = 1;
   }
 
+  _rejectToken() {
+    if( !confirm('Are you sure you want to disconnect UC Davis from your ORCiD record?') ) {
+      return;
+    }
+    window.location = '/api/orcid/reject-token';
+  }
+
 }
 
 customElements.define('app-checklist', AppChecklist);

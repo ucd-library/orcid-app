@@ -51,6 +51,9 @@ router.get('/login', (req, res) => {
     if( username ) {
       // write new user record
       await users.syncUcd(username);
+      
+      // verify users access token
+      
 
       // logger.info('CAS Service: CAS login success: '+username);
       res.redirect('/');

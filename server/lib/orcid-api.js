@@ -14,7 +14,7 @@ class OrcidApi {
   /**
    * @method generateToken
    * @description creates a oauth access token, this is a long living token so keep it secret,
-   * keep it safe.  TODO: figure out if we can void these tokens via API.
+   * keep it safe.
    * 
    * http://members.orcid.org/api/tutorial/read-orcid-records#gettoken
    * 
@@ -35,7 +35,36 @@ class OrcidApi {
     if( options.scope ) form.scope = options.scope;
 
     return request(
-      config.apiEnv === 'prod' ? 'https://orcid.org/oauth/token' : 'https://sandbox.orcid.org/oauth/token',
+      `${config.orcid.oauthBaseUrl}/token`,
+      {
+        method : 'POST',
+        headers : {
+          accept : 'application/json'
+        },
+        form
+      }
+    );
+  }
+
+  /**
+   * @method revokeToken
+   * @description revoke a ORCiD access token.
+   * 
+   * https://members.orcid.org/api/oauth/revoke-tokens
+   * 
+   * @param {String} token ORCiD access or refresh token
+   * 
+   * @returns {Promise}
+   */
+  revokeToken(token) {
+    let form = {
+      client_id : config.orcid.clientId,
+      client_secret : config.orcid.clientSecret,
+      token
+    }
+
+    return request(
+      `${config.orcid.oauthBaseUrl}/revoke`,
       {
         method : 'POST',
         headers : {

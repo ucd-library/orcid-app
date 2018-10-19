@@ -66,7 +66,8 @@ module.exports = {
     api : {
       baseUrl : `https://${baseApiUrl}.orcid.org/v2.1`,
       scopes : '/read-limited /activities/update'
-    }
+    },
+    oauthBaseUrl : (apiEnv === 'prod') ? 'https://orcid.org/oauth' : 'https://sandbox.orcid.org/oauth'
   },
 
   firestore : {

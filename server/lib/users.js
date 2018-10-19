@@ -19,14 +19,35 @@ class Users {
    * 
    * @returns {Promise} resolves to {Object} 
    */
-  getUser(casId, includeToken=false) {
-    let user = firestore.getUser(casId);
+  async getUser(casId, includeToken=false) {
+    let user = await firestore.getUser(casId);
 
-    if( includeToken === false && user.orcidAccessToken ) {
-      delete user.orcidAccessToken;
+    if( user && includeToken === false && user.orcidAccessToken ) {
+      user.orcidUsername = user.orcidAccessToken.username;
+      user.orcidAccessToken = true;
     }
 
-    return user;
+    return user || {};
+  }
+
+  /**
+   * @method revokeToken
+   * @description revoke token from a given casId
+   * 
+   * @param {String} casId Users casId
+   */
+  async revokeToken(casId) {
+    let user = await firestore.getUser(casId);
+    if( !user.orcidAccessToken ) throw new Error('User does not have an access token');
+    let response = await orcidApi.revokeToken(user.orcidAccessToken.access_token);
+    if( response.statusCode !== 200 ) {
+      throw new Error(response.body);
+    }
+
+    await firestore.updateUser(user.id, {
+      orcidAccessToken : firestore.FieldValue.delete(),
+      linked : false
+    });
   }
 
   /**
