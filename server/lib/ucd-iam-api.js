@@ -86,6 +86,34 @@ class UcdiamApi {
     return this._getResponse(response, 'iamId', iamId);
   }
 
+  /**
+   * @method getIamFromEmail
+   * @description given a users email address, return their UCD IAM ID
+   * 
+   * @param {String} email
+   * 
+   * @returns {Promise} resolves to String
+   */
+  async getIamFromEmail(email) {
+    let response = await request(
+      `${config.ucd.api.baseUrl}/people/contactinfo/search`, 
+      {
+        headers : {
+          Accept : 'application/json'
+        },
+        qs : {
+          email,
+          key : config.ucd.api.key,
+          v : config.ucd.api.version
+        }
+      } 
+    );
+
+    response = this._getResponse(response, 'email', email);
+    if( Array.isArray(response) ) response = response[0];
+    return response.iamId;
+  }
+
   async getAffiliations(iamId) {
     let response = await request(
       `${config.ucd.api.baseUrl}/people/affiliations/${iamId}`, 

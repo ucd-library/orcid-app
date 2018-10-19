@@ -6,11 +6,9 @@ process.on('unhandledRejection', e => console.error(e));
 
 const deptImports = {
   eei : {
-    name : 0,
-    id : 1,
-    deptNo : 3,
-    deptName : 4,
-    deptAddr : 5
+    email : 0,
+    name : 1,
+    startDate : 2
   }
 }
 
@@ -35,3 +33,14 @@ const DATA_ROOT = path.join(__dirname, 'data');
   } 
 
 })();
+
+const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'nov', 'dec'];
+function parseDate(date) {
+  date = date.split('-');
+  
+  let day = parseInt(date[0]);
+  let month = MONTHS.indexOf(date[1].toLowerCase());
+  let year = parseInt('20'+date[2]);
+
+  return new Date(year, month, day);
+}

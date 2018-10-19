@@ -5,7 +5,7 @@ const api = require('../../lib/orcid-api');
 const users = require('../../lib/users')
 const config = require('../../config');
 const firestore = require('../../lib/firestore');
-const {hasUcdAuth} = require('../middleware');
+const {hasUcdAuth, handleError} = require('../middleware');
 
 /**
  * Get a users record
@@ -17,13 +17,24 @@ router.get('/', async (req, res) => {
     return res.status(401).json({error: true, message: 'not logged in'});
   }
 
-  let response = await api.get(user.orcid.orcid, config.orcid.accessToken);
-  response = handleApiResponse(response, res, 'server');
+  user = await users.getUser(user.cas, true);
 
-  firestore.setUser({
-    id: user.orcid.orcid,
-    orcid : response
-  });
+  let response = await api.get(
+    user.orcid['orcid-identifier'].path, 
+    user.orcidAccessToken.access_token
+  );
+
+  try {
+    let record = api.getResultObject(response);
+    res.json(record);
+
+    firestore.setUser({
+      id: user.cas,
+      orcid : record
+    });
+  } catch(e) {
+    handleError(e, req, res);
+  }
 });
 
 router.get('/reject-token', hasUcdAuth, async (req, res) => {

@@ -19,7 +19,7 @@ class OrcidService extends BaseService {
     return this.request({
       url : `/api/orcid/`,
       onLoading : request => this.store.setUserRecordLoading(request),
-      onLoad : result => this.store.setUserRecordLoaded(result.body.result),
+      onLoad : result => this.store.setUserRecordLoaded(result.body),
       onError : e => this.store.setUserRecordError(e)
     });
   }

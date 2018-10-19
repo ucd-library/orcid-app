@@ -26,9 +26,8 @@ class OrcidModel extends BaseModel {
    * @method get
    * @description load an ORCiD record
    * 
-   * @param {String} force force a HTTP request, by default will return loaded user record if one exits
    */
-  async get(force=false) {
+  async get() {
     let record = this.store.getUserRecord();
 
     try {
@@ -38,8 +37,29 @@ class OrcidModel extends BaseModel {
         await this.service.get();
       }
     } catch(e) {}
-    
-    return this.store.getUserRecord();
+
+    let state = this.store.getUserRecord();
+    this._checkRejectedTokenState(state);
+
+    return state;
+  }
+
+  /**
+   * @method _checkRejectedTokenState
+   * @description if we made an ORCiD API call and the API responded that the ORCiD token
+   * is invalid, this means the user has removed permission of this application.  The server
+   * will have already unlinked the user at this point, so the application just needs to redirect
+   * them to the home screen
+   * 
+   * @param {Object} state 
+   */
+  _checkRejectedTokenState(data) {
+    if( data.state !== 'error' ) return;
+    let e = data.error.payload;
+
+    if( e.body && e.body.error === 'invalid_token' ) {
+      window.location = '/';
+    }
   }
 
   // async updateEmployment(putCode, id, data) {

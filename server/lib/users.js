@@ -51,6 +51,22 @@ class Users {
   }
 
   /**
+   * @method clearUserLinkage
+   * @description delete the orcidAccessToken field for user and set 
+   * 'linked' flag to false
+   * 
+   * @param {String} id UCD CAS ID
+   * 
+   * @return Promise
+   */
+  clearUserLinkage(id) {
+    return firestore.updateUser(id, {
+      orcidAccessToken : firestore.FieldValue.delete(),
+      linked : false
+    });
+  }
+
+  /**
    * @method isLinked
    * @description has a user account ORCiD credentials been linked to a UCD
    * 
@@ -97,46 +113,6 @@ class Users {
       ucd : ucdInfo
     });
     return ucdInfo;
-  }
-
-  /**
-   * @method addUcdInfo
-   * @description add the UCD verified information to the users ORCiD record.  This will first
-   * pull fresh copies of both UCD and ORCiD records and store them in the db.  Then it will
-   * perform the automatic updates to the ORCiD record.  Finally, it will return the updated
-   * user record along with a list of updates (as an array of strings) that we performed.  If
-   * no updates were required, the updates array will be empty; 
-   * 
-   * @param {String} orcid Users ORCiD 
-   * @param {String} casId Users UCD CAS id 
-   * @param {String} token Users ORCiD access token
-   * 
-   * @returns {Promise} resolves to {Object} 
-   */
-  async addUcdInfo(orcid, casId, token) {
-    let updates = [];
-
-    // always update user, we don't know what they have done...
-    let record = JSON.parse((await orcidApi.get(orcid, token)).body);
-    let ucd = await this.getUcdInfo(casId);
-    await firestore.setUser({
-      id : casId, 
-      orcid : record,
-      ucd : ucd
-    });
-
-    // run automatic updates
-    // currently just employment
-    let user = await this.getUser(casId);
-    await this._addEmployment(user, updates, token);
-
-    // if we changed something, set user
-    if( updates.length > 0 ) {
-      record = JSON.parse((await orcidApi.get(orcid, token)).body);
-      await firestore.setUser({id: casId, orcid: record});
-    }
-
-    return {updates, record};
   }
 
   /**

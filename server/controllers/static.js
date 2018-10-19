@@ -42,10 +42,6 @@ module.exports = (app) => {
       
       if( user.session.cas ) {
         user.data = await userModel.getUser(user.session.cas);
-
-        // if( !user.data.linked && user.session.cas ) {
-        //   user.unlinkedUcd = await userModel.getUcdInfo(user.session.cas);
-        // } 
       }
 
       return {

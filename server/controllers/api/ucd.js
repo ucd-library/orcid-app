@@ -4,7 +4,7 @@ const authUtils = require('../../lib/auth');
 const users = require('../../lib/users');
 const ucdApi = require('../../lib/ucd-iam-api');
 const logger = require('../../lib/logger');
-const {hasOrcidAuth, hasUcdAuth, isAdmin} = require('../middleware');
+const {hasOrcidAuth, hasUcdAuth, isAdmin, handleError} = require('../middleware');
 
 // Link user accounts
 router.get('/link', hasOrcidAuth, hasUcdAuth, async (req, res) => {
@@ -15,46 +15,7 @@ router.get('/link', hasOrcidAuth, hasUcdAuth, async (req, res) => {
     await users.linkAccounts(user.cas);
     res.json(await users.getUser(user.cas));
   } catch(e) {
-    res.status(400).json({
-      error: true,
-      message : e.message,
-      stack : e.stack
-    });
-  }
-});
-
-// Run auto updates for verified UCD information
-router.get('/auto-update', hasUcdAuth, async (req, res) => {
-  let user = req.user;
-  let cas = user.cas;
-  if( !cas ) {
-    let user = await users.getUser(user.orcid.orcid);
-    if( !user.ucd ) {
-      return res.status(400).json({error: true, message: 'You must first link account with UCD'});
-    } else if( !user.ucd.casId ) {
-      return res.status(400).json({error: true, message: 'You must first link account with UCD'});
-    }
-    cas = user.ucd.casId;
-  }
-
-  try {
-    let {updates, record} = await users.addUcdInfo(user.orcid.orcid, cas, user.orcidAccessToken.access_token);
-
-    if( updates.length === 0 ) { // no updates
-      return res.json({updates});
-    } else {
-      return res.send({
-        updates,
-        record,
-        id : user.orcid
-      })
-    }
-  } catch(e) {
-    res.status(400).json({
-      error: true,
-      message : e.message,
-      stack : e.stack
-    });
+    handleError(e, req, res);
   }
 });
 
@@ -64,11 +25,7 @@ router.get('/sync', hasUcdAuth, async (req, res) => {
   try {
     res.json(await users.syncUcd(user.cas));
   } catch(e) {
-    res.status(400).json({
-      error: true,
-      message : e.message,
-      stack : e.stack
-    });
+    handleError(e, req, res);
   }
 });
 
@@ -106,8 +63,21 @@ router.get('/get-user-iam/:iamId', isAdmin, async (req, res) => {
       stack : e.stack
     });
   }
+});
+
+router.get('/get-iam-email/:email', isAdmin, async (req, res) => {
+  try {
+    res.json(await ucdApi.getIamFromEmail(req.params.email));
+  } catch(e) {
+    res.status(400).json({
+      error: true,
+      message : e.message,
+      stack : e.stack
+    });
+  }
 
 });
+
 
 // admin call, get UCD college information
 router.get('/get-college/:orgId', isAdmin, async (req, res) => {

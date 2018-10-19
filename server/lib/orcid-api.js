@@ -1,9 +1,27 @@
 const request = require('./request');
 const config = require('../config');
 
+class ApiAccessError extends Error {
+
+  constructor(msg, statusCode, body) {
+    super(msg);
+
+    this.statusCode = statusCode;
+    this.body = body;
+    this.bodyType = 'string';
+
+    try {
+      this.body = JSON.parse(this.body);
+      this.bodyType = 'json';
+    } catch(e) {}
+  }
+
+}
+
 class OrcidApi {
 
   constructor() {
+    this.ApiAccessError = ApiAccessError;
     this.serverAccessToken = '';
   }
 
@@ -217,7 +235,11 @@ class OrcidApi {
     }
   }
 
-  getResultObject(response) {  
+  getResultObject(response) {
+    if( response.statusCode < 200 || response.statusCode >= 400 ) {
+      throw new ApiAccessError('ORCiD API request error', response.statusCode, response.body);
+    }
+
     try {
       response = JSON.parse(response.body);
     } catch(e) {

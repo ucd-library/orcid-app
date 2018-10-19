@@ -1,4 +1,6 @@
 const authUtils = require('../lib/auth');
+const orcidApi = require('../lib/orcid-api');
+const users = require('../lib/users');
 
 function setUser(req, res, next) {
   req.user = authUtils.getUserFromRequest(req);
@@ -45,4 +47,30 @@ async function isAdmin(req, res, next) {
   next();
 }
 
-module.exports = {setUser, hasOrcidAuth, hasUcdAuth, isAdmin}
+async function handleError(e, req, res) {
+  // normal error, just bubble to API for now
+  if( !(e instanceof orcidApi.ApiAccessError) ) {
+    return res.status(400).json({
+      error: true,
+      message : e.message,
+      stack : e.stack
+    });
+  }
+
+  // clear user linkage
+  if( e.statusCode === 401 && e.bodyType === 'json' && e.body.error === 'invalid_token' ) {
+    let cas = authUtils.getUserFromRequest(req).cas;
+    await users.clearUserLinkage(cas);
+  }
+
+  // send error along
+  res.status(e.statusCode).json({
+    error : true,
+    message : e.message,
+    body : e.body
+  });
+
+  return true;
+}
+
+module.exports = {setUser, hasOrcidAuth, hasUcdAuth, isAdmin, handleError}
