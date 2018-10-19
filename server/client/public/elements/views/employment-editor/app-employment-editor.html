@@ -1,0 +1,68 @@
+<style include="shared-styles">
+  :host {
+    display: block;
+  }
+
+  .title {
+    text-align: center
+  }
+
+  .description {
+    margin-top: 25px;
+  }
+
+  .btns {
+    text-align: right;
+    padding: 15px;
+  }
+</style>
+
+<h2 class="title">UC Davis Employment</h2>
+
+<div class="break-line"></div>
+
+<div class="description">Select the employment information you want to include on your ORCiD iD</div>
+
+<h3>Organizations</h3>
+<app-checkbox id="ucd-check" labelledby="ucd-check-label" circle></app-checkbox> 
+<label id="ucd-check-label">University of California, Davis</label> <span class="required">Required</span>
+
+<div>
+<app-checkbox id="ucd-check-1" labelledby="ucd-check-label-1"></app-checkbox> 
+<label id="ucd-check-label-1">University of California, Davis</label> 
+</div>
+
+<div>
+  <app-checkbox id="ucd-check-2" labelledby="ucd-check-label-2" readonly></app-checkbox> 
+  <label id="ucd-check-label-2">University of California, Davis</label> 
+</div>
+
+<div>
+  <app-checkbox id="ucd-check-2" labelledby="ucd-check-label-2" readonly circle></app-checkbox> 
+  <label id="ucd-check-label-2">University of California, Davis</label> 
+</div>
+
+<div>
+  <app-checkbox id="ucd-check-2" labelledby="ucd-check-label-2" readonly checked></app-checkbox> 
+  <label id="ucd-check-label-2">University of California, Davis</label> 
+</div>
+
+<dom-repeat items="[[positionsTitles]]">
+  <template>
+
+  </template>
+</dom-repeat>
+
+<h3>Position Title and Department</h3>
+<dom-repeat items="[[positionsTitles]]">
+  <template>
+
+  </template>
+</dom-repeat>
+
+<div class="break-line"></div>
+
+<div class="btns">
+  <a class="btn inverse" href="/scorecard">Cancel</a>
+  <a class="btn">Update iD</a>
+</div>

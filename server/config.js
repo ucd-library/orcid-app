@@ -44,7 +44,7 @@ module.exports = {
     loglevel : process.env.SERVER_LOG_LEVEL || 'info',
     cookieSecret : process.env.SERVER_COOKIE_SECRET || 'changeme',
     cookieMaxAge : process.env.SERVER_COOKIE_MAX_AGE ? parseInt(process.env.SERVER_COOKIE_MAX_AGE) : (1000 * 60 * 60 * 24 * 7),
-    appRoutes : ['main', 'app'],
+    appRoutes : ['login', 'scorecard', 'denied-orcid-oauth', 'employment'],
     sessionName : 'app-session'
   },
 
@@ -65,15 +65,18 @@ module.exports = {
     url : apiEnv === 'prod' ? 'https://orcid.org' : 'https://sandbox.orcid.org',
     api : {
       baseUrl : `https://${baseApiUrl}.orcid.org/v2.1`,
-      scopes : '/authenticate /read-limited /activities/update'
-    }
+      scopes : '/read-limited /activities/update'
+    },
+    oauthBaseUrl : (apiEnv === 'prod') ? 'https://orcid.org/oauth' : 'https://sandbox.orcid.org/oauth'
   },
 
   firestore : {
     collections : {
       users : 'users',
       sessions : 'sessions',
-      admins : 'admins'
+      admins : 'admins',
+      // app defined department lists
+      userDepartments : 'user-departments'
     }
   },
 

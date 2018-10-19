@@ -85,18 +85,10 @@ class UcdiamApi {
 
     return this._getResponse(response, 'iamId', iamId);
   }
-  
-  /**
-   * @method getOrgInfo
-   * @description 
-   * 
-   * @param {String} iamId
-   * 
-   * @returns {Promise} resolves to object or null
-   */
-  async getOrgInfo(orgId) {
+
+  async getAffiliations(iamId) {
     let response = await request(
-      `${config.ucd.api.baseUrl}/orginfo/pps/depts/${orgId}`, 
+      `${config.ucd.api.baseUrl}/people/affiliations/${iamId}`, 
       {
         headers : {
           Accept : 'application/json'
@@ -108,7 +100,77 @@ class UcdiamApi {
       } 
     );
 
-    return this._getResponse(response, 'iamId', orgId);
+    return this._getResponse(response, 'iamId', iamId);
+  }
+  
+  /**
+   * @method getOrgInfo
+   * @description 
+   * 
+   * @param {String} iamId
+   * 
+   * @returns {Promise} resolves to object or null
+   */
+  async getOrgInfo(deptId) {
+    let response = await request(
+      `${config.ucd.api.baseUrl}/orginfo/pps/depts/search`, 
+      {
+        headers : {
+          Accept : 'application/json'
+        },
+        qs : {
+          key : config.ucd.api.key,
+          v : config.ucd.api.version,
+          deptCode : deptId
+        }
+      } 
+    );
+
+    return this._getResponse(response, 'deptCode', deptId);
+  }
+
+    /**
+   * @method getOrgInfo
+   * @description 
+   * 
+   * @param {String} iamId
+   * 
+   * @returns {Promise} resolves to object or null
+   */
+  async getOdrOrgInfo(deptId) {
+    let response = await request(
+      `${config.ucd.api.baseUrl}/orginfo/odr/depts/search`, 
+      {
+        headers : {
+          Accept : 'application/json'
+        },
+        qs : {
+          key : config.ucd.api.key,
+          v : config.ucd.api.version,
+          deptCode : deptId
+        }
+      } 
+    );
+
+    return this._getResponse(response, 'deptCode', deptId);
+  }
+
+  async getOdrDivisions(orgId) {
+    let response = await request(
+      `${config.ucd.api.baseUrl}/orginfo/odr/divisions/search`, 
+      {
+        headers : {
+          Accept : 'application/json'
+        },
+        qs : {
+          key : config.ucd.api.key,
+          v : config.ucd.api.version,
+          orgOId : orgId
+        }
+      } 
+    );
+
+    return this._getResponse(response, 'orgOId', orgId);
   }
 
   /**
@@ -119,19 +181,38 @@ class UcdiamApi {
    */
   async getColleges(orgId) {
     let response = await request(
-      `${config.ucd.api.baseUrl}/orginfo/sis/colleges`, 
+      `${config.ucd.api.baseUrl}/orginfo/sis/colleges/search`, 
       {
         headers : {
           Accept : 'application/json'
         },
         qs : {
           key : config.ucd.api.key,
-          v : config.ucd.api.version
+          v : config.ucd.api.version,
+          orgOId : orgId
         }
       } 
     );
 
-    return JSON.parse(response.body).responseData.results;
+    return this._getResponse(response, 'orgOId', orgId);
+  }
+
+  async getDivisions(orgId) {
+    let response = await request(
+      `${config.ucd.api.baseUrl}/orginfo/pps/divisions/search`, 
+      {
+        headers : {
+          Accept : 'application/json'
+        },
+        qs : {
+          key : config.ucd.api.key,
+          v : config.ucd.api.version,
+          orgOId : orgId
+        }
+      } 
+    );
+    console.log(orgId, response.body);
+    return this._getResponse(response, 'orgOId', orgId);
   }
 
   /**

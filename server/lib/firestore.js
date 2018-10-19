@@ -1,5 +1,6 @@
 const admin = require('firebase-admin');
 const config = require('../config');
+const FieldValue = admin.firestore.FieldValue;
 
 // running in google env
 if( config.GOOGLE_ENV ) {
@@ -20,6 +21,7 @@ if( config.GOOGLE_ENV ) {
 class Firestore {
 
   constructor() {
+    this.FieldValue = FieldValue;
     this.db = admin.firestore();
     this.db.settings({timestampsInSnapshots: true});
     this.config = config.firestore;
@@ -50,6 +52,19 @@ class Firestore {
   }
 
   /**
+   * @method updateUser
+   * @description
+   * 
+   * @param {*} data 
+   */
+  updateUser(id, data) {
+    return this.db
+      .collection(this.config.collections.users)
+      .doc(id)
+      .set(data, {merge: true});
+  }
+
+  /**
    * @method getAdmins
    * @description return the list of admins
    * 
@@ -62,7 +77,7 @@ class Firestore {
       .get();
 
     snapshot.forEach(function(doc) {
-      admins.push(doc.data().orcid);
+      admins.push(doc.data().casId);
     });
     return admins;
   }
@@ -83,6 +98,26 @@ class Firestore {
 
     if( !result.exists ) return null;
     return result.data();
+  }
+
+  /**
+   * @method getUserAppDepartments
+   * @description get departments for a user that have the application as the source
+   * 
+   * @param {String} id users employee id
+   * 
+   * @returns {Promise} resolves to Array
+   */
+  async getUserAppDepartments(id) {
+    let result = await this.db
+      .collection(this.config.collections.userDepartments)
+      .where('id', '==', id)
+      .get();
+
+    let arr = [];
+    result.forEach(i => arr.push(i.data()));
+
+    return arr;
   }
 
 }

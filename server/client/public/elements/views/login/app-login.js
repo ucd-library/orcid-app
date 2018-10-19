@@ -3,8 +3,8 @@ import template from "./app-login.html"
 
 import "@polymer/iron-pages"
 
-import "./app-login-cas"
-import "./app-login-orcid"
+// import "./app-login-cas"
+// import "./app-login-orcid"
 
 export default class AppLogin extends Mixin(PolymerElement)
   .with(EventInterface) {
@@ -17,7 +17,7 @@ export default class AppLogin extends Mixin(PolymerElement)
     return {
       section : {
         type : String,
-        value : 'orcid-login'
+        value : 'cas-login'
       }, 
       orcidName : {
         type : String,
@@ -43,16 +43,19 @@ export default class AppLogin extends Mixin(PolymerElement)
   ready() {
     super.ready();
 
+    // return;
+
     let session = APP_CONFIG.user.session;
-    if( !session.orcid ) return;
+    if( !session.cas ) return;
 
+    let userData = APP_CONFIG.user.data || {};
 
-    if( APP_CONFIG.user.data.linked ) {
+    if( userData.linked ) {
       console.log('Account is linked!');
-    } else if ( session.orcid.orcid && APP_CONFIG.user.unlinkedUcd ) {
+    } else if ( userData.orcidAccessToken && userData.ucd && userData.orcid ) {
       this.section = 'link-approval';
 
-      let ucd = APP_CONFIG.user.unlinkedUcd;
+      let ucd = APP_CONFIG.user.data.ucd;
       this.ucdName = ucd.name.dFullName;
       this.ucdTitle = ucd.department.titleOfficialName;
       this.ucdDept = ucd.department.deptOfficialName;
@@ -60,9 +63,8 @@ export default class AppLogin extends Mixin(PolymerElement)
 
       this._setOrcidInfo();
 
-    } else if( session.orcid.orcid ) {
-      this._setOrcidInfo();
-      this.section = 'cas-login'
+    } else if( userData.ucd ) {
+      this.section = 'orcid-login'
     }
   }
 
@@ -80,7 +82,7 @@ export default class AppLogin extends Mixin(PolymerElement)
 
     if( result.state === 'loaded' && result.payload.linked ) {
       // TODO: make this betters.....
-      window.location.reload();
+      window.location = '/scorecard'
     } else if( result.state === 'error' ) {
       alert('Failed to link accounts: '+result.error.message);
     } else {

@@ -1,11 +1,22 @@
 const config = require('../config');
+const {BaseModel} = require('@ucd-lib/cork-app-utils');
 
 /**
  * @class ValidatorModel
  * @description static class that exposes the analyze method which responds with data
  * to render the checklist view
  */
-class ValidatorModel {
+class ValidatorModel extends BaseModel {
+
+  constructor() {
+    super();
+    this.register('ValidatorModel');
+  }
+
+  getAppEmployments(record) {
+    return (this.hasEmployment(record) || [])
+      .filter(e => e.source['source-name'].value === config.ucdSource);
+  }
 
   /**
    * @method analyze
@@ -19,45 +30,57 @@ class ValidatorModel {
 
     let results = {
       checklist : [],
+      warnings : [],
       errors : [],
       total : 0
     };
 
     // CrossRef
     let crossRef = {
+      id: 'crossRef',
       text : 'Enable CrossRef Metadata Search',
       help : 'Link your Scopus id. Under works -> Search & Link -> CrossRef Metadata Search.'
     };
     if( this.hasCrossRefEnabled(record) ) {
       crossRef.checked = this.hasCrossRefEnabled(record);
     } else if( this.hasWorks(record) ) {
-      results.errors.push({
+      results.warnings.push({
         text : 'You have works added to your record but do not appear to have CrossRef enabled',
-        help : 'Link your Scopus id. Under works -> Search & Link -> CrossRef Metadata Search.'
+        help : 'No idea how to do this...'
       })
     }
     results.checklist.push(crossRef);
 
     // Employment
     let employment = {
-      text : 'Employment information',
+      id : 'employment',
+      text : 'Verified employment information',
       help : 'Add employment via the section title "employment"'
     };
     if( this.hasEmployment(record) ) {
       employment.checked = true;
       results.total += config.points.employment;
 
-      if( !this.hasCorrectUcdEmployment(record) ) {
+      let e = this.hasCorrectUcdEmployment(record);
+      if( !e ) {
         results.errors.push({
-          text : 'Incorrect employment insitution displayed.',
-          help : 'Multiple options for UC Davis exist in list. "University of California (Davis, CA, academic) is the preferred option.'
+          text : 'Unverified employment insitution displayed.',
+          help : 'Click \'Select from UC Davis Records\' above to select correct employment information.'
         });
+        employment.showSelect = true;
+      } else {
+        employment.showEdit = true;
+        employment.employment = e;
       }
+    } else {
+      employment.showSelect = true;
     }
+
     results.checklist.push(employment);
 
     // Other Id
     let external = {
+      id : 'externalId',
       text : 'External identifier linked',
       help : 'Link your Scopus id. Under works -> Search & Link -> Scopus Author ID.'
     };
@@ -69,6 +92,7 @@ class ValidatorModel {
 
     //  Works
     let works = {
+      id : 'works',
       text : 'Works information',
       help : 'You have no associated works.  Please link using CrossRef.'
     };
@@ -80,6 +104,7 @@ class ValidatorModel {
 
     // Education
     let education = {
+      id : 'education',
       text : 'Education information',
       help : 'Add education via the section title "Education"'
     };
@@ -91,6 +116,7 @@ class ValidatorModel {
 
     // Funding
     let funding = {
+      id : 'funding',
       text : 'Funding information',
       help : 'Add funding via the section title "Funding"'
     };
@@ -102,6 +128,7 @@ class ValidatorModel {
 
     // Keywords
     let keywords = {
+      id : 'keywords',
       text : 'Keywords about your work',
       help : 'Set keywords that describe your work.  Click pencil icon next to "Keywords"'
     };
@@ -113,6 +140,7 @@ class ValidatorModel {
 
     // Website
     let website = {
+      id : 'website',
       text : 'Your Websites(s)',
       help : 'Set your personal or research websites. Click pencil icon next to "Websites"'
     };
@@ -192,7 +220,7 @@ class ValidatorModel {
       if( !e.organization['disambiguated-organization'] ) continue;
       if( e.organization['disambiguated-organization']['disambiguated-organization-identifier'] === config.ucdRinggoldId &&
           e.organization['disambiguated-organization']['disambiguation-source'] === 'RINGGOLD' ) {
-        return true;
+        return e;
       }
     }
 

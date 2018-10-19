@@ -59,12 +59,6 @@
     }
   }
 
-  .checklist {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
   .orcid-header-text {
     color: var(--orcid-grey);
     width: 130px;
@@ -84,19 +78,14 @@
     padding-left: 15px;
   }
 
-    @media(max-width: 525px) {
-      .orcid-header h1 {
-        margin-bottom: 15px;
-      }
+  @media(max-width: 525px) {
+    .orcid-header h1 {
+      margin-bottom: 15px;
     }
+  }
 
   .orcid-header .logo img {
     height: 64px;
-  }
-
-  .break-line {
-    height: 1px;
-    background-color: var(--medium-background-color);
   }
 
   .main-layout {
@@ -131,26 +120,13 @@
     text-align: center;
   }
 
-  .username {
-    font-size: 28px;
-    color: var(--default-primary-color);
-    text-align: center;
-    font-weight: bold;
-    margin-top: 50px;
-  }
-
-  .orcid {
-    font-size: 12px; 
-    font-weight: normal;
-    color: var(--default-secondary-color);
-  }
 
   .btn {
     font-size: 16px;
   }
 </style>
 
-<app-route app-routes="[[appRoutes]]"></app-route>
+<app-route id="appRoute" app-routes="[[appRoutes]]"></app-route>
 
 <div id="topbar">
   <img src="/images/logo.png" />  
@@ -163,52 +139,29 @@
 
 <div class="main-layout">
   <div>
-    <div class="orcid-header">
-      <h1 class="orcid-header-title">
-        <img src="/images/orcid-vector-logo.svg" style="vertical-align: middle; height: 48px; width: 48px" />
-        Optimization Meter
-      </h1>
-      
-      <div class="logo">
-        <img src="/images/orcid-vector-member-logo.svg" />
-      </div>
-    </div>
-
-    <div class="break-line"></div>
-
-    <app-login hidden$="[[linked]]"></app-login>
-
-    <!-- <div hidden$="[[loggedIn]]">
-      <div class="login-panels">
-        <app-login-cas class="panel"></app-login-cas>
-        <app-login-orcid class="panel"></app-login-orcid>
-      </div>
-    </div> -->
-
-    <div hidden$="[[!linked]]">
-      <div class="username">
-        <div>Hello [[username]]</div>
-        <div class="orcid">
-          <img src="/images/orcid-vector-logo.svg" style="height: 18px; width: 18px; vertical-align: middle" />
-          [[orcid]]
+    
+    <div hidden$="[[noHeader]]">
+      <div class="orcid-header">
+        <h1 class="orcid-header-title">
+          <img src="/images/orcid-vector-logo.svg" style="vertical-align: middle; height: 48px; width: 48px" />
+          Optimization Meter
+        </h1>
+        
+        <div class="logo">
+          <img src="/images/orcid-vector-member-logo.svg" />
         </div>
       </div>
-      <div style="font-size: 22px; text-align:center; margin: 30px 0 50px 0; font-weight: 100">
-        Optimizing your iD will improve its accuracy and usefulness.
-      </div>
-      <div class="checklist">
-        <app-checklist></app-checklist>
-      </div>
 
-      <div class="break-line" style="margin-top:50px"></div>
-
-      <div style="text-align: right; padding: 20px">
-        <a class="btn" href="https://sandbox.orcid.org/my-orcid" target="_blank">
-          Complete your iD
-          <iron-icon icon="chevron-right"></iron-icon>
-        </a>
-      </div>
+      <div class="break-line"></div>
     </div>
+
+    <iron-pages selected$="[[page]]" attr-for-selected="page">
+      <app-login page="login"></app-login>
+      <denied-orcid-oauth page="denied-orcid-oauth"></denied-orcid-oauth>
+      <app-checklist page="scorecard"></app-checklist>
+      <app-employment-editor page="employment"></app-employment-editor>
+    </iron-pages>
+    
   </div>
 </div>
 

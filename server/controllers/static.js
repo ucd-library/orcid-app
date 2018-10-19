@@ -40,12 +40,12 @@ module.exports = (app) => {
         data : null
       }
       
-      if( user.session.orcid ) {
-        user.data = await userModel.getUser(user.session.orcid.orcid);
+      if( user.session.cas ) {
+        user.data = await userModel.getUser(user.session.cas);
 
-        if( !user.data.linked && user.session.cas ) {
-          user.unlinkedUcd = await userModel.getUcdInfo(user.session.cas);
-        } 
+        // if( !user.data.linked && user.session.cas ) {
+        //   user.unlinkedUcd = await userModel.getUcdInfo(user.session.cas);
+        // } 
       }
 
       return {

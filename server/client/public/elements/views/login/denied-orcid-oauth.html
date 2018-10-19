@@ -1,0 +1,45 @@
+<style include="shared-styles">
+  :host {
+    display: block;
+  }
+
+  .title {
+    font-size: 28px;
+    margin: 50px 0 20px 0;
+    font-weight: bold;
+    color: var(--default-primary-color);
+  }
+
+
+  .break-line {
+    height: 1px;
+    background-color: var(--medium-background-color);
+  }
+</style>
+
+<div class="title">No authorization given.  Are you sure?</div>
+
+<div class="break-line"></div>
+
+<h3>Why should I authorize UC Davis?</h3>
+
+<p>UC Davis is collecting your ORCID iD so we can assist in updating your ORCID record with
+accurate, ocial information about your UC Davis employment and help you get the most
+out of your iD.</p>
+
+<p>No changes will be made to your account without your permission.</p>
+
+<p>You may revoke access to your ORCID account at any time 
+via <a href="https://orcid.org/account" target="_blank">orcid.org/account.</a></p>
+
+<div class="break-line"></div>
+
+<div>
+  <a href="/auth/logout" class="btn inverse" style="margin-right: 40px">
+    Do not authorize
+  </a>
+
+  <a href="/auth/orcid/oauth-login" class="btn" style="cursor:pointer">
+    Authorize UC Davis
+  </a>
+</div>

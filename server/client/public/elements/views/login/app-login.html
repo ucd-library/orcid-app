@@ -23,7 +23,7 @@
     text-align: center;
   }
 
-  [section="orcid-login"] .about {
+  .about {
     padding: 20px; 
     margin-top: 20px;
     border-top: 1px solid var(--medium-background-color);
@@ -126,15 +126,25 @@
 </style>
 
 <iron-pages selected="[[section]]" attr-for-selected="section">
-  <div section="orcid-login">
+  
+  
+  <div section="cas-login">
     <div class="title">Improve Your iD</div>
     <div class="description">Get the most out of your ORCiD iD with help from UC Davis.</div>
-    <div style="margin-top: 25px">
-      <a class="btn" href="/auth/orcid/oauth-login">
-        <img src="/images/orcid-vector-logo.svg" /> Login to ORCiD
-      </a>
-    </div>
-    <div class="no-id">No iD? <a href="https://orcid.org/register">Create one.</a></div>
+    
+    <!-- <div class="orcid" style="margin-bottom: 30px">
+      <img src="/images/orcid-vector-logo.svg" style="height: 18px; width: 18px; vertical-align: middle" />
+      <a href="[[orcidUrl]]" class="orcid" target="_blank">[[orcid]]</a>
+    </div> -->
+
+    <!-- <div class="ucd-credentials">
+      <div>
+        <div><img src="/images/ucd-vector-logo-blue.svg" style="height: 46px" /></div>
+        <div><a href="/auth/cas/login" class="btn">Login</a></div>
+      </div>
+    </div> -->
+
+    <div><a href="/auth/cas/login" class="btn">UC Davis Login</a></div>
 
     <div class="about">
       <h3>About ORCID</h3>
@@ -142,29 +152,33 @@
         identifier – an ORCID iD – that distinguishes you from other researchers and 
         a mechanism for linking your research outputs and activities to your iD. ORCID 
         is integrated into many systems used by publishers, funders, institutions, and 
-        other research-related services. Learn more at orcid.org.</div>
+        other research-related services. Learn more at <a href="https://orcid.org">orcid.org.</a></div>
     
       <h3>About the iD Optimization Meter</h3>
       <div>The iD Optimization Meter is provided by UC Davis to help you improve your 
         ORCID profile. The meter scores your iD according to accuracy and completeness. 
         It also provides a list of errors or suggested improvements to help you complete 
         your iD and improve your score.</div>
-    </div>
-  </div>
-  
-  <div section="cas-login">
-    <div class="title" style="margin-bottom:0">Hello [[orcidName]]</div>
-    <div class="orcid" style="margin-bottom: 30px">
-      <img src="/images/orcid-vector-logo.svg" style="height: 18px; width: 18px; vertical-align: middle" />
-      <a href="[[orcidUrl]]" class="orcid" target="_blank">[[orcid]]</a>
-    </div>
-    <div class="description">Connect your ORCiD iD to your UC Davis account by logging in with your CAS credentials</div>
+      <div>Connecting your iD with UC Davis gives us permission to update your ORCID record, 
+        helping you keep your record up-to-date with trusted information. You may disconnect 
+        your accounts at any time.</div>
 
-    <div class="ucd-credentials">
-      <div>
-        <div><img src="/images/ucd-vector-logo-blue.svg" style="height: 46px" /></div>
-        <div><a href="/auth/cas/login" class="btn">Login</a></div>
-      </div>
+      <h3>Need Help?</h3>
+      <div>For technical assistance, email <a href="mailto:orcid@ucdavis.edu">orcid@ucdavis.edu</a></div>
+    </div>   
+  </div>
+
+  <div section="orcid-login">
+    <div class="title">Get Connected</div>
+
+    <div class="description">Connect your ORCiD iD to your UC Davis account by logging in into ORCiD.</div>
+    <div style="margin-top: 25px">
+      <a class="btn" href="/auth/orcid/oauth-login">
+        <div style="display:flex">
+          <img src="/images/orcid-vector-logo.svg" style="height: 50px"/>
+          <div style="text-align: left; padding-left: 20px;">Register or Connect <br /> Your ORCiD iD</div>
+        </div>
+      </a>
     </div>
 
     <div style="margin-top: 30px">You will only need to do this once.</div>

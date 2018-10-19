@@ -34,11 +34,11 @@ async function isAdmin(req, res, next) {
     return res.status(401).json({error: true, message: 'not logged in'});
   }
 
-  if( !req.user.orcid ) {
-    return res.status(401).json({error: true, message: 'not logged in with ORCiD'});
+  if( !req.user.cas ) {
+    return res.status(401).json({error: true, message: 'not logged in with CAS'});
   }
 
-  if( !(await authUtils.isAdmin(req.user.orcid.orcid)) ) {
+  if( !(await authUtils.isAdmin(req.user.cas)) ) {
     return res.status(401).json({error: true, message: 'nope.'});
   }
 

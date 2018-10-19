@@ -12,8 +12,8 @@ router.get('/link', hasOrcidAuth, hasUcdAuth, async (req, res) => {
   logger.info('Linking accounts: ', user.cas, user.orcid.orcid);
   
   try {
-    await users.linkAccounts(user.cas, user.orcid.orcid);
-    res.json(await users.getUser(user.orcid.orcid));
+    await users.linkAccounts(user.cas);
+    res.json(await users.getUser(user.cas));
   } catch(e) {
     res.status(400).json({
       error: true,
@@ -24,7 +24,7 @@ router.get('/link', hasOrcidAuth, hasUcdAuth, async (req, res) => {
 });
 
 // Run auto updates for verified UCD information
-router.get('/auto-update', hasOrcidAuth, async (req, res) => {
+router.get('/auto-update', hasUcdAuth, async (req, res) => {
   let user = req.user;
   let cas = user.cas;
   if( !cas ) {
@@ -38,7 +38,7 @@ router.get('/auto-update', hasOrcidAuth, async (req, res) => {
   }
 
   try {
-    let {updates, record} = await users.addUcdInfo(user.orcid.orcid, cas, user.orcid.access_token);
+    let {updates, record} = await users.addUcdInfo(user.orcid.orcid, cas, user.orcidAccessToken.access_token);
 
     if( updates.length === 0 ) { // no updates
       return res.json({updates});
@@ -59,10 +59,10 @@ router.get('/auto-update', hasOrcidAuth, async (req, res) => {
 });
 
 // resync users UCD information to firestore
-router.get('/sync', hasOrcidAuth, hasUcdAuth, async (req, res) => {
+router.get('/sync', hasUcdAuth, async (req, res) => {
   let user = req.user;
   try {
-    res.json(await users.syncUcd(user.orcid.orcid, user.cas));
+    res.json(await users.syncUcd(user.cas));
   } catch(e) {
     res.status(400).json({
       error: true,
@@ -90,10 +90,10 @@ router.get('/get-user-cas/:casId', isAdmin, async (req, res) => {
 router.get('/get-user-iam/:iamId', isAdmin, async (req, res) => {
   let user = authUtils.getUserFromRequest(req);
 
-  if( !user.orcid ) {
+  if( !user.cas ) {
     return res.status(401).json({error: true, message: 'not logged in'});
   }
-  if( !(await authUtils.isAdmin(user.orcid.orcid)) ) {
+  if( !(await authUtils.isAdmin(user.cas)) ) {
     return res.status(401).json({error: true, message: 'nope.'});
   }
 
@@ -110,9 +110,61 @@ router.get('/get-user-iam/:iamId', isAdmin, async (req, res) => {
 });
 
 // admin call, get UCD college information
-router.get('/get-colleges', isAdmin, async (req, res) => {
+router.get('/get-college/:orgId', isAdmin, async (req, res) => {
   try {
-    res.json(await ucdApi.getColleges());
+    res.json(await ucdApi.getColleges(req.params.orgId));
+  } catch(e) {
+    res.status(400).json({
+      error: true,
+      message : e.message,
+      stack : e.stack
+    });
+  }
+
+});
+
+router.get('/get-odr-division/:orgId', isAdmin, async (req, res) => {
+  try {
+    res.json(await ucdApi.getOdrDivisions(req.params.orgId));
+  } catch(e) {
+    res.status(400).json({
+      error: true,
+      message : e.message,
+      stack : e.stack
+    });
+  }
+
+});
+
+router.get('/get-division/:orgId', isAdmin, async (req, res) => {
+  try {
+    res.json(await ucdApi.getDivisions(req.params.orgId));
+  } catch(e) {
+    res.status(400).json({
+      error: true,
+      message : e.message,
+      stack : e.stack
+    });
+  }
+
+});
+
+router.get('/get-odr-dept/:deptId', isAdmin, async (req, res) => {
+  try {
+    res.json(await ucdApi.getOdrOrgInfo(req.params.deptId));
+  } catch(e) {
+    res.status(400).json({
+      error: true,
+      message : e.message,
+      stack : e.stack
+    });
+  }
+
+});
+
+router.get('/get-dept/:deptId', isAdmin, async (req, res) => {
+  try {
+    res.json(await ucdApi.getOrgInfo(req.params.deptId));
   } catch(e) {
     res.status(400).json({
       error: true,

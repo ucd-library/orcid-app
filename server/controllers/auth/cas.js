@@ -5,6 +5,7 @@ const CASAuthentication = require('cas-authentication');
 const express = require('express');
 const config = require('../../config');
 const router = express.Router();
+const users = require('../../lib/users');
 
 const cas = new CASAuthentication({
   cas_url     : config.ucd.cas.url,
@@ -48,8 +49,15 @@ router.get('/login', (req, res) => {
     }
 
     if( username ) {
+      // write new user record
+      await users.syncUcd(username);
+      
+      // verify users access token
+      
+
       // logger.info('CAS Service: CAS login success: '+username);
       res.redirect('/');
+      
     } else {
       // logger.info('CAS Service: CAS login failure');
       res.status(401).send();
