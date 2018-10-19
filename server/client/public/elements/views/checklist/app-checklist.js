@@ -30,12 +30,19 @@ export default class AppChecklist extends Mixin(PolymerElement)
       errors : {
         type : Array,
         value : () => []
+      },
+      orcidUrl : {
+        type : String,
+        value : ''
       }
     }
   }
 
   constructor() {
     super();
+
+    this.orcidUrl = APP_CONFIG.orcidUrl;
+
     this._injectModel('AppStateModel');
     this._injectModel('UcdModel');
     this._injectModel('OrcidModel');
@@ -78,10 +85,10 @@ export default class AppChecklist extends Mixin(PolymerElement)
    * @description bound to click event on reload anchor tag.  Reload the user record.
    */
   async _onReloadClicked() {
-    if( APP_CONFIG.user.session.orcid && APP_CONFIG.user.session.orcid.orcid ) {
+    // if( APP_CONFIG.user.session.orcid && APP_CONFIG.user.session.orcid.orcid ) {
       this.style.opacity = 0.5;
       this.OrcidModel.get(); 
-    }
+    // }
   }
 
   /**

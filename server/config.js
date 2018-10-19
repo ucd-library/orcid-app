@@ -44,7 +44,7 @@ module.exports = {
     loglevel : process.env.SERVER_LOG_LEVEL || 'info',
     cookieSecret : process.env.SERVER_COOKIE_SECRET || 'changeme',
     cookieMaxAge : process.env.SERVER_COOKIE_MAX_AGE ? parseInt(process.env.SERVER_COOKIE_MAX_AGE) : (1000 * 60 * 60 * 24 * 7),
-    appRoutes : ['login', 'scorecard', 'denied-orcid-oauth'],
+    appRoutes : ['login', 'scorecard', 'denied-orcid-oauth', 'employment'],
     sessionName : 'app-session'
   },
 
@@ -65,7 +65,7 @@ module.exports = {
     url : apiEnv === 'prod' ? 'https://orcid.org' : 'https://sandbox.orcid.org',
     api : {
       baseUrl : `https://${baseApiUrl}.orcid.org/v2.1`,
-      scopes : '/authenticate /read-limited /activities/update'
+      scopes : '/read-limited /activities/update'
     }
   },
 

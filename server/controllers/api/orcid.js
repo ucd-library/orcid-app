@@ -11,10 +11,11 @@ const firestore = require('../../lib/firestore');
 router.get('/', async (req, res) => {
   let user = authUtils.getUserFromRequest(req);
 
-  if( !user.orcid ) {
+  if( !user.cas ) {
     return res.status(401).json({error: true, message: 'not logged in'});
   }
 
+  
   let response = await api.get(user.orcid.orcid, config.orcid.accessToken);
   response = handleApiResponse(response, res, 'server');
 

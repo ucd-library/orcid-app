@@ -19,18 +19,18 @@ class AuthUtils {
 
   /**
    * @method isAdmin
-   * @description is the given ORCiD and application admin
+   * @description is the given casId and application admin
    * 
-   * @param {String} orcid 
+   * @param {String} casId 
    * 
    * @returns {Promise} resolves to {Boolean}
    */
-  async isAdmin(orcid) {
+  async isAdmin(casId) {
     if( !this.admins ) {
       await this.loadAdmins();
     }
 
-    return (this.admins.indexOf(orcid) > -1) ? true : false;
+    return (this.admins.indexOf(casId) > -1) ? true : false;
   }
 
   /**

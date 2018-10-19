@@ -14,6 +14,10 @@ export default class AppChecklistEmployments extends Mixin(PolymerElement)
       record : {
         type : Object,
         value : ({})
+      },
+      hasEmployment : {
+        type : Boolean,
+        value : false
       }
     }
   }

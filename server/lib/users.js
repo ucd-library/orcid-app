@@ -221,13 +221,19 @@ class Users {
 
     let name = await ucdApi.getNameInfo(iamId);
     let contact = await ucdApi.getContactInfo(iamId);
+    let affiliations = await ucdApi.getAffiliations(iamId);
     let department = await ucdApi.getDepartmentInfo(iamId);
     let departmentOdr = await ucdApi.getDepartmentInfoOdr(iamId);
+
+    let departmentApp = [];
+    if( name && name.ppsId ) {
+      departmentApp = await firestore.getUserAppDepartments(name.ppsId);
+    }
 
     // let dept = Array.isArray(department) ? department[0] : '';
     // let organization = await ucdApi.getOrgInfo(dept.bouOrgOId);
 
-    let data = {name, iamId, casId, contact, department, departmentOdr};
+    let data = {name, iamId, casId, contact, department, departmentOdr, departmentApp, affiliations};
     return data;
   }
 

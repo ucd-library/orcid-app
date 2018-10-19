@@ -18,9 +18,10 @@ import "@polymer/iron-pages"
 import "./views/login/app-login"
 import "./views/login/denied-orcid-oauth"
 import "./views/checklist/app-checklist"
-import "./app-auto-edit"
+import "./views/employment-editor/app-employment-editor"
+// import "./app-auto-edit"
 
-const NO_HEADER_LIST = ['denied-orcid-oauth']
+const NO_HEADER_LIST = ['denied-orcid-oauth', 'employment']
 
 export default class OrcidApp extends Mixin(PolymerElement)
   .with(EventInterface) {
@@ -89,9 +90,11 @@ export default class OrcidApp extends Mixin(PolymerElement)
 
     this.hideLogout = (Object.keys(APP_CONFIG.user.session || {}).length === 0);
 
-    if( APP_CONFIG.user.data && APP_CONFIG.user.data.linked) {
-      // this.linked = APP_CONFIG.user.data.linked;
-      this.AppStateModel.setLocation('scorecard');
+    if( this._userLoggedInAndLinked() ) {
+      let page = this.AppStateModel.store.data.location.path[0];
+      if( !page || page === 'login' ) {
+        this.AppStateModel.setLocation('scorecard');
+      }
     } else {
       this.AppStateModel.setLocation('login');
     }
@@ -102,6 +105,10 @@ export default class OrcidApp extends Mixin(PolymerElement)
     this.page = page;
     
     this.noHeader = (NO_HEADER_LIST.indexOf(page) > -1);
+  }
+
+  _userLoggedInAndLinked() {
+    return (APP_CONFIG.user.data && APP_CONFIG.user.data.linked) ? true : false;
   }
 
 }

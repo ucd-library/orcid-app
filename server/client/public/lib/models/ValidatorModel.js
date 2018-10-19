@@ -30,6 +30,7 @@ class ValidatorModel extends BaseModel {
 
     let results = {
       checklist : [],
+      warnings : [],
       errors : [],
       total : 0
     };
@@ -43,9 +44,9 @@ class ValidatorModel extends BaseModel {
     if( this.hasCrossRefEnabled(record) ) {
       crossRef.checked = this.hasCrossRefEnabled(record);
     } else if( this.hasWorks(record) ) {
-      results.errors.push({
+      results.warnings.push({
         text : 'You have works added to your record but do not appear to have CrossRef enabled',
-        help : 'Link your Scopus id. Under works -> Search & Link -> CrossRef Metadata Search.'
+        help : 'No idea how to do this...'
       })
     }
     results.checklist.push(crossRef);

@@ -82,7 +82,7 @@ export default class AppLogin extends Mixin(PolymerElement)
 
     if( result.state === 'loaded' && result.payload.linked ) {
       // TODO: make this betters.....
-      window.location.reload();
+      window.location = '/scorecard'
     } else if( result.state === 'error' ) {
       alert('Failed to link accounts: '+result.error.message);
     } else {
