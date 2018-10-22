@@ -110,7 +110,13 @@ class UcdiamApi {
     );
 
     response = this._getResponse(response, 'email', email);
-    if( Array.isArray(response) ) response = response[0];
+    if( !response ) return null;
+    
+    if( Array.isArray(response) ) {
+      if( response.length === 0 ) return null;
+      response = response[0];
+    }
+
     return response.iamId;
   }
 

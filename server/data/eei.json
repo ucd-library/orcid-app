@@ -1,0 +1,332 @@
+{
+  "1000001823": {
+    "email": "jwpark@ucdavis.edu",
+    "iam": "1000001823",
+    "name": "Jae Wan Park",
+    "startDate": "2016-08-26T07:00:00.000Z"
+  },
+  "1000002367": {
+    "email": "smwheeler@ucdavis.edu",
+    "iam": "1000002367",
+    "name": "Stephen M Wheeler LDA",
+    "startDate": "2016-09-16T07:00:00.000Z"
+  },
+  "1000002914": {
+    "email": "kkorn@ucdavis.edu",
+    "iam": "1000002914",
+    "name": "Kurt Kornbluth BAE",
+    "startDate": "2016-09-16T07:00:00.000Z"
+  },
+  "1000004540": {
+    "email": "gtal@ucdavis.edu",
+    "iam": "1000004540",
+    "name": "Gil Tal ITS",
+    "startDate": "2016-09-16T07:00:00.000Z"
+  },
+  "1000005702": {
+    "email": "esspang@ucdavis.edu",
+    "iam": "1000005702",
+    "name": "Edward Spang FST",
+    "startDate": "2016-09-16T07:00:00.000Z"
+  },
+  "1000006156": {
+    "email": "cpvandam@ucdavis.edu",
+    "iam": "1000006156",
+    "name": "Case van Dam",
+    "startDate": "2016-08-26T07:00:00.000Z"
+  },
+  "1000006250": {
+    "email": "fosterloh@ucdavis.edu",
+    "iam": "1000006250",
+    "name": "Frank Osterloh",
+    "startDate": "2016-08-26T07:00:00.000Z"
+  },
+  "1000006312": {
+    "email": "jmogden@ucdavis.edu",
+    "iam": "1000006312",
+    "name": "Joan Ogden",
+    "startDate": "2016-08-26T07:00:00.000Z"
+  },
+  "1000006610": {
+    "email": "bmjenkins@ucdavis.edu",
+    "iam": "1000006610",
+    "name": "Bryan M Jenkins",
+    "startDate": "2016-08-26T07:00:00.000Z"
+  },
+  "1000008600": {
+    "email": "chmkim@ucdavis.edu",
+    "iam": "1000008600",
+    "name": "Sangtae Kim",
+    "startDate": "2016-08-26T07:00:00.000Z"
+  },
+  "1000008885": {
+    "email": "laberben@ucdavis.edu",
+    "iam": "1000008885",
+    "name": "Louise A Berben",
+    "startDate": "2016-08-26T07:00:00.000Z"
+  },
+  "1000009149": {
+    "email": "donyu@ucdavis.edu",
+    "iam": "1000009149",
+    "name": "Dong Yu",
+    "startDate": "2016-08-26T07:00:00.000Z"
+  },
+  "1000009952": {
+    "email": "mjsiminovitch@ucdavis.edu",
+    "iam": "1000009952",
+    "name": "Michael Siminovitch",
+    "startDate": "2018-08-09T07:00:00.000Z"
+  },
+  "1000011611": {
+    "email": "delplanque@ucdavis.edu",
+    "iam": "1000011611",
+    "name": "JP Delplanque",
+    "startDate": "2016-08-26T07:00:00.000Z"
+  },
+  "1000012261": {
+    "email": "amoule@ucdavis.edu",
+    "iam": "1000012261",
+    "name": "Adam Moule",
+    "startDate": "2016-08-26T07:00:00.000Z"
+  },
+  "1000012947": {
+    "email": "katrina@primal.ucdavis.edu",
+    "iam": "1000012947",
+    "name": "Katrina Jessoe ARE",
+    "startDate": "2016-09-16T07:00:00.000Z"
+  },
+  "1000012979": {
+    "email": "colin@primal.ucdavis.edu",
+    "iam": "1000012979",
+    "name": "Colin Carter ARE",
+    "startDate": "2016-09-16T07:00:00.000Z"
+  },
+  "1000013202": {
+    "email": "asmith@primal.ucdavis.edu",
+    "iam": "1000013202",
+    "name": "Aaron Smith ARE",
+    "startDate": "2016-09-16T07:00:00.000Z"
+  },
+  "1000013561": {
+    "email": "jhlieth@ucdavis.edu",
+    "iam": "1000013561",
+    "name": "Heiner Lieth",
+    "startDate": "2017-01-19T08:00:00.000Z"
+  },
+  "1000013998": {
+    "email": "tjeoh@ucdavis.edu",
+    "iam": "1000013998",
+    "name": "Tina Jeoh",
+    "startDate": "2016-08-26T07:00:00.000Z"
+  },
+  "1000014024": {
+    "email": "dsrapson@ucdavis.edu",
+    "iam": "1000014024",
+    "name": "David S Rapson",
+    "startDate": "2016-08-26T07:00:00.000Z"
+  },
+  "1000019798": {
+    "email": "cwsimmons@ucdavis.edu",
+    "iam": "1000019798",
+    "name": "Christopher W Simmons",
+    "startDate": "2016-08-26T07:00:00.000Z"
+  },
+  "1000020391": {
+    "email": "akfranz@ucdavis.edu",
+    "iam": "1000020391",
+    "name": "Annaliese K Franz",
+    "startDate": "2016-08-26T07:00:00.000Z"
+  },
+  "1000020426": {
+    "email": "amenta@cs.ucdavis.edu",
+    "iam": "1000020426",
+    "name": "Nina Amenta",
+    "startDate": "2016-08-26T07:00:00.000Z"
+  },
+  "1000021810": {
+    "email": "abhargadon@ucdavis.edu",
+    "iam": "1000021810",
+    "name": "Andrew Hargadon",
+    "startDate": "2016-08-26T07:00:00.000Z"
+  },
+  "1000023418": {
+    "email": "dsperling@ucdavis.edu",
+    "iam": "1000023418",
+    "name": "Daniel Sperling",
+    "startDate": "2016-08-26T07:00:00.000Z"
+  },
+  "1000024568": {
+    "email": "mpmodera@ucdavis.edu",
+    "iam": "1000024568",
+    "name": "Mark P Modera",
+    "startDate": "2016-08-26T07:00:00.000Z"
+  },
+  "1000025053": {
+    "email": "paerickson@ucdavis.edu",
+    "iam": "1000025053",
+    "name": "Paul Erickson",
+    "startDate": "2018-08-09T07:00:00.000Z"
+  },
+  "1000026507": {
+    "email": "pcronald@ucdavis.edu",
+    "iam": "1000026507",
+    "name": "Pamela Ronald",
+    "startDate": "2016-08-26T07:00:00.000Z"
+  },
+  "1000027291": {
+    "email": "jzfan@ucdavis.edu",
+    "iam": "1000027291",
+    "name": "Zhiliang (Julia) Fan",
+    "startDate": "2016-08-26T07:00:00.000Z"
+  },
+  "1000027751": {
+    "email": "mjmascal@ucdavis.edu",
+    "iam": "1000027751",
+    "name": "Mark Mascal",
+    "startDate": "2016-08-26T07:00:00.000Z"
+  },
+  "1000028652": {
+    "email": "rhzhang@ucdavis.edu",
+    "iam": "1000028652",
+    "name": "Ruihong Zhang",
+    "startDate": "2016-08-26T07:00:00.000Z"
+  },
+  "1000029590": {
+    "email": "satsumi@ucdavis.edu",
+    "iam": "1000029590",
+    "name": "Shota Atsumi",
+    "startDate": "2016-08-26T07:00:00.000Z"
+  },
+  "1000029975": {
+    "email": "amkendall@ucdavis.edu",
+    "iam": "1000029975",
+    "name": "Alissa Kendall",
+    "startDate": "2016-08-26T07:00:00.000Z"
+  },
+  "1000031001": {
+    "email": "gdrakakaki@ucdavis.edu",
+    "iam": "1000031001",
+    "name": "Georgia Drakakaki",
+    "startDate": "2016-08-26T07:00:00.000Z"
+  },
+  "1000031254": {
+    "email": "jbbushnell@ucdavis.edu",
+    "iam": "1000031254",
+    "name": "James B Bushnell",
+    "startDate": "2016-08-26T07:00:00.000Z"
+  },
+  "1000032999": {
+    "email": "fjloge@ucdavis.edu",
+    "iam": "1000032999",
+    "name": "Frank Loge",
+    "startDate": "2016-08-26T07:00:00.000Z"
+  },
+  "1000034835": {
+    "email": "dsbunch@ucdavis.edu",
+    "iam": "1000034835",
+    "name": "David S. Bunch",
+    "startDate": "2016-08-26T07:00:00.000Z"
+  },
+  "1000050676": {
+    "email": "knovan@ucdavis.edu",
+    "iam": "1000050676",
+    "name": "Kevin Novan ARE",
+    "startDate": "2016-09-16T07:00:00.000Z"
+  },
+  "1000090402": {
+    "email": "akmeier@ucdavis.edu",
+    "iam": "1000090402",
+    "name": "Alan Meier ESP",
+    "startDate": "2016-09-16T07:00:00.000Z"
+  },
+  "1000100349": {
+    "email": "gbarnold@ucdavis.edu",
+    "iam": "1000100349",
+    "name": "Gwen Arnold ESP",
+    "startDate": "2016-09-16T07:00:00.000Z"
+  },
+  "1000169305": {
+    "email": "emuehlegger@ucdavis.edu",
+    "iam": "1000169305",
+    "name": "Erich Muehlegger",
+    "startDate": "2017-01-19T08:00:00.000Z"
+  },
+  "1000185004": {
+    "email": "vnarayanan@ucdavis.edu",
+    "iam": "1000185004",
+    "name": "Vinod Narayanan",
+    "startDate": "2017-01-19T08:00:00.000Z"
+  },
+  "1000225103": {
+    "email": "irdonisgon@ucdavis.edu",
+    "iam": "1000225103",
+    "name": "Irwin Ronaldo Donis-Gonzalez ",
+    "startDate": "2018-08-09T07:00:00.000Z"
+  },
+  "1000226458": {
+    "email": "ckbrinkley@ucdavis.edu",
+    "iam": "1000226458",
+    "name": "Catherine Brinkley",
+    "startDate": "2017-01-19T08:00:00.000Z"
+  },
+  "1000227087": {
+    "email": "sabmil@ucdavis.edu",
+    "iam": "1000227087",
+    "name": "Sabbie Miller",
+    "startDate": "2017-01-19T08:00:00.000Z"
+  },
+  "1000227961": {
+    "email": "rrhernandez@ucdavis.edu",
+    "iam": "1000227961",
+    "name": "Rebecca R Hernandez LAWR",
+    "startDate": "2016-09-16T07:00:00.000Z"
+  },
+  "1000232323": {
+    "email": "fmoore@ucdavis.edu",
+    "iam": "1000232323",
+    "name": "Frances C Moore",
+    "startDate": "2017-01-19T08:00:00.000Z"
+  },
+  "1000252572": {
+    "email": "jevelazquez@ucdavis.edu",
+    "iam": "1000252572",
+    "name": "Jess M. Velzquez",
+    "startDate": "2017-03-15T07:00:00.000Z"
+  },
+  "1000253029": {
+    "email": "bferguson@ucdavis.edu",
+    "iam": "1000253029",
+    "name": "Beth J Ferguson",
+    "startDate": "2018-08-09T07:00:00.000Z"
+  },
+  "1000256669": {
+    "email": "apourreza@ucdavis.edu",
+    "iam": "1000256669",
+    "name": "Alireza Pourreza",
+    "startDate": "2018-08-09T07:00:00.000Z"
+  },
+  "1000269653": {
+    "email": "adaccache@ucdavis.edu",
+    "iam": "1000269653",
+    "name": "Andre Daccache",
+    "startDate": "2018-08-09T07:00:00.000Z"
+  },
+  "1000285037": {
+    "email": "keitaylor@ucdavis.edu",
+    "iam": "1000285037",
+    "name": "Keith Taylor",
+    "startDate": "2018-08-09T07:00:00.000Z"
+  },
+  "1000289621": {
+    "email": "ikisekka@ucdavis.edu",
+    "iam": "1000289621",
+    "name": "Isaya Kisekka",
+    "startDate": "2018-08-09T07:00:00.000Z"
+  },
+  "1000291508": {
+    "email": "tascott@ucdavis.edu",
+    "iam": "1000291508",
+    "name": "Tyler A Scott",
+    "startDate": "2018-08-09T07:00:00.000Z"
+  }
+}

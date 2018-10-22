@@ -1,6 +1,7 @@
 const firestore = require('./firestore');
 const ucdApi = require('./ucd-iam-api');
 const orcidApi = require('./orcid-api');
+const appData = require('./app-data');
 const logger = require('./logger');
 const config = require('../config');
 
@@ -115,94 +116,94 @@ class Users {
     return ucdInfo;
   }
 
-  /**
-   * @method _addEmployment
-   * @description given a user object, check that the employment information is correct. Currently
-   * this is done by verifing that this application has set the correct ringgold identifier in
-   * the users ORCiD record
-   * 
-   * @param {Object} user applications user object
-   * @param {Array} messages array of message updates that have been performed
-   * @param {String} token Users ORCiD access token
-   * 
-   * @return {Promise}
-   */
-  async _addEmployment(user, messages, token) {
-    // currently we are just grabbing the first department for a user
-    // TODO: this will become a user dropdown selection
-    let department = user.ucd.department;
-    if( Array.isArray(department) ) department = department[0];
+  // /**
+  //  * @method _addEmployment
+  //  * @description given a user object, check that the employment information is correct. Currently
+  //  * this is done by verifing that this application has set the correct ringgold identifier in
+  //  * the users ORCiD record
+  //  * 
+  //  * @param {Object} user applications user object
+  //  * @param {Array} messages array of message updates that have been performed
+  //  * @param {String} token Users ORCiD access token
+  //  * 
+  //  * @return {Promise}
+  //  */
+  // async _addEmployment(user, messages, token) {
+  //   // currently we are just grabbing the first department for a user
+  //   // TODO: this will become a user dropdown selection
+  //   let department = user.ucd.department;
+  //   if( Array.isArray(department) ) department = department[0];
 
-    // if there is a odr title, use that instead.  They are normally better
-    // TODO: this will most likely be part of user selection above (perhaps default option)
-    if( user.ucd.departmentOdr )  {
-      department.titleDisplayName = user.ucd.departmentOdr.titleDisplayName;
-    }
+  //   // if there is a odr title, use that instead.  They are normally better
+  //   // TODO: this will most likely be part of user selection above (perhaps default option)
+  //   if( user.ucd.departmentOdr )  {
+  //     department.titleDisplayName = user.ucd.departmentOdr.titleDisplayName;
+  //   }
 
-    // grab start date, role and department name
-    let startDate = new Date(department.assocStartDate);
-    let roleTitle = department.titleDisplayName;
-    let deptName = department.deptDisplayName;
+  //   // grab start date, role and department name
+  //   let startDate = new Date(department.assocStartDate);
+  //   let roleTitle = department.titleDisplayName;
+  //   let deptName = department.deptDisplayName;
 
-    let employmentSummary = user.orcid['activities-summary'].employments['employment-summary'];
-    let ringgoldIds = [];
+  //   let employmentSummary = user.orcid['activities-summary'].employments['employment-summary'];
+  //   let ringgoldIds = [];
 
-    // find all employments that have ringgold ids and store the id as well as the source
-    (employmentSummary || []).forEach(e => {
-      if( e.organization['disambiguated-organization']['disambiguation-source'] === 'RINGGOLD' ) {
-        ringgoldIds.push({
-          id : e.organization['disambiguated-organization']['disambiguated-organization-identifier'],
-          source : (e.source['source-name'] || {}).value
-        });
-      }
-    });
+  //   // find all employments that have ringgold ids and store the id as well as the source
+  //   (employmentSummary || []).forEach(e => {
+  //     if( e.organization['disambiguated-organization']['disambiguation-source'] === 'RINGGOLD' ) {
+  //       ringgoldIds.push({
+  //         id : e.organization['disambiguated-organization']['disambiguated-organization-identifier'],
+  //         source : (e.source['source-name'] || {}).value
+  //       });
+  //     }
+  //   });
 
-    // find the main ucd ringgold id from the config file
-    // this is the one w/o a department code
-    let ucdCode = '';
-    for( let key in config.ringgold.ucd ) {
-      if( config.ringgold.ucd[key].ucdDeptCode === '' ) {
-        ucdCode = key;
-        break;
-      }
-    }
+  //   // find the main ucd ringgold id from the config file
+  //   // this is the one w/o a department code
+  //   let ucdCode = '';
+  //   for( let key in config.ringgold.ucd ) {
+  //     if( config.ringgold.ucd[key].ucdDeptCode === '' ) {
+  //       ucdCode = key;
+  //       break;
+  //     }
+  //   }
 
-    // find the application set ucd ringgold employment record
-    let ucdRinggold = ringgoldIds.find(e => {
-      return (
-        e.id === ucdCode &&
-        e.source === config.ringgold.sourceName
-      )
-    });
+  //   // find the application set ucd ringgold employment record
+  //   let ucdRinggold = ringgoldIds.find(e => {
+  //     return (
+  //       e.id === ucdCode &&
+  //       e.source === config.ringgold.sourceName
+  //     )
+  //   });
 
-    // if they don't have a UCD set ringgold employment record, create one
-    // from the users UCD information
-    if( !ucdRinggold ) {
-      let response = await orcidApi.addEmployment(
-        user.id,
-        {
-          'department-name' : deptName,
-          organization : {
-            address : {region: 'CA', city: 'Davis', country: 'US'},
-            'disambiguated-organization' : {
-              'disambiguated-organization-identifier' : ucdCode,
-              'disambiguation-source': 'RINGGOLD'
-            },
-            name : config.ringgold.ucd[ucdCode].value
-          },
-          'role-title' : roleTitle,
-          'start-date' : orcidApi.dateToOrcidDate(startDate)
-        },
-        token
-      );
-      if( response.statusCode !== 201 ) {
-        logger.error('Failed to add UC Davis Employment', response.statusCode, response.body);
-        messages.push('Failed to add UC Davis Employment');
-      } else {
-        messages.push('Added UC Davis Employment');
-      }      
-    }
-  }
+  //   // if they don't have a UCD set ringgold employment record, create one
+  //   // from the users UCD information
+  //   if( !ucdRinggold ) {
+  //     let response = await orcidApi.addEmployment(
+  //       user.id,
+  //       {
+  //         'department-name' : deptName,
+  //         organization : {
+  //           address : {region: 'CA', city: 'Davis', country: 'US'},
+  //           'disambiguated-organization' : {
+  //             'disambiguated-organization-identifier' : ucdCode,
+  //             'disambiguation-source': 'RINGGOLD'
+  //           },
+  //           name : config.ringgold.ucd[ucdCode].value
+  //         },
+  //         'role-title' : roleTitle,
+  //         'start-date' : orcidApi.dateToOrcidDate(startDate)
+  //       },
+  //       token
+  //     );
+  //     if( response.statusCode !== 201 ) {
+  //       logger.error('Failed to add UC Davis Employment', response.statusCode, response.body);
+  //       messages.push('Failed to add UC Davis Employment');
+  //     } else {
+  //       messages.push('Added UC Davis Employment');
+  //     }      
+  //   }
+  // }
 
   /**
    * @method getUcdInfo
@@ -219,13 +220,20 @@ class Users {
     let name = await ucdApi.getNameInfo(iamId);
     let contact = await ucdApi.getContactInfo(iamId);
     let affiliations = await ucdApi.getAffiliations(iamId);
+    
     let department = await ucdApi.getDepartmentInfo(iamId);
-    let departmentOdr = await ucdApi.getDepartmentInfoOdr(iamId);
-
-    let departmentApp = [];
-    if( name && name.ppsId ) {
-      departmentApp = await firestore.getUserAppDepartments(name.ppsId);
+    if( department ) {
+      if( !Array.isArray(department) ) {
+        department = [department];
+      }
+    
+      department.forEach(d => {
+        d.appTitle = appData.getUserTitle(d.titleOfficialName);
+      });
     }
+
+    let departmentOdr = await ucdApi.getDepartmentInfoOdr(iamId);
+    let departmentApp = appData.getUserDepartments(iamId);
 
     // let dept = Array.isArray(department) ? department[0] : '';
     // let organization = await ucdApi.getOrgInfo(dept.bouOrgOId);
