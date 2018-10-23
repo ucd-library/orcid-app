@@ -1,7 +1,8 @@
 const models = {
   AppStateModel : require('./AppStateModel'),
-  OrcidModel : require('./OrcidModel'),
+  UserModel : require('./UserModel'),
   UcdModel : require('./UcdModel'),
+  EmploymentModel : require('./EmploymentModel'),
   ValidatorModel : require('./ValidatorModel')
 }
 

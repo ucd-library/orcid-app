@@ -11,6 +11,11 @@ const config = require('../config');
  */
 class Users {
 
+  constructor() {
+    // local division cache
+    this.divisions = {};
+  }
+
   /**
    * @method getUser
    * @description given a user casId return all information we have stored
@@ -28,6 +33,61 @@ class Users {
       user.orcidAccessToken = true;
     }
 
+    return user || {};
+  }
+
+  /**
+   * @method getAndSyncUser
+   * 
+   * @description grab the most up to date version of a users record as possible.  This means
+   * pulling from UCD and ORCiD. Will store result in FireStore and return data.  This should really
+   * always be used over getUser :(
+   * 
+   * @param {String} casId 
+   * @param {Boolean} includeToken
+   * 
+   * @returns {Promise} 
+   */
+  async getAndSyncUser(casId, includeToken=false) {
+    // get current user information (we need the orcid access token)
+    let user = await this.getUser(casId, true);
+    if( !user ) return null;
+
+    // grab current UCD information
+    let ucd = await this.getUcdInfo(casId);
+
+    // orcid information has not been set yet
+    if( !user.orcid ) {
+      user.ucd = ucd;
+      await firestore.setUser({
+        id: casId, ucd
+      });
+      return user;
+    }
+
+    // grab current ORCiD information
+    let response = await orcidApi.get(
+      user.orcid['orcid-identifier'].path, 
+      user.orcidAccessToken.access_token
+    );
+    let orcid = orcidApi.getResultObject(response);
+
+    // update firestore
+    await firestore.setUser({
+      id: casId, orcid, ucd
+    });
+    user.orcid = orcid;
+    user.ucd = ucd;
+
+    // strip access token unless asked for
+    if( user.orcidAccessToken ) {
+      user.orcidUsername = user.orcidAccessToken.username;
+      if( includeToken === false ) {
+        user.orcidId = user.orcid['orcid-identifier'].path;
+        user.orcidAccessToken = true;
+      }
+    } 
+    
     return user || {};
   }
 
@@ -221,15 +281,16 @@ class Users {
     let contact = await ucdApi.getContactInfo(iamId);
     let affiliations = await ucdApi.getAffiliations(iamId);
     
-    let department = await ucdApi.getDepartmentInfo(iamId);
-    if( department ) {
-      if( !Array.isArray(department) ) {
-        department = [department];
+    let departmentPps = await ucdApi.getDepartmentInfo(iamId);
+    if( departmentPps ) {
+      if( !Array.isArray(departmentPps) ) {
+        departmentPps = [departmentPps];
       }
-    
-      department.forEach(d => {
-        d.appTitle = appData.getUserTitle(d.titleOfficialName);
-      });
+
+      for( let dept of departmentPps ) {
+        dept.appTitle = appData.getUserTitle(dept.titleOfficialName);
+        dept.division = await this.getDivisions(dept.adminBouOrgOId || dept.bouOrgOId);
+      }
     }
 
     let departmentOdr = await ucdApi.getDepartmentInfoOdr(iamId);
@@ -238,8 +299,36 @@ class Users {
     // let dept = Array.isArray(department) ? department[0] : '';
     // let organization = await ucdApi.getOrgInfo(dept.bouOrgOId);
 
-    let data = {name, iamId, casId, contact, department, departmentOdr, departmentApp, affiliations};
-    return data;
+    return {
+      name, 
+      iamId, 
+      casId, 
+      contact, 
+      departmentPps, 
+      departmentOdr, 
+      departmentApp, 
+      affiliations
+    };
+  }
+
+  /**
+   * @method getDivisions
+   * @description get the division inforation from the UCD IAM API but check a local
+   * cache first.
+   * 
+   * @param {String} orgId
+   */
+  async getDivisions(orgId='') {
+    if( this.divisions[orgId] ) {
+      return this.divisions[orgId];
+    }
+
+    let division = await ucdApi.getDivisions(orgId);
+    if( division ) {
+      this.divisions[orgId] = division;
+    }
+
+    return division;
   }
 
   /**
@@ -252,7 +341,7 @@ class Users {
    * 
    * @returns {Promise} resolves to user {Object}
    */
-  async updateOrcidInfo(orcid, casId, token) {
+  async setOrcidInfo(orcid, casId, token) {
     let info = orcidApi.getResultObject(
       await orcidApi.get(orcid, token.access_token)
     );

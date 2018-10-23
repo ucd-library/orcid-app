@@ -34,6 +34,11 @@ export default class AppChecklist extends Mixin(PolymerElement)
       orcidUrl : {
         type : String,
         value : ''
+      },
+      reloading : {
+        type : Boolean,
+        value : false,
+        reflectToAttribute : true
       }
     }
   }
@@ -45,15 +50,14 @@ export default class AppChecklist extends Mixin(PolymerElement)
 
     this._injectModel('AppStateModel');
     this._injectModel('UcdModel');
-    this._injectModel('OrcidModel');
+    this._injectModel('UserModel');
   }
 
   ready() {
     super.ready();
-    
-    if( APP_CONFIG.user.data && APP_CONFIG.user.data.linked ) {
-      this._render(APP_CONFIG.user.data.orcid);
-    }
+
+    let data = this.UserModel.store.data.record;
+    if( data.linked ) this._render(data.orcid);
   }
 
   /**
@@ -63,6 +67,7 @@ export default class AppChecklist extends Mixin(PolymerElement)
    * @param {Object} record ORCiD record
    */
   _render(record) {
+    if( !record ) return;
     this.record = record;
 
     let name = record.person.name
@@ -85,10 +90,11 @@ export default class AppChecklist extends Mixin(PolymerElement)
    * @description bound to click event on reload anchor tag.  Reload the user record.
    */
   async _onReloadClicked() {
-    // if( APP_CONFIG.user.session.orcid && APP_CONFIG.user.session.orcid.orcid ) {
-      this.style.opacity = 0.5;
-      this.OrcidModel.get(); 
-    // }
+    if( this.reloading ) return;
+    this.reloading = true;
+
+    this.style.opacity = 0.5;
+    this.UserModel.get(); 
   }
 
   /**
@@ -100,8 +106,11 @@ export default class AppChecklist extends Mixin(PolymerElement)
    */
   _onUserRecordUpdate(e) {
     if( e.state !== 'loaded' ) return;
-    this._render(e.payload);
-    this.style.opacity = 1;
+    this._render(e.payload.orcid);
+
+    if( this.reloading ) {
+      this.reloading = false;
+    }
   }
 
   _rejectToken() {

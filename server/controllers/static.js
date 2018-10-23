@@ -41,7 +41,11 @@ module.exports = (app) => {
       }
       
       if( user.session.cas ) {
-        user.data = await userModel.getUser(user.session.cas);
+        if( req.query.noreload ) {
+          user.data = await userModel.getUser(user.session.cas);
+        } else {
+          user.data = await userModel.getAndSyncUser(user.session.cas);
+        }
       }
 
       return {

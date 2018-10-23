@@ -62,4 +62,14 @@ router.get('/login', (req, res) => {
   });
 });
 
+router.get('/dev-login/:casid', async (req, res) => {
+  if( config.env !== 'dev' ) {
+    return res.status(401).send('nope.');
+  }
+
+  req.session[cas.session_name] = req.params.casid;
+  await users.syncUcd(req.params.casid);
+  res.redirect('/');
+});
+
 module.exports = router;

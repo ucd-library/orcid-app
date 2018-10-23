@@ -9,11 +9,28 @@
 
   .description {
     margin-top: 25px;
+    font-style: italic;
   }
 
   .btns {
     text-align: right;
     padding: 15px;
+  }
+
+  .checkbox-layout {
+    display: flex;
+  }
+
+  .checkbox-layout app-checkbox {
+    margin: 0 10px;
+  }
+
+  label {
+    font-weight: bold;
+  }
+
+  .value-label, .pos-info {
+    color: var(--orcid-grey);
   }
 </style>
 
@@ -23,42 +40,53 @@
 
 <div class="description">Select the employment information you want to include on your ORCiD iD</div>
 
-<h3>Organizations</h3>
-<app-checkbox id="ucd-check" labelledby="ucd-check-label" circle></app-checkbox> 
-<label id="ucd-check-label">University of California, Davis</label> <span class="required">Required</span>
+<h3>Position Information</h3>
+<div class="pos-info">If no selection is made, an entry for UC Davis will be added without position information using
+  your earliest start date.</div>
 
-<div>
-<app-checkbox id="ucd-check-1" labelledby="ucd-check-label-1"></app-checkbox> 
-<label id="ucd-check-label-1">University of California, Davis</label> 
-</div>
-
-<div>
-  <app-checkbox id="ucd-check-2" labelledby="ucd-check-label-2" readonly></app-checkbox> 
-  <label id="ucd-check-label-2">University of California, Davis</label> 
-</div>
-
-<div>
-  <app-checkbox id="ucd-check-2" labelledby="ucd-check-label-2" readonly circle></app-checkbox> 
-  <label id="ucd-check-label-2">University of California, Davis</label> 
-</div>
-
-<div>
-  <app-checkbox id="ucd-check-2" labelledby="ucd-check-label-2" readonly checked></app-checkbox> 
-  <label id="ucd-check-label-2">University of California, Davis</label> 
-</div>
-
-<dom-repeat items="[[positionsTitles]]">
+<dom-repeat items="[[positions]]">
   <template>
-
+    <div class="checkbox-layout">
+      <div>
+        <app-checkbox 
+          id$="ppsCheckbox-[[index]]" 
+          labelledby$="pps-check-label-[[index]]" 
+          checked$="[[item.enabled]]"
+          index$="[[index]]">
+        </app-checkbox>
+      </div>
+      <div>
+        <div><label id$="pps-check-label-[[index]]">[[item.title]]</label></div>
+        <div><span class="value-label">Department:</span> [[item.department]]</div>
+        <div><span class="value-label">Start Date:</span> [[item.startDate]]</div>
+      </div>
+    </div>
   </template>
 </dom-repeat>
 
-<h3>Position Title and Department</h3>
-<dom-repeat items="[[positionsTitles]]">
-  <template>
+<div hidden$="[[!hasOrgs]]">
+  <h3>Organizations</h3>
+  <div>Include these organizations to increases visibility and findability of your work.</div>
 
-  </template>
-</dom-repeat>
+  <dom-repeat items="[[organizations]]">
+    <template>
+      <div class="checkbox-layout">
+        <div>
+          <app-checkbox 
+            id$="orgsCheckbox-[[index]]" 
+            labelledby$="orgs-check-label-[[index]]" 
+            checked$="[[item.enabled]]"
+            index$="[[index]]">
+          </app-checkbox> 
+        </div>
+        <div>
+          <div><label id$="orgs-check-label-[[index]]">[[item.department]]</label></div>
+          <div><span class="value-label">Start Date:</span> [[item.startDate]]</div>
+        </div>
+      </div>
+    </template>
+  </dom-repeat>
+</div>
 
 <div class="break-line"></div>
 

@@ -24,7 +24,7 @@ export default class AppChecklistEmployments extends Mixin(PolymerElement)
 
   constructor() {
     super();
-    this._injectModel('OrcidModel');
+    this._injectModel('UserModel');
     this._injectModel('ValidatorModel');
   }
 

@@ -245,7 +245,7 @@ class UcdiamApi {
         }
       } 
     );
-    console.log(orgId, response.body);
+
     return this._getResponse(response, 'orgOId', orgId);
   }
 

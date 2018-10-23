@@ -24,17 +24,6 @@ class UcdModel extends BaseModel {
     return this.store.data.link;
   }
 
-  /**
-   * @method autoUpdate
-   * @description Update users ORCiD record with verified UCD information
-   * 
-   * @returns {Promise} resolves to autoUpdate state
-   */
-  async autoUpdate() {
-    await this.service.autoUpdate();
-    return this.store.data.autoUpdate;
-  }
-
 }
 
 module.exports = new UcdModel();

@@ -1,25 +1,16 @@
 const {BaseModel} = require('@ucd-lib/cork-app-utils');
-const OrcidService = require('../services/OrcidService');
-const OrcidStore = require('../stores/OrcidStore');
-const UcdStore = require('../stores/UcdStore');
+const UserService = require('../services/UserService');
+const UserStore = require('../stores/UserStore');
 
-class OrcidModel extends BaseModel {
+class UserModel extends BaseModel {
 
   constructor() {
     super();
 
-    this.store = OrcidStore;
-    this.service = OrcidService;
+    this.store = UserStore;
+    this.service = UserService;
       
-    this.register('OrcidModel');
-
-    // When the the UCD Model auto-updates a record and changes were made,
-    // update the record in the ORCiD store
-    this.EventBus.on(UcdStore.events.UCD_AUTO_UPDATE_UPDATE, (e) => {
-      if( e.state !== UcdStore.STATE.LOADED ) return;
-      if( (e.payload.updates || []).length === 0 ) return;
-      this.store.setUserRecordLoaded(e.payload.record);
-    });
+    this.register('UserModel');
   }
 
   /**
@@ -106,4 +97,4 @@ class OrcidModel extends BaseModel {
 
 }
 
-module.exports = new OrcidModel();
+module.exports = new UserModel();

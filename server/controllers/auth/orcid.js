@@ -60,7 +60,7 @@ router.get('/oauth-callback', async (req, res) => {
     req.session[config.orcid.sessionName] = response;
 
     logger.info('Updating user info from orcid auto flow for: '+response.orcid);
-    await usersModel.updateOrcidInfo(response.orcid, req.session[config.ucd.cas.sessionName], response);
+    await usersModel.setOrcidInfo(response.orcid, req.session[config.ucd.cas.sessionName], response);
 
     res.redirect('/');
   } catch(e) {

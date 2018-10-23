@@ -57,8 +57,8 @@ export default class AppLogin extends Mixin(PolymerElement)
 
       let ucd = APP_CONFIG.user.data.ucd;
       this.ucdName = ucd.name.dFullName;
-      this.ucdTitle = ucd.department.titleOfficialName;
-      this.ucdDept = ucd.department.deptOfficialName;
+      this.ucdTitle = ucd.departmentPps[0].titleOfficialName;
+      this.ucdDept = ucd.departmentPps[0].deptOfficialName;
       this.ucdEmail = ucd.contact.email;
 
       this._setOrcidInfo();

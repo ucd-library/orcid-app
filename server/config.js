@@ -37,6 +37,7 @@ if( !GOOGLE_ENV ) {
 module.exports = {
   GOOGLE_ENV,
   apiEnv,
+  env : apiEnv,
 
   server : {
     host : process.env.SERVER_HOST || `http://localhost:${PORT}`,

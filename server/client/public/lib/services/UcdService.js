@@ -17,15 +17,6 @@ class UcdService extends BaseService {
     });
   }
 
-  autoUpdate() {
-    return this.request({
-      url : `/api/ucd/auto-update`,
-      onLoading : request => this.store.setAutoUpdateLoading(request),
-      onLoad : result => this.store.setAutoUpdateLoaded(result.body),
-      onError : e => this.store.setAutoUpdateError(e)
-    });
-  }
-
 }
 
 module.exports = new UcdService();
