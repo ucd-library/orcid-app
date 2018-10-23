@@ -85,12 +85,12 @@ export default class OrcidApp extends Mixin(PolymerElement)
 
     this.hideLogout = (Object.keys(APP_CONFIG.user.session || {}).length === 0);
 
-    if( this._userLoggedInAndLinked() ) {
-      let page = this.AppStateModel.store.data.location.path[0];
+    let page = this.AppStateModel.store.data.location.path[0];
+    if( this._userLoggedInAndLinked() ) {  
       if( !page || page === 'login' ) {
         this.AppStateModel.setLocation('scorecard');
       }
-    } else {
+    } else if( page !== 'denied-orcid-oauth' ) {
       this.AppStateModel.setLocation('login');
     }
   }

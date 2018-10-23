@@ -34,29 +34,41 @@ module.exports = (app) => {
     htmlFile : path.join(assetsDir, 'index.html'),
     isRoot : true,
     appRoutes : config.server.appRoutes,
-    getConfig : async (req, res) => {
+    getConfig : async (req, res, next) => {
       let user = {
-        session : authUtils.getUserFromRequest(req),
+        session : {},
         data : null
       }
       
-      if( user.session.cas ) {
-        if( req.query.noreload ) {
-          user.data = await userModel.getUser(user.session.cas);
-        } else {
-          user.data = await userModel.getAndSyncUser(user.session.cas);
+      let session = authUtils.getUserFromRequest(req);
+      try {
+        if( session.cas ) {
+          if( req.query.noreload ) {
+            user.data = await userModel.getUser(session.cas);
+          } else {
+            user.data = await userModel.getAndSyncUser(session.cas, false, false);
+          }
+        }
+        user.session = session;
+      } catch(e) {
+        if( e.statusCode === 401 && e.bodyType === 'json' && e.body.error === 'invalid_token' ) {
+          await userModel.clearUserLinkage(session.cas);
+          return res.redirect('/auth/logout');
         }
       }
 
-      return {
+      next({
         user,
         appRoutes : config.server.appRoutes,
         env : config.client.env,
         orcidUrl : config.orcid.url,
-        baseApiUrl : config.orcid.api.baseUrl
-      }
+        baseApiUrl : config.orcid.api.baseUrl,
+        orgs : config.ringgold.orgs,
+        appPartners : config.ringgold.appPartners,
+        clientId : config.orcid.clientId
+      });
     },
-    template : async (req, res) => ({bundle})
+    template : async (req, res, next) => next({bundle})
   });
 
   /**

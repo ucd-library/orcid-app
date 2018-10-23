@@ -65,7 +65,9 @@ export default class AppEmploymentEditor extends Mixin(PolymerElement)
     if( !this.userData ) return;
     if( !this.userData.ucd ) return;
 
+    // debugger;
     let data = this.EmploymentModel.getUcdEmployments();
+    
     this.positions = data.positions;
     this.organizations = data.organizations;
     this.hasOrgs = data.organizations.length > 0 ? true : false;
@@ -78,13 +80,13 @@ export default class AppEmploymentEditor extends Mixin(PolymerElement)
   }
 
   _setDefaults() {
+    if( this.EmploymentModel.hasUcdSourceEmployments() ) {
+      return;
+    }
+    
     let hasOdr = false;
     for( let pos of this.positions ) {
-      if( pos.enabled ) return;
-      if( !hasOdr && pos.odr ) hasOdr = true;
-    }
-    for( let pos of this.organizations ) {
-      if( pos.organizations ) return;
+      if( pos.odr ) hasOdr = true;
     }
 
     if( hasOdr ) {
@@ -98,6 +100,35 @@ export default class AppEmploymentEditor extends Mixin(PolymerElement)
     for( let i = 0; i < this.organizations.length; i++ ) {
       this.set(`organizations.${i}.enabled`, true);
     }
+  }
+
+  _save() {
+
+    let employments = this.positions
+      .filter(e => e.enabled)
+      .concat(this.organizations.filter(e => e.enabled))
+      .map(e => {
+        e = Object.assign({}, e);
+        e.code = e.org;
+        delete e.enabled;
+        delete e.org;
+        delete e.odr;
+        return e;
+      })
+    
+    // set default ucd record
+    if( employments.length === 0 ) {
+      let user = this.UserModel.store.getUserRecord().payload;
+      employments.push({
+        code : APP_CONFIG.orgs.ucd,
+        startDate : this.EmploymentModel._getDisplayStartDate(
+          this.EmploymentModel._getEarliestStartDate(user.ucd.departmentPps)
+        )
+      });
+    }
+
+    // console.log(employments);
+    this.UserModel.updateEmployments(employments);
   }
 
 

@@ -33,12 +33,17 @@ class AppData {
       if( this.departments[key].people[iamId] ) {
         depts.push({
           displayName : this.departments[key].label,
-          startDate : new Date(this.departments[key].people[iamId].startDate)
+          startDate : this._getDate(this.departments[key].people[iamId].startDate)
         });
       }
     }
 
     return depts;
+  }
+
+  _getDate(date) {
+    date = date.replace(/[ T].*/,'').split('-').map(d => parseInt(d))
+    return new Date(Date.UTC(date[0], date[1]-1, date[2], 12, 0, 0, 0));
   }
 
   /**

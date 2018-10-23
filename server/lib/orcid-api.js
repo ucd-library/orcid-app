@@ -145,6 +145,7 @@ class OrcidApi {
    * http://members.orcid.org/api/tutorial/update-orcid-records#3add
    * https://github.com/ORCID/ORCID-Source/blob/master/orcid-model/src/main/resources/record_2.0/samples/write_sample/employment-2.0.xml
    * 
+   * @param {String} id ORCiD
    * @param {Object} data employment object
    * @param {String} token Required (from Oauth dance)
    * 
@@ -223,6 +224,11 @@ class OrcidApi {
    * @returns {Object} orcid date format
    */
   dateToOrcidDate(date) {
+    if( typeof date === 'string' ) {
+      date = date.replace(/[ T].*/,'').split('-').map(d => parseInt(d))
+      date = new Date(Date.UTC(date[0], date[1]-1, date[2], 12, 0, 0, 0));
+    }
+
     let day = date.getDate();
     if( day < 10 ) day = '0'+day;
     let month = date.getMonth()+1;

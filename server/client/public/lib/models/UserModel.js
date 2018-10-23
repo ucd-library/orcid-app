@@ -35,6 +35,13 @@ class UserModel extends BaseModel {
     return state;
   }
 
+  async updateEmployments(employments) {
+    try {
+      await this.service.updateEmployments(employments);
+    } catch(e) {}
+    this.store.getEmploymentsUpdate();
+  }
+
   /**
    * @method _checkRejectedTokenState
    * @description if we made an ORCiD API call and the API responded that the ORCiD token

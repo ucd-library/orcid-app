@@ -1,10 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authUtils = require('../../lib/auth');
-const api = require('../../lib/orcid-api');
 const users = require('../../lib/users')
-const config = require('../../config');
-const firestore = require('../../lib/firestore');
 const {hasUcdAuth, handleError} = require('../middleware');
 
 /**
@@ -14,7 +11,18 @@ router.get('/', hasUcdAuth, async (req, res) => {
   let user = authUtils.getUserFromRequest(req);
 
   try {
-    res.json(await this.getUser(user.cas));
+    res.json(await users.getUser(user.cas));
+  } catch(e) {
+    handleError(e, req, res);
+  }
+});
+
+router.post('/update/employment', hasUcdAuth, async (req, res) => {
+  let user = authUtils.getUserFromRequest(req);
+  let employments = req.body;
+
+  try {
+    res.json(await users.updateEmployments(user.cas, employments));
   } catch(e) {
     handleError(e, req, res);
   }

@@ -12,7 +12,8 @@ export default class AppCheckbox extends PolymerElement {
       checked : {
         type : Boolean,
         value : false,
-        reflectToAttribute : true
+        reflectToAttribute : true,
+        notify : true
       },
       'aria-checked' : {
         type : String,

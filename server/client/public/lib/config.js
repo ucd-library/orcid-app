@@ -1,12 +1,7 @@
-
-
 module.exports = {
 
-  orgs : {
-    ucd : '8789',
-    coe : '9999',
-    eei : '8888'
-  },
+  orgs : APP_CONFIG.orgs,
+  appPartners : APP_CONFIG.appPartners,
 
   appPartners : {
     'COLLEGE OF ENGINEERING' : {

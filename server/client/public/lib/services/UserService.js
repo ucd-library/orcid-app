@@ -23,6 +23,22 @@ class UserService extends BaseService {
       onError : e => this.store.setUserRecordError(e)
     });
   }
+
+  updateEmployments(employments) {
+    return this.request({
+      url : `/api/user/update/employment`,
+      fetchOptions : {
+        method : 'POST',
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+        },
+        body : JSON.stringify(employments)
+      },
+      onLoading : request => this.store.setUpdateEmploymentsLoading(request, employments),
+      onLoad : result => this.store.setUpdateEmploymentsLoaded(result.body),
+      onError : e => this.store.setUpdateEmploymentsError(e)
+    });
+  }
 }
 
 module.exports = new UserService();

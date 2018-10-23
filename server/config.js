@@ -68,7 +68,8 @@ module.exports = {
       baseUrl : `https://${baseApiUrl}.orcid.org/v2.1`,
       scopes : '/read-limited /activities/update'
     },
-    oauthBaseUrl : (apiEnv === 'prod') ? 'https://orcid.org/oauth' : 'https://sandbox.orcid.org/oauth'
+    oauthBaseUrl : (apiEnv === 'prod') ? 'https://orcid.org/oauth' : 'https://sandbox.orcid.org/oauth',
+    sourceId : secrets.orcid[apiEnv].clientId
   },
 
   firestore : {
@@ -97,13 +98,28 @@ module.exports = {
   },
 
   ringgold : {
-    sourceName : 'UC Davis',
     sourceId : null, // TODO
-    ucd : {
-      '8789' : {
-        value : 'University of California Davis',
-        ucdDeptCode : ''
+
+    orgs : {
+      ucd : '8789',
+      coe : '9999',
+      eei : '8888'
+    },
+    appPartners : {
+      'COLLEGE OF ENGINEERING' : {
+        label : 'College of Engineering',
+        org : 'coe'
+      },
+      'Energy and Efficiency Institute' : {
+        label : 'Energy and Efficiency Institute',
+        org : 'eei'
       }
+    },
+
+    ucd : {
+      org: 'ucd',
+      code : '8789',
+      label : 'University of California Davis'
     }
   }
 

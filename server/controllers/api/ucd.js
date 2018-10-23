@@ -7,9 +7,9 @@ const logger = require('../../lib/logger');
 const {hasOrcidAuth, hasUcdAuth, isAdmin, handleError} = require('../middleware');
 
 // Link user accounts
-router.get('/link', hasOrcidAuth, hasUcdAuth, async (req, res) => {
+router.get('/link', hasUcdAuth, async (req, res) => {
   let user = req.user;
-  logger.info('Linking accounts: ', user.cas, user.orcid.orcid);
+  logger.info('Linking account for: ', user.cas);
   
   try {
     await users.linkAccounts(user.cas);
@@ -20,14 +20,14 @@ router.get('/link', hasOrcidAuth, hasUcdAuth, async (req, res) => {
 });
 
 // resync users UCD information to firestore
-router.get('/sync', hasUcdAuth, async (req, res) => {
-  let user = req.user;
-  try {
-    res.json(await users.syncUcd(user.cas));
-  } catch(e) {
-    handleError(e, req, res);
-  }
-});
+// router.get('/sync', hasUcdAuth, async (req, res) => {
+//   let user = req.user;
+//   try {
+//     res.json(await users.syncUcd(user.cas));
+//   } catch(e) {
+//     handleError(e, req, res);
+//   }
+// });
 
 // admin call, get user UCD info via CAS ID
 router.get('/get-user-cas/:casId', isAdmin, async (req, res) => {

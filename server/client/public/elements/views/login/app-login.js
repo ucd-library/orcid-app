@@ -69,10 +69,10 @@ export default class AppLogin extends Mixin(PolymerElement)
   }
 
   _setOrcidInfo() {
-    let orcid = APP_CONFIG.user.session.orcid;
-    this.orcid = orcid.orcid;
-    this.orcidName = orcid.name;
-    this.orcidUrl = APP_CONFIG.orcidUrl + '/' + this.orcid;
+    let orcid = APP_CONFIG.user.data.orcid;
+    this.orcid = orcid['orcid-identifier'].path;
+    this.orcidName = orcid.person.name['given-names'].value+' '+orcid.person.name['family-name'].value;
+    this.orcidUrl = orcid['orcid-identifier'].uri;
   }
 
   async _linkAccounts() {

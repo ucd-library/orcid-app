@@ -6,10 +6,12 @@ class UserStore extends BaseStore {
     super();
 
     this.data = {
-      record : {}
+      record : {},
+      employmentsUpdate : {}
     };
     this.events = {
-      USER_RECORD_UPDATE : 'user-record-update'
+      USER_RECORD_UPDATE : 'user-record-update',
+      USER_EMPLOYMENTS_UPDATE_UPDATE : 'user-employments-update-update'
     };
 
     if( typeof window !== 'undefined' && 
@@ -50,6 +52,39 @@ class UserStore extends BaseStore {
 
   getUserRecord() {
     return this.data.record;
+  }
+
+  setUpdateEmploymentsLoading(request, employments) {
+    this.data.employmentsUpdate = {
+      state : this.STATE.LOADING, 
+      payload : employments,
+      request
+    }
+    this._updateEmploymentsUpdate();
+  }
+
+  setUpdateEmploymentsLoaded(payload) {
+    this.data.employmentsUpdate = {
+      state : this.STATE.LOADED,
+      payload
+    }
+    this._updateEmploymentsUpdate();
+  }
+
+  setUpdateEmploymentsError(error) {
+    this.data.employmentsUpdate = {
+      state : this.STATE.ERROR,
+      error
+    }
+    this._updateEmploymentsUpdate();
+  }
+
+  _updateEmploymentsUpdate() {
+    this.emit(this.events.USER_EMPLOYMENTS_UPDATE_UPDATE, this.data.employmentsUpdate);
+  }
+
+  getEmploymentsUpdate() {
+    return this.data.employmentsUpdate;
   }
 
 }

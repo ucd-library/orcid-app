@@ -14,6 +14,15 @@ class Users {
   constructor() {
     // local division cache
     this.divisions = {};
+
+    // org ringgold code lookup
+    this.codeLabels = {
+      [config.ringgold.ucd.code] : config.ringgold.ucd.label
+    };
+    for( let key in config.ringgold.appPartners ) {
+      let p = config.ringgold.appPartners[key];
+      this.codeLabels[config.ringgold.orgs[p.org]] = p.label;
+    }
   }
 
   /**
@@ -44,11 +53,13 @@ class Users {
    * always be used over getUser :(
    * 
    * @param {String} casId 
-   * @param {Boolean} includeToken
+   * @param {Boolean} includeToken include users access token?
+   * @param {Boolean} waitOnWrite should the function wait on write to firestore or just continue
+   * execution, returning user object possibly before write completes?
    * 
    * @returns {Promise} 
    */
-  async getAndSyncUser(casId, includeToken=false) {
+  async getAndSyncUser(casId, includeToken=false, waitOnWrite=true) {
     // get current user information (we need the orcid access token)
     let user = await this.getUser(casId, true);
     if( !user ) return null;
@@ -57,11 +68,18 @@ class Users {
     let ucd = await this.getUcdInfo(casId);
 
     // orcid information has not been set yet
-    if( !user.orcid ) {
+    if( !user.orcid || !user.orcidAccessToken ) {
       user.ucd = ucd;
-      await firestore.setUser({
-        id: casId, ucd
-      });
+      if( waitOnWrite ) {
+        await firestore.setUser({
+          id: casId, ucd
+        });
+      } else {
+        firestore.setUser({
+          id: casId, ucd
+        });
+      }
+     
       return user;
     }
 
@@ -73,9 +91,16 @@ class Users {
     let orcid = orcidApi.getResultObject(response);
 
     // update firestore
-    await firestore.setUser({
-      id: casId, orcid, ucd
-    });
+    if( waitOnWrite ) {
+      await firestore.setUser({
+        id: casId, orcid, ucd
+      });
+    } else {
+      firestore.setUser({
+        id: casId, orcid, ucd
+      });
+    }
+    
     user.orcid = orcid;
     user.ucd = ucd;
 
@@ -89,6 +114,87 @@ class Users {
     } 
     
     return user || {};
+  }
+
+  /**
+   * @method updateEmployments
+   * @description update a users ORCiD record with given employments.  This will 
+   * remove all existing employments for the UC Davis application and replace with 
+   * the given list.
+   * 
+   * @param {String} casId
+   * @param {Object[]} employments 
+   * @param {String} employments[].title
+   * @param {String} employments[].department
+   * @param {String} employments[].code
+   * @param {String} employments[].startDate
+   */
+  async updateEmployments(casId, employments = []) {
+    // check for all fields
+    employments.forEach((e, index) => {
+      if( !e.code || !e.startDate ) {
+        throw new Error(`Employment ${index} is missing required fields code or startDate`);
+      } 
+    });
+
+    // grab current ORCiD information
+    let user = await this.getUser(casId, true);
+    let orcidId = user.orcid['orcid-identifier'].path;
+    let accessToken = user.orcidAccessToken.access_token;
+    let response = await orcidApi.get(orcidId, accessToken);
+    let orcid = orcidApi.getResultObject(response);
+    let currentEmployments = orcid['activities-summary'].employments['employment-summary'] || [];
+
+    let messages = [];
+    for( let e of currentEmployments ) {
+      if( this._isAppSource(e.source) ) {
+        let response = await orcidApi.deleteEmployment(e['put-code'], orcidId, accessToken);
+        if( response.statusCode !== 204 ) {
+          logger.fatal('Failed to remove UC Davis Employment', response.statusCode, response.body);
+          messages.push({error: true, message: 'Failed to add UC Davis Employment'});
+        } else {
+          messages.push({success: true, message: 'Removed UC Davis Employment', code: e['put-code']});
+        }
+      }
+    }
+
+    for( let e of employments ) {
+      let response = await orcidApi.addEmployment(
+        orcidId,
+        {
+          'department-name' : e.department || null,
+          organization : {
+            address : {region: 'CA', city: 'Davis', country: 'US'},
+            'disambiguated-organization' : {
+              'disambiguated-organization-identifier' : e.code,
+              'disambiguation-source': 'RINGGOLD'
+            },
+            name : this.codeLabels[e.code]
+          },
+          'role-title' : e.title || null,
+          'start-date' : orcidApi.dateToOrcidDate(e.startDate)
+        },
+        accessToken
+      );
+  
+      if( response.statusCode !== 201 ) {
+        logger.fatal('Failed to add UC Davis Employment', response.statusCode, response.body);
+        messages.push({errpor: true, message: 'Failed to add UC Davis Employment', employment: e});
+      } else {
+        messages.push({success: true, message: 'Added UC Davis Employment', employment: e});
+      }
+    }
+    
+    return messages;
+  }
+
+  _isAppSource(source) {
+    if( source && 
+        source['source-client-id'] && 
+        source['source-client-id'].path === config.orcid.sourceId ) {
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -146,12 +252,14 @@ class Users {
    * in the db along with the users UCD information.
    * 
    * @param {String} casId Users UCD CAS id
-   * @param {String} orcid Users ORCiD
    * 
    * @return {Promise} resolves to user information {Object}
    */
   async linkAccounts(casId) {
-    // let ucdInfo = await this.getUcdInfo(casId);
+    let user = await this.getUser(casId);
+    if( !user.orcidAccessToken && user.orcidAccessToken.access_token ) {
+      throw new Error('ORCiD account not set. Accounts cannot be linked');
+    }
 
     return firestore.setUser({
       id: casId,
@@ -175,95 +283,6 @@ class Users {
     });
     return ucdInfo;
   }
-
-  // /**
-  //  * @method _addEmployment
-  //  * @description given a user object, check that the employment information is correct. Currently
-  //  * this is done by verifing that this application has set the correct ringgold identifier in
-  //  * the users ORCiD record
-  //  * 
-  //  * @param {Object} user applications user object
-  //  * @param {Array} messages array of message updates that have been performed
-  //  * @param {String} token Users ORCiD access token
-  //  * 
-  //  * @return {Promise}
-  //  */
-  // async _addEmployment(user, messages, token) {
-  //   // currently we are just grabbing the first department for a user
-  //   // TODO: this will become a user dropdown selection
-  //   let department = user.ucd.department;
-  //   if( Array.isArray(department) ) department = department[0];
-
-  //   // if there is a odr title, use that instead.  They are normally better
-  //   // TODO: this will most likely be part of user selection above (perhaps default option)
-  //   if( user.ucd.departmentOdr )  {
-  //     department.titleDisplayName = user.ucd.departmentOdr.titleDisplayName;
-  //   }
-
-  //   // grab start date, role and department name
-  //   let startDate = new Date(department.assocStartDate);
-  //   let roleTitle = department.titleDisplayName;
-  //   let deptName = department.deptDisplayName;
-
-  //   let employmentSummary = user.orcid['activities-summary'].employments['employment-summary'];
-  //   let ringgoldIds = [];
-
-  //   // find all employments that have ringgold ids and store the id as well as the source
-  //   (employmentSummary || []).forEach(e => {
-  //     if( e.organization['disambiguated-organization']['disambiguation-source'] === 'RINGGOLD' ) {
-  //       ringgoldIds.push({
-  //         id : e.organization['disambiguated-organization']['disambiguated-organization-identifier'],
-  //         source : (e.source['source-name'] || {}).value
-  //       });
-  //     }
-  //   });
-
-  //   // find the main ucd ringgold id from the config file
-  //   // this is the one w/o a department code
-  //   let ucdCode = '';
-  //   for( let key in config.ringgold.ucd ) {
-  //     if( config.ringgold.ucd[key].ucdDeptCode === '' ) {
-  //       ucdCode = key;
-  //       break;
-  //     }
-  //   }
-
-  //   // find the application set ucd ringgold employment record
-  //   let ucdRinggold = ringgoldIds.find(e => {
-  //     return (
-  //       e.id === ucdCode &&
-  //       e.source === config.ringgold.sourceName
-  //     )
-  //   });
-
-  //   // if they don't have a UCD set ringgold employment record, create one
-  //   // from the users UCD information
-  //   if( !ucdRinggold ) {
-  //     let response = await orcidApi.addEmployment(
-  //       user.id,
-  //       {
-  //         'department-name' : deptName,
-  //         organization : {
-  //           address : {region: 'CA', city: 'Davis', country: 'US'},
-  //           'disambiguated-organization' : {
-  //             'disambiguated-organization-identifier' : ucdCode,
-  //             'disambiguation-source': 'RINGGOLD'
-  //           },
-  //           name : config.ringgold.ucd[ucdCode].value
-  //         },
-  //         'role-title' : roleTitle,
-  //         'start-date' : orcidApi.dateToOrcidDate(startDate)
-  //       },
-  //       token
-  //     );
-  //     if( response.statusCode !== 201 ) {
-  //       logger.error('Failed to add UC Davis Employment', response.statusCode, response.body);
-  //       messages.push('Failed to add UC Davis Employment');
-  //     } else {
-  //       messages.push('Added UC Davis Employment');
-  //     }      
-  //   }
-  // }
 
   /**
    * @method getUcdInfo

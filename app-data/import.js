@@ -72,5 +72,5 @@ function parseDate(date) {
   let month = MONTHS.indexOf(date[1].toLowerCase());
   let year = parseInt('20'+date[2]);
 
-  return new Date(year, month, day, 0, 0, 0).toISOString();
+  return new Date(Date.UTC(year, month, day, 0, 0, 0)).toISOString();
 }

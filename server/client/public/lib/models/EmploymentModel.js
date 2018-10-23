@@ -9,6 +9,22 @@ class EmploymentModel extends BaseModel {
     this.register('EmploymentModel');
   }
 
+  hasUcdSourceEmployments() {
+    let user = UserStore.getUserRecord().payload;
+    if( !user.ucd || !user.orcid ) {
+      return false;
+    }
+
+    let employments = user.orcid['activities-summary'].employments['employment-summary'];
+    for( let e of employments ) {
+      if( this._isAppSource(e.source) ) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   getUcdEmployments() {
     let data = {
       positions : [],
@@ -73,22 +89,32 @@ class EmploymentModel extends BaseModel {
   }
 
   _setEnable(pos, employments) {
+    pos.enabled = false;
+
     for( let e of employments ) {
       if( 
         e['department-name'] === (pos.department || null) &&
         e['role-title'] === (pos.title || null) &&
         this._getDateFromOrcid(e['start-date']) === pos.startDate &&
-        e.source['source-client-id'] === pos.org
+        this._isAppSource(e.source)
       ) {
         pos.enabled = true;
-      } else {
-        pos.enabled = false;
+        return;
       }
     }
   }
 
+  _isAppSource(source) {
+    if( source && 
+        source['source-client-id'] && 
+        source['source-client-id'].path === APP_CONFIG.clientId ) {
+      return true;
+    }
+    return false;
+  }
+
   _getDateFromOrcid(date) {
-    return date.year.value+'-'+date.year.month+'-'+date.year.day;
+    return date.year.value+'-'+date.month.value+'-'+date.day.value;
   }
 
   _getEarliestStartDate(pps=[]) {
