@@ -184,7 +184,17 @@ class Users {
         messages.push({success: true, message: 'Added UC Davis Employment', employment: e});
       }
     }
-    
+
+    // update ORCiD local record
+    response = await orcidApi.get(
+      user.orcid['orcid-identifier'].path, 
+      user.orcidAccessToken.access_token
+    );
+    orcid = orcidApi.getResultObject(response);
+    await firestore.setUser({
+      id: casId, orcid
+    });
+
     return messages;
   }
 

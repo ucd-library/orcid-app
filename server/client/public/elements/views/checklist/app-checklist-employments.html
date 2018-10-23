@@ -28,9 +28,9 @@
 </style>
 
 <div hidden$="[[hasEmployment]]">
-  <a class="select" href="/employment">Select from UC Davis records</a>
+  <a class="select" href="/employment/edit">Select from UC Davis records</a>
 </div>
 <div hidden$="[[!hasEmployment]]" style="display:flex; align-items: center">
-  <a class="edit" href="/employment">Position [[position]] / Department [[department]]</a>
-  <iron-icon icon="create"></iron-icon>
+  <a class="edit" href="/employment/view">[[position]] <span hidden$="[[!hasPosition]]">/</span> [[department]]</a>
+  <iron-icon icon="create" on-click="_onEditClicked" style="padding-left: 5px"></iron-icon>
 </div>

@@ -18,7 +18,7 @@ import "@polymer/iron-pages"
 import "./views/login/app-login"
 import "./views/login/denied-orcid-oauth"
 import "./views/checklist/app-checklist"
-import "./views/employment-editor/app-employment-editor"
+import "./views/employment/app-employment"
 // import "./app-auto-edit"
 
 const NO_HEADER_LIST = ['denied-orcid-oauth', 'employment']

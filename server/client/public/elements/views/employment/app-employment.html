@@ -1,0 +1,10 @@
+<style>
+  :host {
+    display: block;
+  }
+</style>
+
+<iron-pages selected$="[[selectedView]]" attr-for-selected="page">
+  <app-employment-viewer page="view"></app-employment-viewer>
+  <app-employment-editor page="edit"></app-employment-editor>
+</iron-pages>

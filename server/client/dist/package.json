@@ -1,6 +1,6 @@
 {
   "name": "@ucd-lib/orcid-app-client",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "main": "index.js",
   "author": "jrmerz@ucdavis.edu",
   "license": "MIT",

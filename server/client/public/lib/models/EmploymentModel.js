@@ -17,7 +17,7 @@ class EmploymentModel extends BaseModel {
 
     let employments = user.orcid['activities-summary'].employments['employment-summary'];
     for( let e of employments ) {
-      if( this._isAppSource(e.source) ) {
+      if( this.isAppSource(e.source) ) {
         return true;
       }
     }
@@ -96,7 +96,7 @@ class EmploymentModel extends BaseModel {
         e['department-name'] === (pos.department || null) &&
         e['role-title'] === (pos.title || null) &&
         this._getDateFromOrcid(e['start-date']) === pos.startDate &&
-        this._isAppSource(e.source)
+        this.isAppSource(e.source)
       ) {
         pos.enabled = true;
         return;
@@ -104,7 +104,7 @@ class EmploymentModel extends BaseModel {
     }
   }
 
-  _isAppSource(source) {
+  isAppSource(source) {
     if( source && 
         source['source-client-id'] && 
         source['source-client-id'].path === APP_CONFIG.clientId ) {

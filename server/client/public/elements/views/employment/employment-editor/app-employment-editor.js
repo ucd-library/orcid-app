@@ -28,6 +28,10 @@ export default class AppEmploymentEditor extends Mixin(PolymerElement)
       hasOrgs : {
         type : Boolean,
         value : false
+      },
+      updating : {
+        type : Boolean,
+        value : false
       }
     }
   }
@@ -35,6 +39,7 @@ export default class AppEmploymentEditor extends Mixin(PolymerElement)
   constructor() {
     super();
     this._injectModel('UserModel');
+    this._injectModel('AppStateModel');
     this._injectModel('EmploymentModel');
   }
 
@@ -65,7 +70,6 @@ export default class AppEmploymentEditor extends Mixin(PolymerElement)
     if( !this.userData ) return;
     if( !this.userData.ucd ) return;
 
-    // debugger;
     let data = this.EmploymentModel.getUcdEmployments();
     
     this.positions = data.positions;
@@ -74,12 +78,12 @@ export default class AppEmploymentEditor extends Mixin(PolymerElement)
 
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        this._setDefaults();
+        this._setDefaultCheckboxes();
       });
     })
   }
 
-  _setDefaults() {
+  _setDefaultCheckboxes() {
     if( this.EmploymentModel.hasUcdSourceEmployments() ) {
       return;
     }
@@ -103,7 +107,6 @@ export default class AppEmploymentEditor extends Mixin(PolymerElement)
   }
 
   _save() {
-
     let employments = this.positions
       .filter(e => e.enabled)
       .concat(this.organizations.filter(e => e.enabled))
@@ -127,8 +130,23 @@ export default class AppEmploymentEditor extends Mixin(PolymerElement)
       });
     }
 
-    // console.log(employments);
+    this.updating = true;
     this.UserModel.updateEmployments(employments);
+  }
+
+  _onUserEmploymentsUpdateUpdate(e) {
+    if( e.state === 'loading' ) return;
+    this.updating = false;
+
+    if( e.state === 'error' ) {
+      console.error(e);
+      return alert('Failed to update ORCiD record');
+    }
+    
+    // pull latest record
+    this.UserModel.get();
+
+    this.AppStateModel.setLocation('/scorecard');
   }
 
 

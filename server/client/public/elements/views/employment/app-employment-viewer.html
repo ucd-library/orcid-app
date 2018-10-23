@@ -1,0 +1,65 @@
+<style include="shared-styles">
+  :host {
+    display: block;
+  }
+
+  .title {
+    text-align: center
+  }
+
+  .btns {
+    text-align: right;
+    padding: 15px;
+  }
+
+  .pos-title {
+    font-weight: bold;
+  }
+
+  .value-label {
+    color: var(--orcid-grey);
+  }
+
+  h3 {
+    margin-bottom: 5px;
+  }
+
+  .content-padding {
+    padding: 20px;
+  }
+</style>
+
+<h2 class="title">UC Davis Employment</h2>
+
+<div class="break-line"></div>
+
+<div class="content-padding">
+  <h3>University of California, Davis</h3>
+  <dom-repeat items="[[positions]]">
+    <template>
+      <div>
+        <div class="pos-title">[[item.title]]</div>
+        <div><span class="value-label">Department:</span> [[item.department]]</div>
+        <div><span class="value-label">Start Date:</span> [[item.startDate]]</div>
+      </div>
+    </template>
+  </dom-repeat>
+
+  <dom-repeat items="[[organizations]]">
+    <template>
+      <div>
+        <h3>[[item.department]]</h3>
+        <div><span class="value-label">Start Date:</span> [[item.startDate]]</div>
+      </div>
+    </template>
+  </dom-repeat>
+</div>
+
+<div class="break-line"></div>
+
+<div class="btns">
+  <a class="btn inverse" href="/scorecard">Cancel</a>
+  <a class="btn" href="/employment/edit">
+    <iron-icon icon="create"></iron-icon> Edit
+  </a>
+</div>

@@ -11,11 +11,19 @@ export default class AppChecklistEmployments extends Mixin(PolymerElement)
 
   static get properties() {
     return {
-      record : {
-        type : Object,
-        value : ({})
+      position : {
+        type : String,
+        value : ''
+      },
+      department : {
+        type : String,
+        value : ''
       },
       hasEmployment : {
+        type : Boolean,
+        value : false
+      },
+      hasPosition : {
         type : Boolean,
         value : false
       }
@@ -25,21 +33,34 @@ export default class AppChecklistEmployments extends Mixin(PolymerElement)
   constructor() {
     super();
     this._injectModel('UserModel');
-    this._injectModel('ValidatorModel');
+    this._injectModel('AppStateModel');
+    this._injectModel('EmploymentModel');
   }
 
   ready() {
     super.ready();
     
     if( APP_CONFIG.user.data && APP_CONFIG.user.data.linked ) {
-      this._render(APP_CONFIG.user.data.orcid);
+      this._render();
     }
   }
 
-  _render(record) {
-    this.record = record;
+  _render() {
+    this.hasEmployment = this.EmploymentModel.hasUcdSourceEmployments();
 
-    let recordEmployments = this.ValidatorModel.getAppEmployments(record);
+    if( this.hasEmployment ) {
+      let pos = this.EmploymentModel
+        .getUcdEmployments()
+        .positions
+        .filter(e => e.enabled);
+
+      if( pos.length > 0 ) pos = pos[0];
+      else pos = {};
+
+      this.position = pos.title || '';
+      this.hasPosition = this.position ? true : false;
+      this.department = pos.department || 'University of California, Davis';
+    }
   }
 
   /**
@@ -51,8 +72,11 @@ export default class AppChecklistEmployments extends Mixin(PolymerElement)
    */
   _onUserRecordUpdate(e) {
     if( e.state !== 'loaded' ) return;
-    this._render(e.payload);
-    this.style.opacity = 1;
+    this._render();
+  }
+
+  _onEditClicked() {
+    this.AppStateModel.setLocation('/employment/view');
   }
 
 }
