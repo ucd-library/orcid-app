@@ -55,14 +55,45 @@
     margin-top: 30px;
   }
 
+  .description {
+    font-size: 22px; 
+    text-align:center; 
+    margin: 30px 0 50px 0; 
+    font-weight: 100
+  }
+
+  @keyframes complete {
+    from {
+      transform: scale(0);
+      color: var(--default-primary-color);
+    }
+    to {
+      transform: scale(1);
+      color: black;
+    }
+  }
+
+  .description.complete {
+    /* animation: complete 200ms ease-out; */
+  }
+
+  iron-icon[icon="help"] {
+    --iron-icon-width: 16px;
+    --iron-icon-height: 16px;
+    vertical-align: text-bottom;
+    margin-left: 10px;
+  }
 </style>
 
 <div class="username">
   <div class="title">Hello [[username]]</div>
   <app-orcid-label orcid="[[orcid]]"></app-orcid-label>
 </div>
-<div style="font-size: 22px; text-align:center; margin: 30px 0 50px 0; font-weight: 100">
-  Optimizing your iD will improve its accuracy and usefulness.
+<div class="description" hidden$="[[complete]]">
+  Optimizing your record will improve its accuracy and usefulness.
+</div>
+<div class="description complete" hidden$="[[!complete]]">
+  Nice Work!  Your ORCID record looks great!
 </div>
 
 <div class="checklist">
@@ -71,7 +102,7 @@
       <div>
         <app-completed-chart id="chart"></app-completed-chart>
       </div>
-      <a on-click="_onReloadClicked">Reload the iD score</a>
+      <a on-click="_onReloadClicked">Reload iD score</a>
     </div>
 
     <div style="flex:1; max-width: 450px">
@@ -81,9 +112,20 @@
         <template>
           <div class="item-layout">
             <app-checklist-mark text="[[item.text]]" checked$="[[item.checked]]"></app-checklist-mark>
-            <app-checklist-help>
-              <div>[[item.help]]</div>
-            </app-checklist-help>
+
+            <dom-if if="[[item.helpIsLink]]">
+              <template>
+                <a href$="[[item.help]]"><iron-icon icon="help"></iron-icon></a>
+              </template>
+            </dom-if>
+            <dom-if if="[[!item.helpIsLink]]">
+              <template>
+                <app-checklist-help>
+                  <div>[[item.help]]</div>
+                </app-checklist-help>
+              </template>
+            </dom-if>
+            
           </div>
           <dom-if if="[[item.isEmployment]]">
             <template>
@@ -92,20 +134,6 @@
           </dom-if>
         </template>
       </dom-repeat>
-
-      <div hidden$="[[!errors.length]]">
-        <h2>Errors Detected</h2>
-        <dom-repeat items="[[errors]]">
-          <template>
-            <div class="item-layout">
-              <app-checklist-mark text="[[item.text]]" error></app-checklist-mark>
-              <app-checklist-help>
-                <div>[[item.help]]</div>
-              </app-checklist-help>
-            </div>
-          </template>
-        </dom-repeat>
-      </div>
     </div>
   </div>
 </div>
@@ -120,6 +148,6 @@
 </div>
 
 <div class="info-text footer">
-  <div>For technical help, email <a href="mailto:orcid@ucdavis.edu">orcid@ucdavis.edu</a>.</div>
-  <div>No longer want to use the iD Optimization Meter? <a style="cursor: pointer" on-click="_rejectToken">Disconnect your accounts</a>.</div>
+  <div>For help, email <a href="mailto:orcid@ucdavis.edu">orcid@ucdavis.edu</a>.</div>
+  <div>No longer want to use the ORCID iD Optimizer? <a style="cursor: pointer" on-click="_rejectToken">Disconnect your accounts</a>.</div>
 </div>

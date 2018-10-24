@@ -9,7 +9,7 @@
     cursor: pointer;
     color: var(--default-secondary-color);
     text-overflow: ellipsis;
-    max-width: 250px;
+    max-width: 275px;
     white-space: nowrap;
     overflow: hidden;
   }
@@ -25,10 +25,18 @@
   a.select {
     font-style: italic;
   }
+
+  iron-icon[icon="add-box"] {
+    vertical-align: bottom;
+    --iron-icon-height: 30px;
+    --iron-icon-width: 30px;
+  }
 </style>
 
 <div hidden$="[[hasEmployment]]">
-  <a class="select" href="/employment/edit">Select from UC Davis records</a>
+  <a class="select" href="/employment/edit">
+    <iron-icon icon="add-box"></iron-icon> Select from UC Davis records
+  </a>
 </div>
 <div hidden$="[[!hasEmployment]]" style="display:flex; align-items: center">
   <a class="edit" href="/employment/view">[[position]] <span hidden$="[[!hasPosition]]">/</span> [[department]]</a>

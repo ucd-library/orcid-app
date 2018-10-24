@@ -129,49 +129,38 @@
   
   
   <div section="cas-login">
-    <div class="title">Improve Your iD</div>
-    <div class="description">Get the most out of your ORCiD iD with help from UC Davis.</div>
+    <div class="title">Improve Your ORCID Record</div>
+    <div class="description">Get the most out of your ORCID iD with help from the UC Davis Library.</div>
     
-    <!-- <div class="orcid" style="margin-bottom: 30px">
-      <img src="/images/orcid-vector-logo.svg" style="height: 18px; width: 18px; vertical-align: middle" />
-      <a href="[[orcidUrl]]" class="orcid" target="_blank">[[orcid]]</a>
-    </div> -->
-
-    <!-- <div class="ucd-credentials">
-      <div>
-        <div><img src="/images/ucd-vector-logo-blue.svg" style="height: 46px" /></div>
-        <div><a href="/auth/cas/login" class="btn">Login</a></div>
-      </div>
-    </div> -->
-
     <div><a href="/auth/cas/login" class="btn">UC Davis Login</a></div>
 
     <div class="about">
-      <h3>About ORCID</h3>
-      <div>ORCID is an independent non-profit organization that provides a persistent 
-        identifier – an ORCID iD – that distinguishes you from other researchers and 
-        a mechanism for linking your research outputs and activities to your iD. ORCID 
-        is integrated into many systems used by publishers, funders, institutions, and 
-        other research-related services. Learn more at <a href="https://orcid.org">orcid.org.</a></div>
+      <h3>About ORCID and ORCID iDs</h3>
+      <div>ORCID is an independent non-profit organization that provides a persistent identifier – an 
+        ORCID iD – that distinguishes you from other researchers and a mechanism for linking your 
+        research outputs and activities to your iD. Your ORCID iD, through integration in key research 
+        workflows such as manuscript and grant submission, supports automated linkages between you and 
+        your professional activities. Your ORCID iD is entirely controlled by you. ORCID is integrated 
+        into many systems used by publishers, funders, institutions, and other research-related services. 
+        Learn more at <a href="https://orcid.org">orcid.org.</a></div>
     
-      <h3>About the iD Optimization Meter</h3>
-      <div>The iD Optimization Meter is provided by UC Davis to help you improve your 
-        ORCID profile. The meter scores your iD according to accuracy and completeness. 
-        It also provides a list of errors or suggested improvements to help you complete 
-        your iD and improve your score.</div>
-      <div>Connecting your iD with UC Davis gives us permission to update your ORCID record, 
-        helping you keep your record up-to-date with trusted information. You may disconnect 
-        your accounts at any time.</div>
+      <h3>About the ORCID iD Optimizer</h3>
+      <div>The ORCID iD Optimizer is provided by the UC Davis Library to help you improve your ORCID record. 
+        The meter scores your record according to the number of sections filled out. It also provides a list 
+        of suggested improvements to help you complete your iD and improve your score.</div>
+      <div>Connecting your ORCID iD with UC Davis gives us permission to update your ORCID record, helping 
+        you keep your record up-to-date with trusted information. You may revoke UC Davis access to your 
+        ORCID acount and/or delete any information added by UC Davis at any time.</div>
 
       <h3>Need Help?</h3>
-      <div>For technical assistance, email <a href="mailto:orcid@ucdavis.edu">orcid@ucdavis.edu</a></div>
+      <div>For assistance, email <a href="mailto:orcid@ucdavis.edu">orcid@ucdavis.edu</a></div>
     </div>   
   </div>
 
   <div section="orcid-login">
     <div class="title">Get Connected</div>
 
-    <div class="description">Connect your ORCiD iD to your UC Davis account by logging in into ORCiD.</div>
+    <div class="description">Connect your ORCID iD to your UC Davis account by logging into ORCID.</div>
     <div style="margin-top: 25px">
       <a class="btn" href="/auth/orcid/oauth-login">
         <div style="display:flex">
@@ -185,48 +174,47 @@
   </div>
   
   <div section="link-approval">
-    <div class="title">Link Accounts</div>
+    <div class="title">Complete the Connection</div>
 
     <div class="description">Check that the correct accounts are displayed below.</div>
 
     <div class="review">
-      
-        <div class="review-card">
-          <div><img src="/images/ucd-vector-logo-blue.svg" style="height: 38px; margin-top: 7px;" /></div>
-          
-          <div class="info-label">Name</div>
-          <div>[[ucdName]]</div>
-          <div class="info-label">Email</div>
-          <div>[[ucdEmail]]</div>
-          <div class="info-label">Title</div>
-          <div>[[ucdTitle]]</div>
-          <div class="info-label">Department</div>
-          <div>[[ucdDept]]</div>
+      <div class="review-card">
+        <div><img src="/images/ucd-vector-logo-blue.svg" style="height: 38px; margin-top: 7px;" /></div>
+        
+        <div class="info-label">Name</div>
+        <div>[[ucdName]]</div>
+        <div class="info-label">Email</div>
+        <div>[[ucdEmail]]</div>
+        <div class="info-label">Title</div>
+        <div>[[ucdTitle]]</div>
+        <div class="info-label">Department</div>
+        <div>[[ucdDept]]</div>
 
-        </div>
-
-        <div class="review-card">
-          <div>
-            <img src="/images/orcid-logo.png" />
-          </div>
-
-          <div class="info-label">Name</div>
-          <div>[[orcidName]]</div>
-          <div class="info-label">iD Number</div>
-          <div>
-            <img src="/images/orcid-vector-logo.svg" style="height: 18px; width: 18px; vertical-align: middle" />
-            <a href="[[orcidUrl]]" class="orcid" target="_blank">[[orcidUrl]]</a>
-          </div>
-        </div>
       </div>
 
-    <div style="text-align:center">
-      <a class="btn" style="cursor:pointer" on-click="_linkAccounts" disabled$="[[linking]]">
-        Link UCD & ORCiD Accounts
-      </a>
+      <div class="review-card">
+        <div>
+          <img src="/images/orcid-logo.png" />
+        </div>
 
+        <div class="info-label">Name</div>
+        <div>[[orcidName]]</div>
+        <div class="info-label">iD Number</div>
+        <div>
+          <img src="/images/orcid-vector-logo.svg" style="height: 18px; width: 18px; vertical-align: middle" />
+          <a href="[[orcidUrl]]" class="orcid" target="_blank">[[orcidUrl]]</a>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:right">
       <a href="/auth/logout" class="btn inverse" style="margin-left: 40px" disabled$="[[linking]]">
         Cancel
+      </a>
+
+      <a class="btn" style="cursor:pointer" on-click="_linkAccounts" disabled$="[[linking]]">
+        Link Accounts
       </a>
     </div>
   </div>

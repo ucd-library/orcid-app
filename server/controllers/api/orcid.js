@@ -20,15 +20,29 @@ router.get('/reject-token', hasUcdAuth, async (req, res) => {
 });
 
 router.get('/profile/:id', async (req, res) => {
+  let response;
   try {
-    let response = await users.getPublicProfileByUcdId(req.params.id);
+    response = await users.getPublicProfileByUcdId(req.params.id);
     res.set('x-id-type', response.type);
     res.status(response.statusCode).json(response.body);
   } catch(e) {
     res.status(400).json({
       error : true,
-      message : e.message,
-      stack : e.stack
+      message : e.message
+    });
+  }
+});
+
+router.get('/profile/:id/id', async (req, res) => {
+  let response;
+  try {
+    response = await users.getPublicProfileByUcdId(req.params.id, true);
+    res.set('x-id-type', response.type);
+    res.json({orcid: response.id});
+  } catch(e) {
+    res.status(400).json({
+      error : true,
+      message : e.message
     });
   }
 });

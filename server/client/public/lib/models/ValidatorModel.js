@@ -38,16 +38,12 @@ class ValidatorModel extends BaseModel {
     // CrossRef
     let crossRef = {
       id: 'crossRef',
-      text : 'Enable CrossRef Metadata Search',
-      help : 'Link your Scopus id. Under works -> Search & Link -> CrossRef Metadata Search.'
+      text : 'Enable CrossRef to automatically import works',
+      helpIsLink : true,
+      help : '/help/crossref'
     };
     if( this.hasCrossRefEnabled(record) ) {
       crossRef.checked = this.hasCrossRefEnabled(record);
-    } else if( this.hasWorks(record) ) {
-      results.warnings.push({
-        text : 'You have works added to your record but do not appear to have CrossRef enabled',
-        help : 'No idea how to do this...'
-      })
     }
     results.checklist.push(crossRef);
 
@@ -57,25 +53,14 @@ class ValidatorModel extends BaseModel {
       text : 'Verified employment information',
       help : 'Add employment via the section title "employment"'
     };
-    if( this.hasEmployment(record) ) {
+    if( this.hasAppUcdEmployment(record) ) {
       employment.checked = true;
+      // employment.showEdit = true;
       results.total += config.points.employment;
-
-      let e = this.hasCorrectUcdEmployment(record);
-      if( !e ) {
-        results.errors.push({
-          text : 'Unverified employment insitution displayed.',
-          help : 'Click \'Select from UC Davis Records\' above to select correct employment information.'
-        });
-        employment.showSelect = true;
-      } else {
-        employment.showEdit = true;
-        employment.employment = e;
-      }
-    } else {
-      employment.showSelect = true;
-    }
-
+    } 
+    // else {
+    //   employment.showSelect = true;
+    // }
     results.checklist.push(employment);
 
     // Other Id
@@ -211,16 +196,15 @@ class ValidatorModel extends BaseModel {
    * 
    * @returns {Boolean}
    */
-  hasCorrectUcdEmployment(record) {
+  hasAppUcdEmployment(record) {
     let employments = this.hasEmployment(record);
     if( !employments ) return false;
 
     for( let e of employments ) {
-      if( !e.organization ) continue;
-      if( !e.organization['disambiguated-organization'] ) continue;
-      if( e.organization['disambiguated-organization']['disambiguated-organization-identifier'] === config.ucdRinggoldId &&
-          e.organization['disambiguated-organization']['disambiguation-source'] === 'RINGGOLD' ) {
-        return e;
+      if( !e.source ) continue;
+      if( !e.source['source-client-id'] ) continue;
+      if( e.source['source-client-id']['path'] === APP_CONFIG.clientId ) {
+        return true;
       }
     }
 

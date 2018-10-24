@@ -8,10 +8,7 @@
     align-items: center;
   }
 
-  iron-icon {
-    color: var(--medium-background-color);
-  }
-  iron-icon[checked] {
+  iron-icon[icon="check-circle"] {
     color: var(--default-primary-color);
   }
   iron-icon[icon="error"] {
@@ -21,8 +18,8 @@
 
 <div class="layout">
   <div>
-    <iron-icon icon="check-circle" checked$="[[checked]]" hidden$="[[error]]"></iron-icon>
-    <iron-icon icon="error" hidden$="[[!error]]"></iron-icon>
+    <iron-icon icon="check-circle" hidden$="[[!checked]]"></iron-icon>
+    <iron-icon icon="error" hidden$="[[checked]]"></iron-icon>
   </div>
   <div style="padding-left: 10px">[[text]]</div>
 </div>

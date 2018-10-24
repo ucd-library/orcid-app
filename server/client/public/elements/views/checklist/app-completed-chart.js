@@ -21,6 +21,10 @@ export default class AppCompletedChart extends PolymerElement {
       width: {
         type : Number,
         value : 200
+      },
+      complete : {
+        type : Boolean,
+        computed : '_computeComplete(percent)'
       }
     }
   }
@@ -29,6 +33,10 @@ export default class AppCompletedChart extends PolymerElement {
     super.ready();
     this.ctx = this.$.canvas.getContext('2d');
     this._redraw();
+  }
+
+  _computeComplete(percent) {
+    return (percent >= 100) ? true : false;
   }
 
   /**

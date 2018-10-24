@@ -22,6 +22,9 @@
     font-size: 50px;
     margin: 0 0 5px 0;
   }
+  h1[complete] {
+    font-size: 38px;
+  }
   h3 {
     margin: 0;
     padding: 0;
@@ -31,7 +34,7 @@
 <div style="position: relative; height: [[height]]px; width: [[width]]px">
   <canvas id="canvas" height$="[[height]]" width$="[[width]]"></canvas>
   <div class="text">
-    <h1>[[percent]]%</h1>
+    <h1 complete$="[[complete]]">[[percent]]%</h1>
     <h3>optimized</h3>
   </div>
 </div>

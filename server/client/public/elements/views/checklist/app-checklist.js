@@ -27,10 +27,6 @@ export default class AppChecklist extends Mixin(PolymerElement)
         type: Array,
         value : () => []
       },
-      errors : {
-        type : Array,
-        value : () => []
-      },
       orcidUrl : {
         type : String,
         value : ''
@@ -39,6 +35,10 @@ export default class AppChecklist extends Mixin(PolymerElement)
         type : Boolean,
         value : false,
         reflectToAttribute : true
+      },
+      complete : {
+        type : Boolean,
+        value : false
       }
     }
   }
@@ -76,13 +76,14 @@ export default class AppChecklist extends Mixin(PolymerElement)
 
     let results = validator.analyze(this.record);
 
+    this.complete = (results.total >= 100) ? true : false; 
+
     this.$.chart.percent = results.total;
     
     results.checklist.forEach(item => {
       if( item.id === 'employment' ) item.isEmployment = true;
     });
     this.checklist = results.checklist;
-    this.errors = results.errors;
   }
 
   /**

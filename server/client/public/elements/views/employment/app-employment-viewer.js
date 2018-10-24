@@ -10,13 +10,17 @@ export default class AppEmploymentViewer extends Mixin(PolymerElement)
 
   static get properties() {
     return {
-      
+      removing : {
+        type : Boolean,
+        value : false
+      }
     }
   }
 
   constructor() {
     super();
     this._injectModel('UserModel');
+    this._injectModel('AppStateModel');
     this._injectModel('EmploymentModel');
   }
 
@@ -49,6 +53,32 @@ export default class AppEmploymentViewer extends Mixin(PolymerElement)
   _onUserRecordUpdate(e) {
     if( e.state !== 'loaded' ) return;
     this._render();
+  }
+
+  /**
+   * @method _onDeleteAllClicked
+   * @description bound to remove all btn click event
+   */
+  _onDeleteAllClicked() {
+    if( !confirm('Are you sure you want to remove all employments added by the ORCID iD Optimizer?') ) return; 
+
+    this.removing = true;
+    this.UserModel.updateEmployments([]);
+  }
+
+  _onUserEmploymentsUpdateUpdate(e) {
+    if( !this.removing || e.state === 'loading' ) return;
+    this.removing = false;
+
+    if( e.state === 'error' ) {
+      console.error(e);
+      return alert('Failed to update ORCiD record');
+    }
+    
+    // pull latest record
+    this.UserModel.get();
+
+    this.AppStateModel.setLocation('/scorecard');
   }
 
 

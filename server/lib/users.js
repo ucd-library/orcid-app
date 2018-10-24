@@ -25,7 +25,7 @@ class Users {
     }
   }
 
-  async getPublicProfileByUcdId(id) {
+  async getPublicProfileByUcdId(id, orcidOnly=false) {
     let collection = firestore.db.collection(config.firestore.collections.users);
     let user;
     let type = '';
@@ -46,7 +46,14 @@ class Users {
       } 
     }
 
-    if( !user ) throw new Error('Unknown id: '+id);
+    if( !user ) throw new Error('Unknown id: '+id+'.  Lookup method: '+type);
+
+    if( orcidOnly ) {
+      return {
+        type,
+        id: user.orcid['orcid-identifier'].path
+      }
+    }
 
     let response = await orcidApi.getPublic(user.orcid['orcid-identifier'].path);
     let body = response.body;

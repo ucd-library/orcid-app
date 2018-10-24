@@ -135,7 +135,7 @@ export default class AppEmploymentEditor extends Mixin(PolymerElement)
   }
 
   _onUserEmploymentsUpdateUpdate(e) {
-    if( e.state === 'loading' ) return;
+    if( !this.updating || e.state === 'loading' ) return;
     this.updating = false;
 
     if( e.state === 'error' ) {

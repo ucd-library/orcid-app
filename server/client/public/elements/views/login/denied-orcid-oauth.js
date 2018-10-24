@@ -9,7 +9,10 @@ export default class DeniedOrcidOauth extends PolymerElement {
 
   static get properties() {
     return {
-      
+      orcidUrl : {
+        type : String,
+        value : APP_CONFIG.orcidUrl
+      }
     }
   }
 

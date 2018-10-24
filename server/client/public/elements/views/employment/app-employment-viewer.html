@@ -8,8 +8,8 @@
   }
 
   .btns {
-    text-align: right;
-    padding: 15px;
+    display: flex;
+    padding-top: 30px;
   }
 
   .pos-title {
@@ -32,7 +32,12 @@
   }
 
   .content-padding {
-    padding: 20px;
+    padding: 20px 20px 30px 20px;
+  }
+
+  iron-icon[icon="delete"] {
+    color: var(--default-secondary-color);
+    vertical-align: bottom;
   }
 </style>
 
@@ -70,6 +75,14 @@
 <div class="break-line"></div>
 
 <div class="btns">
+  <div style="flex: 1">
+    <a class="btn inverse" on-click="_onDeleteAllClicked" hidden$="[[removing]]">
+      <iron-icon icon="delete"></iron-icon> Remove all from iD
+    </a>
+    <a class="btn inverse" hidden$="[[!removing]]">
+      Removing from record...
+    </a>
+  </div>
   <a class="btn inverse" href="/scorecard">Cancel</a>
   <a class="btn" href="/employment/edit">
     <iron-icon icon="create"></iron-icon> Edit

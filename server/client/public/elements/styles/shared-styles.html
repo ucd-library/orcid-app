@@ -10,7 +10,13 @@
           font-weight: bold;
         }
 
-        .btn {
+        a, a:visited {
+          color: var(--default-secondary-color);
+          text-decoration: none;
+          cursor: pointer;
+        }
+
+        .btn, a.btn {
           border: none;
           border-radius: 0;
           color: var(--inverse-text-color);
@@ -21,7 +27,7 @@
           display: inline-block;
         }
 
-        .btn.inverse {
+        .btn.inverse, a.btn.inverse {
           background: var(--inverse-text-color);
           color: var(--default-secondary-color);
         }
