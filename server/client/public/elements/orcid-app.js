@@ -19,9 +19,9 @@ import "./views/login/app-login"
 import "./views/login/denied-orcid-oauth"
 import "./views/checklist/app-checklist"
 import "./views/employment/app-employment"
-// import "./app-auto-edit"
+import "./views/help/app-help"
 
-const NO_HEADER_LIST = ['denied-orcid-oauth', 'employment']
+const NO_HEADER_LIST = ['denied-orcid-oauth',  'employment']
 
 export default class OrcidApp extends Mixin(PolymerElement)
   .with(EventInterface) {
