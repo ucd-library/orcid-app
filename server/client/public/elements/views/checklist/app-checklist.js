@@ -92,9 +92,7 @@ export default class AppChecklist extends Mixin(PolymerElement)
   async _onReloadClicked() {
     if( this.reloading ) return;
     this.reloading = true;
-
-    this.style.opacity = 0.5;
-    this.UserModel.get(); 
+    this.UserModel.get(true); 
   }
 
   /**

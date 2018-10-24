@@ -15,9 +15,9 @@ class UserService extends BaseService {
     }
   }
 
-  get() {
+  get(sync=false) {
     return this.request({
-      url : `/api/user`,
+      url : `/api/user/${sync ? 'sync' : ''}`,
       onLoading : request => this.store.setUserRecordLoading(request),
       onLoad : result => this.store.setUserRecordLoaded(result.body),
       onError : e => this.store.setUserRecordError(e)

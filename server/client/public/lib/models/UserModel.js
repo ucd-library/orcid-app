@@ -18,14 +18,14 @@ class UserModel extends BaseModel {
    * @description load an ORCiD record
    * 
    */
-  async get() {
+  async get(sync=false) {
     let record = this.store.getUserRecord();
 
     try {
       if( record && record.request ) {
         await record.request;
       } else {
-        await this.service.get();
+        await this.service.get(sync);
       }
     } catch(e) {}
 

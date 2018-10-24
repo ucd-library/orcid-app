@@ -16,6 +16,13 @@
     font-weight: bold;
   }
 
+  .no-dept {
+    font-style: italic;
+    color: var(--orcid-grey);
+    font-size: 14px;
+    line-height: 18px;
+  }
+
   .value-label {
     color: var(--orcid-grey);
   }
@@ -39,7 +46,12 @@
     <template>
       <div>
         <div class="pos-title">[[item.title]]</div>
-        <div><span class="value-label">Department:</span> [[item.department]]</div>
+        <div hidden$="[[!item.hasDepartment]]">
+          <span class="value-label">Department:</span> [[item.department]]
+        </div>
+        <div hidden$="[[item.hasDepartment]]" class="no-dept">
+          No position information specified
+        </div>
         <div><span class="value-label">Start Date:</span> [[item.startDate]]</div>
       </div>
     </template>

@@ -120,9 +120,9 @@ export default class AppEmploymentEditor extends Mixin(PolymerElement)
       })
     
     // set default ucd record
-    if( employments.length === 0 ) {
+    if( this.positions.filter(e => e.enabled).length === 0 ) {
       let user = this.UserModel.store.getUserRecord().payload;
-      employments.push({
+      employments.unshift({
         code : APP_CONFIG.orgs.ucd,
         startDate : this.EmploymentModel._getDisplayStartDate(
           this.EmploymentModel._getEarliestStartDate(user.ucd.departmentPps)

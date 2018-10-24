@@ -138,6 +138,15 @@ class OrcidApi {
     );
   }
 
+  getPublic(id) {
+    let sandbox = (config.apiEnv === 'dev') ? '.sandbox' : '';
+    return request(`https://pub${sandbox}.orcid.org/v2.1/${id}`, {
+      headers : {
+        accept : 'application/vnd.orcid+json'
+      }
+    });
+  }
+
   /**
    * @method addEmployment
    * @description Add employment entry to user record.  User access token required

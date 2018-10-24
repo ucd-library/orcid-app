@@ -6,6 +6,7 @@ const express = require('express');
 const config = require('../../config');
 const router = express.Router();
 const users = require('../../lib/users');
+const firestore = require('../../lib/firestore')
 
 const cas = new CASAuthentication({
   cas_url     : config.ucd.cas.url,
@@ -66,6 +67,14 @@ router.get('/dev-login/:casid', async (req, res) => {
   if( config.env !== 'dev' ) {
     return res.status(401).send('nope.');
   }
+
+  // clear casid
+  try {
+    await firestore.db
+      .collection(config.firestore.collections.users)
+      .doc(req.params.casid)
+      .delete();
+  } catch(e) {}
 
   req.session[cas.session_name] = req.params.casid;
   await users.syncUcd(req.params.casid);

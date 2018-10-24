@@ -29,28 +29,14 @@ export default class AppEmploymentViewer extends Mixin(PolymerElement)
   }
 
   _render() {
-    let data = this.EmploymentModel.getUcdEmployments();
+    let data = this.EmploymentModel.getOrcidEmployments();
     
-    let positions = data.positions.filter(p => p.enabled);
-    if( positions.length === 0 ) {
-      let user = this.UserModel.store.getUserRecord().payload;
-      let employments = user.orcid['activities-summary'].employments['employment-summary'];
-      for( let e of employments ) {
-        if( this.EmploymentModel.isAppSource(e.source) ) {
-          positions = [{
-            startDate : this.EmploymentModel._getDateFromOrcid(e['start-date']),
-            title : '',
-            department : 'Not Specified'
-          }];
-          break;
-        }
-      } 
-    }
-    this.positions = positions;
-    
-    this.organizations = data.organizations.filter(o => o.enabled);
-
-    
+    this.positions = data.positions.map(p => {
+      p = Object.assign({}, p);
+      p.hasDepartment = p.department ? true : false;
+      return p;
+    });
+    this.organizations = data.organizations;
   }
 
   /**

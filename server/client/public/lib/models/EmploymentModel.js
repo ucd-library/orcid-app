@@ -25,6 +25,40 @@ class EmploymentModel extends BaseModel {
     return false;
   }
 
+  getOrcidEmployments() {
+    let data = {
+      positions : [],
+      organizations : []
+    }
+
+    let user = UserStore.getUserRecord().payload;
+    if( !user.ucd || !user.orcid ) {
+      return data;
+    }
+
+    let employments = user.orcid['activities-summary'].employments['employment-summary'];
+    for( let e of employments ) {
+      if( !this.isAppSource(e.source) ) continue;
+
+      let pos = {
+        org : e.organization['disambiguated-organization']['disambiguated-organization-identifier'],
+        title : e['role-title'],
+        department : e['department-name'],
+        startDate : e['start-date'].year.value+'-'+
+                    e['start-date'].month.value+'-'+
+                    e['start-date'].day.value
+      }
+
+      if( pos.org === APP_CONFIG.orgs.ucd ) {
+        data.positions.push(pos);
+      } else {
+        data.organizations.push(pos);
+      }
+    }
+
+    return data;
+  }
+
   getUcdEmployments() {
     let data = {
       positions : [],

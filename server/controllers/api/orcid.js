@@ -19,4 +19,18 @@ router.get('/reject-token', hasUcdAuth, async (req, res) => {
   }
 });
 
+router.get('/profile/:id', async (req, res) => {
+  try {
+    let response = await users.getPublicProfileByUcdId(req.params.id);
+    res.set('x-id-type', response.type);
+    res.status(response.statusCode).json(response.body);
+  } catch(e) {
+    res.status(400).json({
+      error : true,
+      message : e.message,
+      stack : e.stack
+    });
+  }
+});
+
 module.exports = router;

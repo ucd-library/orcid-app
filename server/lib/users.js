@@ -25,6 +25,55 @@ class Users {
     }
   }
 
+  async getPublicProfileByUcdId(id) {
+    let collection = firestore.db.collection(config.firestore.collections.users);
+    let user;
+    let type = '';
+    
+    if( id.match(/^\d{10}$/) ) { // iam
+      type = 'iam';
+      let result = await collection.where('ucd.contact.iamId', '==', id).get();
+      user = this._getFirstFromQueryRef(result);
+    } else if( id.indexOf('@') > -1 ) { // email
+      type = 'email';
+      let result = await collection.where('ucd.contact.email', '==', id).get();
+      user = this._getFirstFromQueryRef(result);
+    } else { // cas
+      type = 'cas';
+      user = await this.getUser(id);
+      if( Object.keys(user).length === 0 ) {
+        user = null;
+      } 
+    }
+
+    if( !user ) throw new Error('Unknown id: '+id);
+
+    let response = await orcidApi.getPublic(user.orcid['orcid-identifier'].path);
+    let body = response.body;
+    try {
+      body = JSON.parse(response.body);
+    } catch(e) {
+      body = {body}
+    };
+    
+    return {
+      type,
+      body,
+      statusCode : response.statusCode
+    }
+  }
+
+  _getFirstFromQueryRef(ref) {
+    let data = [];
+    ref.forEach(doc => {
+      data.push(doc.data());
+    });
+    if( data.length === 0 ) return null;
+    return data[0];
+  }
+
+
+
   /**
    * @method getUser
    * @description given a user casId return all information we have stored

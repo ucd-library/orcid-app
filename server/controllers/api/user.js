@@ -17,6 +17,16 @@ router.get('/', hasUcdAuth, async (req, res) => {
   }
 });
 
+router.get('/sync', hasUcdAuth, async (req, res) => {
+  let user = authUtils.getUserFromRequest(req);
+
+  try {
+    res.json(await users.getAndSyncUser(user.cas));
+  } catch(e) {
+    handleError(e, req, res);
+  }
+});
+
 router.post('/update/employment', hasUcdAuth, async (req, res) => {
   let user = authUtils.getUserFromRequest(req);
   let employments = req.body;
