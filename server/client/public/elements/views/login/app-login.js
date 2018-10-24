@@ -37,6 +37,7 @@ export default class AppLogin extends Mixin(PolymerElement)
   constructor() {
     super();
     this._injectModel('AppStateModel');
+    this._injectModel('EmploymentModel');
     this._injectModel('UcdModel');
   }
 
@@ -55,10 +56,12 @@ export default class AppLogin extends Mixin(PolymerElement)
     } else if ( userData.orcidAccessToken && userData.ucd && userData.orcid ) {
       this.section = 'link-approval';
 
+      let positions = this.EmploymentModel.getUcdEmployments().positions;
+
       let ucd = APP_CONFIG.user.data.ucd;
       this.ucdName = ucd.name.dFullName;
-      this.ucdTitle = ucd.departmentPps[0].titleOfficialName;
-      this.ucdDept = ucd.departmentPps[0].deptOfficialName;
+      this.ucdTitle = positions[0].title;
+      this.ucdDept = positions[0].department;
       this.ucdEmail = ucd.contact.email;
 
       this._setOrcidInfo();

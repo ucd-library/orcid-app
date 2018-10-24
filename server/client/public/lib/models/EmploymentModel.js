@@ -73,17 +73,24 @@ class EmploymentModel extends BaseModel {
     let employments = user.orcid['activities-summary'].employments['employment-summary'];
 
     if( user.ucd.departmentOdr ) {
-      let pos = {
-        odr : true,
-        org : config.orgs.ucd,
-        title : user.ucd.departmentOdr.titleDisplayName,
-        department : user.ucd.departmentOdr.deptDisplayName,
-        startDate : this._getDisplayStartDate(
-          this._getEarliestStartDate(user.ucd.departmentPps)
-        )
+      let odrArr = user.ucd.departmentOdr;
+      if( !Array.isArray(odrArr) ) {
+        odrArr = [odrArr];
       }
-      this._setEnable(pos, employments);
-      data.positions.push(pos);
+
+      odrArr.forEach(odr => {
+        let pos = {
+          odr : true,
+          org : config.orgs.ucd,
+          title : odr.titleDisplayName,
+          department : odr.deptDisplayName,
+          startDate : this._getDisplayStartDate(
+            this._getEarliestStartDate(user.ucd.departmentPps, odr)
+          )
+        }
+        this._setEnable(pos, employments);
+        data.positions.push(pos);
+      });
     }
 
     for( let pps of user.ucd.departmentPps ) {
@@ -104,7 +111,10 @@ class EmploymentModel extends BaseModel {
           startDate : this._getDisplayStartDate(pps.createDate)
         };
         this._setEnable(pos, employments);
-        data.organizations.push(pos);
+
+        if( !data.organizations.find(o => o.org === pos.org) ) {
+          data.organizations.push(pos);
+        }
       }
     }
 
@@ -116,7 +126,10 @@ class EmploymentModel extends BaseModel {
         startDate : this._getDisplayStartDate(app.startDate)
       };
       this._setEnable(pos, employments);
-      data.organizations.push(pos);
+
+      if( !data.organizations.find(o => o.org === pos.org) ) {
+        data.organizations.push(pos);
+      }
     }
 
     return data;

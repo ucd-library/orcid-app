@@ -94,7 +94,11 @@ export default class AppEmploymentEditor extends Mixin(PolymerElement)
     }
 
     if( hasOdr ) {
-      this.set('positions.0.enabled', true);
+      for( let i = 0; i < this.positions.length; i++ ) {
+        if( this.positions[i].odr ) {
+          this.set(`positions.${i}.enabled`, true);
+        }
+      }
     } else {
       for( let i = 0; i < this.positions.length; i++ ) {
         this.set(`positions.${i}.enabled`, true);
