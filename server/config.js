@@ -98,12 +98,10 @@ module.exports = {
   },
 
   ringgold : {
-    sourceId : null, // TODO
-
     orgs : {
       ucd : '8789',
-      coe : '9999',
-      eei : '8888'
+      coe : '140245',
+      eei : '522604'
     },
     appPartners : {
       'COLLEGE OF ENGINEERING' : {
