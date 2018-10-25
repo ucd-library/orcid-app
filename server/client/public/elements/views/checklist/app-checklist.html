@@ -27,12 +27,9 @@
   }
 
   h2 {
+    margin-top: 0;
     margin-bottom: 5px;
     font-size: 20px;
-  }
-
-  #chart {
-    display: inline-block;
   }
 
   app-checklist-help {
@@ -40,9 +37,13 @@
   }
 
   .checklist {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    text-align: center;
+  }
+
+  .checklist > div {
+    display: inline-block;
+    margin: auto;
+    text-align: left;
   }
 
   .username {
@@ -97,41 +98,43 @@
 </div>
 
 <div class="checklist">
-  <div class="layout">
-    <div style="margin-right: 35px; text-align: center">
-      <div>
+  <div>
+    <div class="layout">
+      <div style="margin-right: 35px; text-align: center">
         <app-completed-chart id="chart"></app-completed-chart>
+        <div><a on-click="_onReloadClicked">Reload iD score</a></div>
       </div>
-      <a on-click="_onReloadClicked">Reload iD score</a>
-    </div>
 
-    <div style="flex:1; max-width: 450px">
-      <h2 style="margin-top: 0">Improve Your iD with Key Features</h2>
+      <div style="max-width: 450px;">
+        <div>
+          <h2>Improve Your iD with Key Features</h2>
+        </div>
 
-      <dom-repeat items="[[checklist]]">
-        <template>
-          <div class="item-layout">
-            <app-checklist-mark text="[[item.text]]" checked$="[[item.checked]]"></app-checklist-mark>
+        <dom-repeat items="[[checklist]]">
+          <template>
+            <div class="item-layout">
+              <app-checklist-mark text="[[item.text]]" checked$="[[item.checked]]"></app-checklist-mark>
 
-            <dom-if if="[[item.helpIsLink]]">
+              <dom-if if="[[item.helpIsLink]]">
+                <template>
+                  <a href$="[[item.help]]"><iron-icon icon="help"></iron-icon></a>
+                </template>
+              </dom-if>
+              <dom-if if="[[!item.helpIsLink]]">
+                <template>
+                  <app-checklist-help help="[[item.help]]"></app-checklist-help>
+                </template>
+              </dom-if>
+              
+            </div>
+            <dom-if if="[[item.isEmployment]]">
               <template>
-                <a href$="[[item.help]]"><iron-icon icon="help"></iron-icon></a>
+                <app-checklist-employments ></app-checklist-employments>
               </template>
             </dom-if>
-            <dom-if if="[[!item.helpIsLink]]">
-              <template>
-                <app-checklist-help help="[[item.help]]"></app-checklist-help>
-              </template>
-            </dom-if>
-            
-          </div>
-          <dom-if if="[[item.isEmployment]]">
-            <template>
-              <app-checklist-employments ></app-checklist-employments>
-            </template>
-          </dom-if>
-        </template>
-      </dom-repeat>
+          </template>
+        </dom-repeat>
+      </div>
     </div>
   </div>
 </div>

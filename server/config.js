@@ -42,7 +42,7 @@ module.exports = {
   env : apiEnv,
 
   server : {
-    host : process.env.SERVER_HOST || `http://localhost:${PORT}`,
+    host : process.env.SERVER_HOST || 'http://168.150.61.88:8000' || `http://localhost:${PORT}`,
     port : PORT, 
     loglevel : process.env.SERVER_LOG_LEVEL || 'info',
     cookieSecret : process.env.SERVER_COOKIE_SECRET || 'changeme',

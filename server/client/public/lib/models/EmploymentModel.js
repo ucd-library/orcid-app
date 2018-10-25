@@ -165,11 +165,24 @@ class EmploymentModel extends BaseModel {
   }
 
   _getPpsDate(obj) {
-    return obj.assocStartDate;
+    return this._cleanDate(obj.assocStartDate);
   }
 
   _getOdrDate(obj) {
-    return obj.startDate || obj.modifyDate;
+    return this._cleanDate(obj.startDate || obj.modifyDate);
+  }
+
+  /**
+   * @method _cleanDate
+   * @description strip off time information from date.  UCD IAM apis return with space
+   * between date and time :/
+   * 
+   * @param {String} date
+   * 
+   * @return {String}
+   */
+  _cleanDate(date='') {
+    return date.replace(/[ T].*/, '');
   }
 
   /**
@@ -186,7 +199,7 @@ class EmploymentModel extends BaseModel {
     // if odr has start date, return it
     // this almost never happens
     if( odr.startDate ) {
-      return new Date(odr.startDate)
+      return new Date(this._cleanDate(odr.startDate))
     }
 
     // get the latest Pps date
@@ -197,7 +210,7 @@ class EmploymentModel extends BaseModel {
       return latestPps;
     }
 
-    let modifyDate = new Date(odr.modifyDate);
+    let modifyDate = new Date(this._cleanDate(odr.modifyDate));
 
     // return the earliest date between odr modified and latest pps
     if( modifyDate.getTime() < latestPps.getTime() ) {
@@ -234,9 +247,9 @@ class EmploymentModel extends BaseModel {
   }
 
   _getDisplayStartDate(date) {
-    if( !date ) return '';
+    if( !date ) return '';    
     if( typeof date !== 'object' ) {
-      date = new Date(date);
+      date = new Date(date.replace(/[ T].*/, ''));
     }
     return date.toISOString().replace(/T.*/, '');
   }

@@ -16,11 +16,13 @@ export default class AppCompletedChart extends PolymerElement {
       },
       height : {
         type : Number,
-        value : 200
+        value : 200,
+        observer : '_heightObserver'
       },
       width: {
         type : Number,
-        value : 200
+        value : 200,
+        observer : '_widthObserver'
       },
       complete : {
         type : Boolean,
@@ -37,6 +39,14 @@ export default class AppCompletedChart extends PolymerElement {
 
   _computeComplete(percent) {
     return (percent >= 100) ? true : false;
+  }
+
+  _heightObserver() {
+    this.$.outer.style.height = this.height+'px';
+  }
+
+  _widthObserver() {
+    this.$.outer.style.width = this.width+'px';
   }
 
   /**
