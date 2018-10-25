@@ -18,6 +18,10 @@ export default class AppChecklistHelp extends PolymerElement {
       showing : {
         type : Boolean,
         value : false
+      },
+      initWidth : {
+        type : Number,
+        value : 300
       }
     }
   }
@@ -31,6 +35,15 @@ export default class AppChecklistHelp extends PolymerElement {
       if( path.indexOf(this) > -1 ) return;
       this.hide();
     });
+
+    window.addEventListener('resize', e => {
+      if( !this.showing ) return;
+      this.show(); // resize
+    })
+  }
+
+  ready() {
+    super.ready();
   }
 
   _helpObserver() {
@@ -43,12 +56,20 @@ export default class AppChecklistHelp extends PolymerElement {
    * @description show checklist help popup
    */
   show() {
-    // let top = this.$.icon.offsetHeight + this.$.icon.offsetTop;
-    // let left = this.$.icon.offsetLeft + (this.$.icon.offsetWidth / 2);
-
     this.$.popup.style.top = (5)+'px';
-    this.$.popup.style.right = (-1*20)+'px';
     this.$.popup.style.display = 'block';
+    this.$.popup.style.right = '0px';
+
+    let left = this.offsetLeft;
+    let right = this.offsetWidth+left;
+
+    if( 0 < right-this.initWidth-20 ) {
+      this.$.popup.style.width = this.initWidth+'px';
+    } else {
+      let w = window.innerWidth;
+      this.$.popup.style.width = (w-10)+'px';
+    }
+
     this.showing = true;
   }
 
@@ -76,8 +97,15 @@ export default class AppChecklistHelp extends PolymerElement {
    * @description bound to popup panel click event
    */
   _onPopupClicked(e) {
-    e.preventDefault();
-    e.stopPropagation();
+    // if( !this.showing ) return;
+
+    // var path = e.path || (e.composedPath && e.composedPath());
+    // if( path.length > 0 && path[0].nodeName === 'A' ) {
+    //   return;
+    // }
+
+    // e.preventDefault();
+    // e.stopPropagation();
   }
 
 }

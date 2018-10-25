@@ -2,7 +2,9 @@ const secrets = require('./secrets');
 const path = require('path');
 const fs = require('fs');
 
-const apiEnv = process.env.API_ENV || 'dev';
+let apiEnv = process.env.API_ENV || process.env.NODE_ENV || 'dev';
+if( apiEnv === 'production' ) apiEnv = 'prod';
+if( apiEnv !== 'prod' ) apiEnv = 'dev';
 
 // let baseApiUrl = 'pub';
 let baseApiUrl = 'api';

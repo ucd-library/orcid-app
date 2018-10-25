@@ -120,13 +120,25 @@
     text-align: center;
   }
 
-
   .btn {
     font-size: 16px;
+  }
+
+  .dev {
+    background-color: #d8b633;
+    border-bottom: 1px solid #183257;
+    font-size: 13px;
+    line-height: 16px;
+    padding: 5px;
   }
 </style>
 
 <app-route id="appRoute" app-routes="[[appRoutes]]"></app-route>
+
+<div class="dev" hidden$="[[!isDev]]">
+  This is the development server!  The production server is located at 
+  <a href="https://orcid.library.ucdavis.edu">orcid.library.ucdavis.edu</a>
+</div>
 
 <div id="topbar">
   <img src="/images/logo.png" />  

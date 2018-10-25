@@ -50,7 +50,7 @@ class ValidatorModel extends BaseModel {
     let employment = {
       id : 'employment',
       text : 'Verified employment information',
-      help : 'Your latest UC Davis position will be displayed in a consistent, discoverable manner. Click the plus icon to get started.'
+      help : 'Your latest UC Davis position will be displayed in a consistent, discoverable manner. Click the plus button to get started.'
     };
     if( this.hasAppUcdEmployment(record) ) {
       employment.checked = true;
@@ -75,7 +75,8 @@ class ValidatorModel extends BaseModel {
     let works = {
       id : 'works',
       text : 'Works information',
-      help : 'We recommend using CrossRef Metadata Search to import your publications <a href="/help/crossref">[Step-by-Step Guide]</a>'
+      help : 'We recommend using CrossRef Metadata Search to import your publications '+
+              '<a href="https://support.orcid.org/hc/en-us/articles/360006973653" target="_blank">[Step-by-Step Guide]</a>'
     };
     if( this.hasWorks(record) ) {
       works.checked = true;
@@ -125,7 +126,7 @@ class ValidatorModel extends BaseModel {
     // Website
     let website = {
       id : 'website',
-      text : 'Your Websites(s)',
+      text : 'Your websites(s)',
       help : 'Adding links to your Twitter, blog, lab website, GitHub, etc., helps unify different aspects of your scholarship. '+
               '<a href="https://support.orcid.org/hc/en-us/articles/360006973833-Add-links-to-personal-websites-to-your-ORCID-record" target="_blank">[Step-by-Step Guide]</a>'
     };

@@ -60,7 +60,8 @@ module.exports = (app) => {
       next({
         user,
         appRoutes : config.server.appRoutes,
-        env : config.client.env,
+        env : config.env,
+        clientEnv : config.client.env,
         orcidUrl : config.orcid.url,
         baseApiUrl : config.orcid.api.baseUrl,
         orgs : config.ringgold.orgs,

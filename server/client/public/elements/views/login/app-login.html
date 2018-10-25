@@ -123,6 +123,12 @@
     line-height: 16px;
     margin-top: 10px;
   }
+
+  .pilot {
+    color: var(--color-red);
+    text-align: center;
+    padding: 20px 0 20px 0; 
+  }
 </style>
 
 <iron-pages selected="[[section]]" attr-for-selected="section">
@@ -133,6 +139,8 @@
     <div class="description">Get the most out of your ORCID iD with help from the UC Davis Library.</div>
     
     <div><a href="/auth/cas/login" class="btn">UC Davis Login</a></div>
+
+    <div class="pilot">This app is currently for use by CoE and EEI pilot participants only.</div>
 
     <div class="about">
       <h3>About ORCID and ORCID iDs</h3>
@@ -148,6 +156,7 @@
       <div>The ORCID iD Optimizer is provided by the UC Davis Library to help you improve your ORCID record. 
         The meter scores your record according to the number of sections filled out. It also provides a list 
         of suggested improvements to help you complete your iD and improve your score.</div>
+      <br />
       <div>Connecting your ORCID iD with UC Davis gives us permission to update your ORCID record, helping 
         you keep your record up-to-date with trusted information. You may revoke UC Davis access to your 
         ORCID acount and/or delete any information added by UC Davis at any time.</div>

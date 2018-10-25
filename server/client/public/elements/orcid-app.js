@@ -68,6 +68,10 @@ export default class OrcidApp extends Mixin(PolymerElement)
       noHeader : {
         type : Boolean,
         value : false
+      },
+      isDev : {
+        type : Boolean,
+        value : (APP_CONFIG.env === 'dev') ? true : false
       }
     }
   }
