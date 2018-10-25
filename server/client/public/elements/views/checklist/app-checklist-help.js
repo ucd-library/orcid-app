@@ -10,16 +10,32 @@ export default class AppChecklistHelp extends PolymerElement {
 
   static get properties() {
     return {
-      
+      help : {
+        type : String,
+        value : '',
+        observer : '_helpObserver'
+      },
+      showing : {
+        type : Boolean,
+        value : false
+      }
     }
   }
 
   constructor() {
     super();
     window.addEventListener('click', (e) => {
-      if( e.path.indexOf(this) > -1 ) return;
+      if( !this.showing ) return;
+
+      var path = e.path || (e.composedPath && e.composedPath());
+      if( path.indexOf(this) > -1 ) return;
       this.hide();
     });
+  }
+
+  _helpObserver() {
+    if( !this.$.popup ) return;
+    this.$.popup.innerHTML = this.help;
   }
 
   /**

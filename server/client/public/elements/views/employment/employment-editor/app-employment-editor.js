@@ -129,7 +129,10 @@ export default class AppEmploymentEditor extends Mixin(PolymerElement)
       employments.unshift({
         code : APP_CONFIG.orgs.ucd,
         startDate : this.EmploymentModel._getDisplayStartDate(
-          this.EmploymentModel._getEarliestStartDate(user.ucd.departmentPps)
+          this.EmploymentModel.getEarliestStartDate(
+            user.ucd.departmentPps,
+            user.ucd.departmentOdr
+          )
         )
       });
     }

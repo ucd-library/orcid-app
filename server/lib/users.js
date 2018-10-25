@@ -25,6 +25,16 @@ class Users {
     }
   }
 
+  /**
+   * @method getPublicProfileByUcdId
+   * @description given an UCD id, either IAM, email or CAS, return a ORCiD record or
+   * just the id
+   * 
+   * @param {String} id UCD id, either IAM, email or CAS, will auto detect
+   * @param {Boolean} orcidOnly return only the String ORCiD iD
+   * 
+   * @returns {Promise} resolves to object or string
+   */
   async getPublicProfileByUcdId(id, orcidOnly=false) {
     let collection = firestore.db.collection(config.firestore.collections.users);
     let user;
@@ -70,6 +80,11 @@ class Users {
     }
   }
 
+  /**
+   * @method _getFirstFromQueryRef
+   * @description help method for firestore
+   * TODO: move to firestore
+   */
   _getFirstFromQueryRef(ref) {
     let data = [];
     ref.forEach(doc => {
@@ -78,8 +93,6 @@ class Users {
     if( data.length === 0 ) return null;
     return data[0];
   }
-
-
 
   /**
    * @method getUser
@@ -122,10 +135,10 @@ class Users {
 
     // grab current UCD information
     let ucd = await this.getUcdInfo(casId);
+    user.ucd = ucd;
 
     // orcid information has not been set yet
     if( !user.orcid || !user.orcidAccessToken ) {
-      user.ucd = ucd;
       if( waitOnWrite ) {
         await firestore.setUser({
           id: casId, ucd
@@ -140,26 +153,30 @@ class Users {
     }
 
     // grab current ORCiD information
-    let response = await orcidApi.get(
-      user.orcid['orcid-identifier'].path, 
-      user.orcidAccessToken.access_token
-    );
-    let orcid = orcidApi.getResultObject(response);
+    try {
+      // TODO: add timeout option
+      let response = await orcidApi.get(
+        user.orcid['orcid-identifier'].path, 
+        user.orcidAccessToken.access_token
+      );
+      let orcid = orcidApi.getResultObject(response);
+  
+      // update firestore
+      if( waitOnWrite ) {
+        await firestore.setUser({
+          id: casId, orcid, ucd
+        });
+      } else {
+        firestore.setUser({
+          id: casId, orcid, ucd
+        });
+      }
 
-    // update firestore
-    if( waitOnWrite ) {
-      await firestore.setUser({
-        id: casId, orcid, ucd
-      });
-    } else {
-      firestore.setUser({
-        id: casId, orcid, ucd
-      });
+      user.orcid = orcid;
+    } catch(e) {
+      logger.error('Failed to request ORCiD profile: '+user.orcid['orcid-identifier'].path, e);
     }
     
-    user.orcid = orcid;
-    user.ucd = ucd;
-
     // strip access token unless asked for
     if( user.orcidAccessToken ) {
       user.orcidUsername = user.orcidAccessToken.username;

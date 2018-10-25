@@ -85,7 +85,7 @@ class EmploymentModel extends BaseModel {
           title : odr.titleDisplayName,
           department : odr.deptDisplayName,
           startDate : this._getDisplayStartDate(
-            this._getEarliestStartDate(user.ucd.departmentPps, odr)
+            this.getOdrDate(user.ucd.departmentPps, odr)
           )
         }
         this._setEnable(pos, employments);
@@ -98,7 +98,7 @@ class EmploymentModel extends BaseModel {
         org : config.orgs.ucd,
         title : pps.appTitle,
         department : pps.division.deptOfficialName,
-        startDate : this._getDisplayStartDate(this._getDate(pps))
+        startDate : this._getDisplayStartDate(this._getPpsDate(pps))
       }
       this._setEnable(pos, employments);
       data.positions.push(pos);
@@ -108,7 +108,7 @@ class EmploymentModel extends BaseModel {
         pos = {
           org : config.orgs[p.org],
           department : p.label,
-          startDate : this._getDisplayStartDate(this._getDate(pps))
+          startDate : this._getDisplayStartDate(this._getPpsDate(pps))
         };
         this._setEnable(pos, employments);
 
@@ -164,22 +164,69 @@ class EmploymentModel extends BaseModel {
     return date.year.value+'-'+date.month.value+'-'+date.day.value;
   }
 
-  _getDate(obj) {
-    return obj.assocStartDate || obj.createDate;
+  _getPpsDate(obj) {
+    return obj.assocStartDate;
   }
 
-  _getEarliestStartDate(pps=[], odr) {
+  _getOdrDate(obj) {
+    return obj.startDate || obj.modifyDate;
+  }
+
+  /**
+   * @method getOdrDate
+   * @description get the odr start date given all PPS records and
+   * the odr record
+   * 
+   * @param {Array} pps array of pps records
+   * @param {Object} odr odr record
+   * 
+   * @return {Date}
+   */
+  getOdrDate(pps=[], odr) {
+    // if odr has start date, return it
+    // this almost never happens
+    if( odr.startDate ) {
+      return new Date(odr.startDate)
+    }
+
+    // get the latest Pps date
+    let latestPps = this._getLatestPpsDate(pps);
+
+    // if there is no modify date on odr, return latest pps
+    if( !odr.modifyDate ) {
+      return latestPps;
+    }
+
+    let modifyDate = new Date(odr.modifyDate);
+
+    // return the earliest date between odr modified and latest pps
+    if( modifyDate.getTime() < latestPps.getTime() ) {
+      return modifyDate;
+    }
+    return latestPps;
+  }
+
+  _getLatestPpsDate(pps=[]) {
+    let latest = new Date(this._getPpsDate(pps[0])).getTime();
+    for( var i = 1; i < pps.length; i++ ) {
+      let t = new Date(this._getPpsDate(pps[i])).getTime();
+      if( latest < t ) latest = t;
+    }
+    return new Date(latest);
+  }
+
+  getEarliestStartDate(pps=[], odr) {
     if( !odr ) odr = [];
     if( Array.isArray(odr) ) odr = [odr]; 
 
-    let earliest = new Date(this._getDate(pps[0])).getTime();
+    let earliest = new Date(this._getPpsDate(pps[0])).getTime();
     for( var i = 1; i < pps.length; i++ ) {
-      let t = new Date(this._getDate(pps[i])).getTime();
+      let t = new Date(this._getPpsDate(pps[i])).getTime();
       if( earliest > t ) earliest = t;
     }
 
     for( var i = 1; i < odr.length; i++ ) {
-      let t = new Date(this._getDate(odr[i])).getTime();
+      let t = new Date(this._getOdrDate(odr[i])).getTime();
       if( earliest > t ) earliest = t;
     }
 

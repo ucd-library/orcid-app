@@ -120,9 +120,7 @@
             </dom-if>
             <dom-if if="[[!item.helpIsLink]]">
               <template>
-                <app-checklist-help>
-                  <div>[[item.help]]</div>
-                </app-checklist-help>
+                <app-checklist-help help="[[item.help]]"></app-checklist-help>
               </template>
             </dom-if>
             

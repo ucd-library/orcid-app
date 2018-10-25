@@ -126,7 +126,7 @@ class OrcidApi {
    * 
    * @returns {Promise} resolves to response
    */
-  get(id, token) {
+  get(id, token, timeout) {
     return this._request(
       `${config.orcid.api.baseUrl}/${id}/record`,
       {

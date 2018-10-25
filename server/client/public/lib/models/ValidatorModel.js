@@ -39,8 +39,7 @@ class ValidatorModel extends BaseModel {
     let crossRef = {
       id: 'crossRef',
       text : 'Enable CrossRef to automatically import works',
-      helpIsLink : true,
-      help : '/help/crossref'
+      help : 'Find and automatically import your publications. <a href="/help/crossref">[Step-by-Step Guide]</a>'
     };
     if( this.hasCrossRefEnabled(record) ) {
       crossRef.checked = this.hasCrossRefEnabled(record);
@@ -51,23 +50,20 @@ class ValidatorModel extends BaseModel {
     let employment = {
       id : 'employment',
       text : 'Verified employment information',
-      help : 'Add employment via the section title "employment"'
+      help : 'Your latest UC Davis position will be displayed in a consistent, discoverable manner. Click the plus icon to get started.'
     };
     if( this.hasAppUcdEmployment(record) ) {
       employment.checked = true;
-      // employment.showEdit = true;
       results.total += config.points.employment;
     } 
-    // else {
-    //   employment.showSelect = true;
-    // }
     results.checklist.push(employment);
 
     // Other Id
     let external = {
       id : 'externalId',
       text : 'External identifier linked',
-      help : 'Link your Scopus id. Under works -> Search & Link -> Scopus Author ID.'
+      help : 'Add your Scopus Author ID or ResearcherID as another way to import your works. '+
+              '<a href="https://support.orcid.org/hc/en-us/articles/360006894854-Add-person-identifiers-other-identifiers-to-your-ORCID-record" target="_blank">[Step-by-Step Guide]</a>'
     };
     if( this.hasExternalId(record) ) {
       external.checked = true;
@@ -79,7 +75,7 @@ class ValidatorModel extends BaseModel {
     let works = {
       id : 'works',
       text : 'Works information',
-      help : 'You have no associated works.  Please link using CrossRef.'
+      help : 'We recommend using CrossRef Metadata Search to import your publications <a href="/help/crossref">[Step-by-Step Guide]</a>'
     };
     if( this.hasWorks(record) ) {
       works.checked = true;
@@ -91,7 +87,8 @@ class ValidatorModel extends BaseModel {
     let education = {
       id : 'education',
       text : 'Education information',
-      help : 'Add education via the section title "Education"'
+      help : 'Add your undergraduate and graduate institutions. '+
+              '<a href="https://support.orcid.org/hc/en-us/articles/360006973933-Add-an-education-or-qualification-to-your-ORCID-record" target="_blank">[Step-by-Step Guide]</a>'
     };
     if( this.hasEducation(record) ) {
       education.checked = true;
@@ -103,7 +100,8 @@ class ValidatorModel extends BaseModel {
     let funding = {
       id : 'funding',
       text : 'Funding information',
-      help : 'Add funding via the section title "Funding"'
+      help : 'Automatically import information about your grants using ÜberWizard. '+
+            '<a href="https://support.orcid.org/hc/en-us/articles/360006897214-Add-funding-information-to-your-ORCID-record" target="_blank">[Step-by-Step Guide]</a>'
     };
     if( this.hasFunding(record) ) {
       funding.checked = true;
@@ -115,7 +113,8 @@ class ValidatorModel extends BaseModel {
     let keywords = {
       id : 'keywords',
       text : 'Keywords about your work',
-      help : 'Set keywords that describe your work.  Click pencil icon next to "Keywords"'
+      help : 'Use keywords that describe your research work and interests. '+
+              '<a href="https://support.orcid.org/hc/en-us/articles/360006971533-Add-keywords-to-your-ORCID-record" target="_blank">[Step-by-Step Guide]</a>'
     };
     if( this.hasKeywords(record) ) {
       keywords.checked = true;
@@ -127,7 +126,8 @@ class ValidatorModel extends BaseModel {
     let website = {
       id : 'website',
       text : 'Your Websites(s)',
-      help : 'Set your personal or research websites. Click pencil icon next to "Websites"'
+      help : 'Adding links to your Twitter, blog, lab website, GitHub, etc., helps unify different aspects of your scholarship. '+
+              '<a href="https://support.orcid.org/hc/en-us/articles/360006973833-Add-links-to-personal-websites-to-your-ORCID-record" target="_blank">[Step-by-Step Guide]</a>'
     };
     if( this.hasWebsite(record) ) {
       website.checked = true;
