@@ -100,6 +100,12 @@ export default class OrcidApp extends Mixin(PolymerElement)
   }
 
   _onAppStateUpdate(e) {
+    if( window.gtag ) {
+      gtag('config', 'UA-128190046-1', {
+        page_path: window.location.pathname
+      });
+    }
+
     let page = e.location.path[0];
     this.page = page;
     
