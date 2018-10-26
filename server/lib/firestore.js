@@ -100,6 +100,39 @@ class Firestore {
     return result.data();
   }
 
+  /**
+   * @method get all files for a collection
+   * 
+   * @param {String} collection collection name
+   * @param {Function} onDocLoaded callback, passed id and data.  can return promise
+   * @param {Number} size batch size
+   * 
+   * @returns {Promise}
+   */
+  getAll(collection, onDocLoaded, size=50) {
+    var collectionRef = this.db.collection(collection);
+  
+    return new Promise((resolve, reject) => {
+      getQueryBatch(collectionRef, size, 0, onDocLoaded, resolve, reject);
+    });
+  }
+
+}
+
+async function getQueryBatch(collectionRef, size, offset, onDocLoaded, resolve, reject) {
+  let snapshot = await collectionRef.limit(size).offset(offset).get();
+  if (snapshot.size == 0) {
+    return resolve();
+  }
+
+  for (let doc of snapshot.docs) {
+    await onDocLoaded(doc.id, doc.data());
+  }
+
+  offset += size;
+  process.nextTick(() => {
+    getQueryBatch(collectionRef, size, offset, onDocLoaded, resolve, reject);
+  });
 }
 
 module.exports = new Firestore();

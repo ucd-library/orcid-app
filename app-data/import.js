@@ -1,6 +1,5 @@
 const path = require('path');
 const fs = require('fs-extra');
-// const firestore = require('./lib/firestore');
 const parse = require('./lib/parse');
 const ucdApi = require('../server/lib/ucd-iam-api');
 

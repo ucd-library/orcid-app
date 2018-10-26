@@ -1,0 +1,5 @@
+cron:
+- description: "daily back cron job"
+  url: /api/cron/backup
+  target: beta
+  schedule: every day 03:00

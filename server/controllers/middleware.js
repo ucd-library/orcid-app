@@ -47,6 +47,26 @@ async function isAdmin(req, res, next) {
   next();
 }
 
+async function isAdminOrAeCron(req, res, next) {
+  if( req.get('x-appengine-cron') === 'true' ) {
+    return next();
+  }
+
+  if( !req.user ) {
+    return res.status(401).json({error: true, message: 'not logged in'});
+  }
+
+  if( !req.user.cas ) {
+    return res.status(401).json({error: true, message: 'not logged in with CAS'});
+  }
+
+  if( !(await authUtils.isAdmin(req.user.cas)) ) {
+    return res.status(401).json({error: true, message: 'nope.'});
+  }
+
+  next();
+}
+
 async function handleError(e, req, res) {
   // normal error, just bubble to API for now
   if( !(e instanceof orcidApi.ApiAccessError) ) {
@@ -73,4 +93,4 @@ async function handleError(e, req, res) {
   return true;
 }
 
-module.exports = {setUser, hasOrcidAuth, hasUcdAuth, isAdmin, handleError}
+module.exports = {setUser, isAdminOrAeCron, hasOrcidAuth, hasUcdAuth, isAdmin, handleError}

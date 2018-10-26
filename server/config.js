@@ -78,9 +78,14 @@ module.exports = {
     collections : {
       users : 'users',
       sessions : 'sessions',
-      admins : 'admins',
-      // app defined department lists
-      userDepartments : 'user-departments'
+      admins : 'admins'
+    }
+  },
+
+  cloudStorage : {
+    backup : {
+      bucketName : 'ucd-orcid-app-'+apiEnv+'-backups',
+      collections : ['users', 'admins']
     }
   },
 
