@@ -100,6 +100,10 @@ export default class OrcidApp extends Mixin(PolymerElement)
     } else if( page !== 'denied-orcid-oauth' ) {
       this.AppStateModel.setLocation('login');
     }
+
+    // double check?
+    let loadingEle = document.querySelector('#loading');
+    if( loadingEle ) loadingEle.remove();
   }
 
   _onAppStateUpdate(e) {
