@@ -26,9 +26,9 @@ class AuthUtils {
    * @returns {Promise} resolves to {Boolean}
    */
   async isAdmin(casId) {
-    if( !this.admins ) {
+    // if( !this.admins ) {
       await this.loadAdmins();
-    }
+    // }
 
     return (this.admins.indexOf(casId) > -1) ? true : false;
   }
