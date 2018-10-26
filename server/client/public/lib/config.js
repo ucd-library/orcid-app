@@ -17,15 +17,15 @@ module.exports = {
   ucdSource : 'UC Davis',
   ucdRinggoldId : '8789',
   crossRefSourceName : 'CrossRef',
-  crossRefSourceId : '0000-0002-3054-1567',
+  crossRefSourceId : '0000-0001-9884-1913',
 
   points : {
     externalId : 20,
     education : 14,
-    employment : 21,
+    employment : 20,
     funding : 14,
-    works : 21,
-    keywords : 7,
-    websites : 7
+    works : 20,
+    keywords : 6,
+    websites : 6
   }
 }

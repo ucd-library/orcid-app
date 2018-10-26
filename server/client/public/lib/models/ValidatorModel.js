@@ -150,8 +150,8 @@ class ValidatorModel extends BaseModel {
   hasExternalId(record) {
     if( !record.person ) return false;
     if( !record.person['external-identifiers'] ) return false;
-    if( !record.person['external-identifiers']['external-identifiers'] ) return false;
-    if( record.person['external-identifiers']['external-identifiers'].length > 0 ) return true;
+    if( !record.person['external-identifiers']['external-identifier'] ) return false;
+    if( record.person['external-identifiers']['external-identifier'].length > 0 ) return true;
     return false;
   }
 
@@ -263,8 +263,8 @@ class ValidatorModel extends BaseModel {
       if( !w['work-summary'] ) continue;
       for( let s of w['work-summary'] ) {
         if( !s.source ) continue;
-        if( !s.source['source-orcid'] ) continue;
-        if( s.source['source-orcid'].path === config.crossRefSourceId ) {
+        if( !s.source['source-client-id'] ) continue;
+        if( s.source['source-client-id'].path === config.crossRefSourceId ) {
           return true;
         }
       }
