@@ -66,10 +66,14 @@ module.exports = (app) => {
         baseApiUrl : config.orcid.api.baseUrl,
         orgs : config.ringgold.orgs,
         appPartners : config.ringgold.appPartners,
+        analyticsKey : config.google.analyticsKey,
         clientId : config.orcid.clientId
       });
     },
-    template : async (req, res, next) => next({bundle})
+    template : async (req, res, next) => next({
+      bundle,
+      analyticsKey : config.google.analyticsKey
+    })
   });
 
   /**

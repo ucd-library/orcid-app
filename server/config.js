@@ -101,7 +101,8 @@ module.exports = {
   },
 
   google : {
-    key : secrets.google
+    key : secrets.google,
+    analyticsKey : 'UA-128209231-1'
   },
 
   ringgold : {

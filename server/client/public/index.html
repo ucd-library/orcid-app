@@ -1,8 +1,16 @@
 <!doctype html>
 <html lang="en">
+  <!--[if lte IE 10]>
+    <script type="text/javascript">
+      if ( document.URL.indexOf( 'ie' ) === -1 ) {
+        window.location = '/ie.html';
+      }
+    </script>
+  <![endif]-->
   <head>
     <meta charset="utf-8" />
-    <title>UCD Library ORCiD Webapp</title>
+    <title>UCD Library - ORCiD Optimizer</title>
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/vnd.microsoft.icon">
     <meta name="viewport" content="width=device-width, maximum-scale=1, minimum-scale=1, initial-scale=1">
     <meta name="theme-color" content="#FFFFFF">
 
@@ -10,6 +18,13 @@
     
     <!-- from spa-router-middleware -->
     {{config}}
+
+    <!-- IE 10 detection -->
+		<script type="text/javascript">
+			if( window.navigator.appVersion.match(/MSIE 10/) ) {
+				window.location = '/ie.html';
+			}
+		</script>
   </head>
 
   <body>
@@ -19,15 +34,21 @@
       browser does not support it.
     </noscript>
 
+    <div id="loading" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; align-items: center">
+      <div>
+        <div style="margin-bottom: 25px"><img src="/images/ucd-vector-logo-blue.svg" alt="UC Davis" style="width: 275px" /></div>
+        <div style="text-align: center"><img src="/images/app-logo.svg" alt="ORCiD Optimizer" style="width: 225px" /></div>
+      </div>
+    </div>
+
     <orcid-app></orcid-app>
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-128190046-1"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{analyticsKey}}"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'UA-128190046-1');
     </script>
 
   </body>

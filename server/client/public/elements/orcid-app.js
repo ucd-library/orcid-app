@@ -79,6 +79,9 @@ export default class OrcidApp extends Mixin(PolymerElement)
   constructor() {
     super();
 
+    let loadingEle = document.querySelector('#loading');
+    if( loadingEle ) loadingEle.remove();
+
     this._injectModel('AppStateModel');
   }
 
@@ -101,7 +104,7 @@ export default class OrcidApp extends Mixin(PolymerElement)
 
   _onAppStateUpdate(e) {
     if( window.gtag ) {
-      gtag('config', 'UA-128190046-1', {
+      gtag('config', APP_CONFIG.analyticsKey, {
         page_path: window.location.pathname
       });
     }
