@@ -126,7 +126,7 @@ async function getQueryBatch(collectionRef, size, offset, onDocLoaded, resolve, 
   }
 
   for (let doc of snapshot.docs) {
-    await onDocLoaded(doc.id, doc.data());
+    await onDocLoaded(doc.id, doc.data(), doc);
   }
 
   offset += size;

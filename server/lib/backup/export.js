@@ -100,7 +100,6 @@ class Export {
       // older than a week and less than year old, only keep the first
       if( fileDate.getDate() !== 1 ) {
         await file.delete();
-        continue;
       }
     }
 

@@ -24,6 +24,17 @@ class CloudStorage {
     }
   }
 
+  async fileExists(bucket, bucketPath) {
+    return (await this.storage.bucket(bucket).file(bucketPath).exists())[0];
+  }
+
+  downloadFile(bucket, bucketPath, localPath) {
+    return this.storage
+      .bucket(bucket)
+      .file(bucketPath)
+      .download({destination: localPath});
+  }
+
   async addFile(bucket, filePath, bucketPath) {
     return this.storage.bucket(bucket).upload(filePath, {
       destination: bucketPath
