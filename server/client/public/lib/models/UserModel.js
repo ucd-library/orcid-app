@@ -47,16 +47,24 @@ class UserModel extends BaseModel {
    * @description if we made an ORCiD API call and the API responded that the ORCiD token
    * is invalid, this means the user has removed permission of this application.  The server
    * will have already unlinked the user at this point, so the application just needs to redirect
-   * them to the home screen
+   * them to the home screen.
+   * 
+   * Also if the account is not linked, we should not be making this request either...
    * 
    * @param {Object} state 
    */
   _checkRejectedTokenState(data) {
-    if( data.state !== 'error' ) return;
-    let e = data.error.payload;
+    if( data.state === 'error' ) {
+      let e = data.error.payload;
 
-    if( e.body && e.body.error === 'invalid_token' ) {
-      window.location = '/';
+      if( e.body && e.body.error === 'invalid_token' ) {
+        window.location = '/';
+      }
+    } else if ( data.state === 'loaded' ) {
+      let payload = data.payload || {};
+      if( !payload.linked ) {
+        window.location = '/';
+      }
     }
   }
 

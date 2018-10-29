@@ -158,30 +158,25 @@ class Users {
       return user;
     }
 
-    // grab current ORCiD information
-    try {
-      // TODO: add timeout option
-      let response = await orcidApi.get(
-        user.orcid['orcid-identifier'].path, 
-        user.orcidAccessToken.access_token
-      );
-      let orcid = orcidApi.getResultObject(response);
-  
-      // update firestore
-      if( waitOnWrite ) {
-        await firestore.setUser({
-          id: casId, orcid, ucd
-        });
-      } else {
-        firestore.setUser({
-          id: casId, orcid, ucd
-        });
-      }
+    let response = await orcidApi.get(
+      user.orcid['orcid-identifier'].path, 
+      user.orcidAccessToken.access_token
+    );
+    let orcid = orcidApi.getResultObject(response);
 
-      user.orcid = orcid;
-    } catch(e) {
-      logger.error('Failed to request ORCiD profile: '+user.orcid['orcid-identifier'].path, e);
+    // update firestore
+    if( waitOnWrite ) {
+      await firestore.setUser({
+        id: casId, orcid, ucd
+      });
+    } else {
+      firestore.setUser({
+        id: casId, orcid, ucd
+      });
     }
+
+    user.orcid = orcid;
+
     
     // strip access token unless asked for
     if( user.orcidAccessToken ) {
