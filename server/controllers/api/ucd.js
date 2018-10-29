@@ -19,16 +19,6 @@ router.get('/link', hasUcdAuth, async (req, res) => {
   }
 });
 
-// resync users UCD information to firestore
-// router.get('/sync', hasUcdAuth, async (req, res) => {
-//   let user = req.user;
-//   try {
-//     res.json(await users.syncUcd(user.cas));
-//   } catch(e) {
-//     handleError(e, req, res);
-//   }
-// });
-
 // admin call, get user UCD info via CAS ID
 router.get('/get-user-cas/:casId', isAdmin, async (req, res) => {
   try {
@@ -42,6 +32,28 @@ router.get('/get-user-cas/:casId', isAdmin, async (req, res) => {
   }
 
 });
+
+// router.get('/get-user-ids/:id', isAdmin, async (req, res) => {
+//   let user = authUtils.getUserFromRequest(req);
+
+//   if( !user.cas ) {
+//     return res.status(401).json({error: true, message: 'not logged in'});
+//   }
+//   if( !(await authUtils.isAdmin(user.cas)) ) {
+//     return res.status(401).json({error: true, message: 'nope.'});
+//   }
+
+//   try {
+//     let type = users.getUcdIdType(req.params.id);
+//     res.json(await ucdApi.getIds(type, req.params.id));
+//   } catch(e) {
+//     res.status(400).json({
+//       error: true,
+//       message : e.message,
+//       stack : e.stack
+//     });
+//   }
+// });
 
 // admin call, get UCD information via IAM id
 router.get('/get-user-iam/:iamId', isAdmin, async (req, res) => {

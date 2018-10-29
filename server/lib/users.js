@@ -38,18 +38,15 @@ class Users {
   async getPublicProfileByUcdId(id, orcidOnly=false) {
     let collection = firestore.db.collection(config.firestore.collections.users);
     let user;
-    let type = '';
+    let type = this.getUcdIdType(id);
     
-    if( id.match(/^\d{10}$/) ) { // iam
-      type = 'iam';
+    if( type === 'iam' ) { // iam
       let result = await collection.where('ucd.contact.iamId', '==', id).get();
       user = this._getFirstFromQueryRef(result);
-    } else if( id.indexOf('@') > -1 ) { // email
-      type = 'email';
+    } else if( type === 'email ') { // email
       let result = await collection.where('ucd.contact.email', '==', id).get();
       user = this._getFirstFromQueryRef(result);
     } else { // cas
-      type = 'cas';
       user = await this.getUser(id);
       if( Object.keys(user).length === 0 ) {
         user = null;
@@ -78,6 +75,15 @@ class Users {
       body,
       statusCode : response.statusCode
     }
+  }
+
+  getUcdIdType(id) {
+    if( id.match(/^\d{10}$/) ) { // iam
+      return 'iam';
+    } else if( id.indexOf('@') > -1 ) { // email
+      return 'email'
+    } // cas
+    return 'cas'
   }
 
   /**

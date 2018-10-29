@@ -81,4 +81,22 @@ router.get('/dev-login/:casid', async (req, res) => {
   res.redirect('/');
 });
 
+
+router.get('/dev-reset/:casid', async (req, res) => {
+  if( config.env !== 'dev' ) {
+    return res.status(401).send('nope.');
+  }
+
+  // clear casid
+  try {
+    await firestore.db
+      .collection(config.firestore.collections.users)
+      .doc(req.params.casid)
+      .delete();
+  } catch(e) {}
+
+  res.redirect('/');
+});
+
+
 module.exports = router;

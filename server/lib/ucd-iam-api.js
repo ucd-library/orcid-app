@@ -61,6 +61,25 @@ class UcdiamApi {
     return response.userId;
   }
 
+  // async getIds(idType, value) {
+  //   idType = 'iamId';
+  //   let response = await request(
+  //     `${config.ucd.api.baseUrl}/people/ids/`, 
+  //     {
+  //       headers : {
+  //         Accept : 'application/json'
+  //       },
+  //       qs : {
+  //         [idType] : value,
+  //         key : config.ucd.api.key,
+  //         v : config.ucd.api.version
+  //       }
+  //     } 
+  //   );
+
+  //   return this._getResponse(response, idType, value);
+  // }
+
   /**
    * @method getContactInfo
    * @description given a users ucd iam id, return their contact info
