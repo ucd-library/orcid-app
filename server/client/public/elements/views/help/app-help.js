@@ -4,6 +4,7 @@ import template from "./app-help.html"
 import "@polymer/iron-pages"
 
 import "./app-crossref-help"
+import "./app-faq"
 
 export default class AppHelp extends Mixin(PolymerElement)
   .with(EventInterface) {

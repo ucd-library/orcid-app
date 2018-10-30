@@ -93,12 +93,13 @@ export default class OrcidApp extends Mixin(PolymerElement)
     this.hideLogout = (Object.keys(APP_CONFIG.user.session || {}).length === 0);
 
     let page = this.AppStateModel.store.data.location.path[0];
+
     if( this._userLoggedInAndLinked() ) {  
       if( !page || page === 'login' ) {
-        this.AppStateModel.setLocation('scorecard');
+        this.AppStateModel.setLocation('/scorecard');
       }
-    } else if( page !== 'denied-orcid-oauth' ) {
-      this.AppStateModel.setLocation('login');
+    } else if( page !== 'help' && page !== 'denied-orcid-oauth' ) {
+      this.AppStateModel.setLocation('/login');
     }
 
     // double check?
@@ -114,6 +115,12 @@ export default class OrcidApp extends Mixin(PolymerElement)
     }
 
     let page = e.location.path[0];
+    
+    if( !page ) {
+      if( !this._userLoggedInAndLinked() ) page = 'login';
+      else page = 'scorecard';
+    }
+    
     this.page = page;
     
     this.noHeader = (NO_HEADER_LIST.indexOf(page) > -1);

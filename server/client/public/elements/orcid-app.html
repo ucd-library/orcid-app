@@ -110,7 +110,7 @@
   [hidden] {
     display: none;
   }
-  a[logout] {
+  [logout], [logout] a  {
     color: white;
     text-decoration: none;
   }
@@ -143,9 +143,13 @@
 
 <div id="topbar">
   <img src="/images/logo.png" alt="UC Davis" />  
-  <div hidden$="[[hideLogout]]">
-    <a href="/auth/logout" logout>
-    Logout <iron-icon icon="exit-to-app" style="vertical-align: bottom"></iron-icon></a>
+  <div logout>
+    <a href="/help/faq">FAQ</a>
+    <span hidden$="[[hideLogout]]">
+      &nbsp;&nbsp;|&nbsp;&nbsp;
+      <a href="/auth/logout">
+      Logout <iron-icon icon="exit-to-app" style="vertical-align: bottom"></iron-icon></a>
+    </span>
   </div>
 </div>
 
