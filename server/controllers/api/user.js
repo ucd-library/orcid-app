@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const authUtils = require('../../lib/auth');
-const users = require('../../lib/users')
-const {hasUcdAuth, handleError} = require('../middleware');
+const users = require('../../lib/users');
+const admin = require('../../lib/admin');
+const csvStringify = require('csv-stringify');
+const {hasUcdAuth, handleError, isAdmin} = require('../middleware');
 
 /**
  * Get a users record
@@ -36,6 +38,25 @@ router.post('/update/employment', hasUcdAuth, async (req, res) => {
   } catch(e) {
     handleError(e, req, res);
   }
+});
+
+router.get('/all-employments', isAdmin, async (req, res) => {
+  try {
+    let overview = await admin.getUserOverview();
+
+    res.set('Content-type', 'text/csv');
+    csvStringify(
+      overview,
+      {
+        header : true,
+        columns: [ 'casId', 'name', 'linked', 'orcidId', 'organization', 'department', 'role', 'visibility', 'startDate' ]
+      },
+      (err, txt ) => res.send(txt)
+    );
+  } catch(e) {
+    handleError(e, req, res);
+  }
+
 });
 
 module.exports = router;

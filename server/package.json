@@ -24,6 +24,7 @@
     "cas-authentication": "0.0.8",
     "compression": "^1.7.3",
     "cookie-parser": "^1.4.3",
+    "csv-stringify": "^4.3.1",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
     "firebase-admin": "^6.0.0",
