@@ -34,7 +34,6 @@ class AdminUtils {
   }
 
   _getUserOverview(record, employment={}) {
-    console.log(record);
     return {
       casId : record.id,
       name : record.ucd ? record.ucd.name.dFullName : '',
