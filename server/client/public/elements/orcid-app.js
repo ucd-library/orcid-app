@@ -79,6 +79,11 @@ export default class OrcidApp extends Mixin(PolymerElement)
   constructor() {
     super();
 
+    // check for logged in user but app offline, if so, log user out
+    if( APP_CONFIG.user.data && this._isOffline() ) {
+      window.location = '/auth/logout';
+    }
+
     let loadingEle = document.querySelector('#loading');
     if( loadingEle ) loadingEle.remove();
 
@@ -87,6 +92,10 @@ export default class OrcidApp extends Mixin(PolymerElement)
 
   ready() {
     super.ready();
+
+    if( APP_CONFIG.user.data && this._isOffline() ) {
+      return;
+    }
 
     this.AppStateModel.setLocationElement(this.$.appRoute);
 
@@ -105,6 +114,10 @@ export default class OrcidApp extends Mixin(PolymerElement)
     // double check?
     let loadingEle = document.querySelector('#loading');
     if( loadingEle ) loadingEle.remove();
+  }
+
+  _isOffline() {
+    return (APP_CONFIG.appStatus && APP_CONFIG.appStatus.online === false);
   }
 
   _onAppStateUpdate(e) {

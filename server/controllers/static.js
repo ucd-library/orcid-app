@@ -4,6 +4,7 @@ const spaMiddleware = require('@ucd-lib/spa-router-middleware');
 const config = require('../config');
 const authUtils = require('../lib/auth');
 const logger = require('../lib/logger');
+const firebase = require('../lib/firestore');
 const userModel = require('../lib/users');
 
 /**
@@ -54,6 +55,8 @@ module.exports = (app) => {
         if( e.statusCode === 401 && e.bodyType === 'json' && e.body.error === 'invalid_token' ) {
           await userModel.clearUserLinkage(session.cas);
           return res.redirect('/auth/logout');
+        } else {
+          logger.error('Failed to sync user on page load:', e);
         }
       }
 
@@ -67,7 +70,8 @@ module.exports = (app) => {
         orgs : config.ringgold.orgs,
         appPartners : config.ringgold.appPartners,
         analyticsKey : config.google.analyticsKey,
-        clientId : config.orcid.clientId
+        clientId : config.orcid.clientId,
+        appStatus : await firebase.getAppStatus()
       });
     },
     template : async (req, res, next) => next({

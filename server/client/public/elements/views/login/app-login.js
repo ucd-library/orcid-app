@@ -30,6 +30,12 @@ export default class AppLogin extends Mixin(PolymerElement)
       orcid : {
         type : String,
         value : ''
+      },
+
+      // 
+      appOnline : {
+        type : Boolean,
+        value : true
       }
     }
   }
@@ -44,7 +50,12 @@ export default class AppLogin extends Mixin(PolymerElement)
   ready() {
     super.ready();
 
-    // return;
+    // check for logged in user but app offline, if so, log user out
+    if( APP_CONFIG.appStatus && APP_CONFIG.appStatus.online === false ) {
+      this.appOnline = false;
+      this.$.appOnlineMsg.innerHTML = APP_CONFIG.appStatus.message || 'The ORCiD Optimizer is currently down for maintenance.';
+      return;
+    }
 
     let session = APP_CONFIG.user.session;
     if( !session.cas ) return;

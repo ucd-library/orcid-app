@@ -78,7 +78,8 @@ module.exports = {
     collections : {
       users : 'users',
       sessions : 'sessions',
-      admins : 'admins'
+      admins : 'admins',
+      status : 'status'
     }
   },
 

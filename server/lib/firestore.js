@@ -117,6 +117,35 @@ class Firestore {
     });
   }
 
+  /**
+   * @method getAppStatus
+   * @description return information from the application status collection
+   * 
+   * @return {Promise} resolves to object
+   */
+  async getAppStatus() {
+    // TODO: should we cache?
+    // if( this.appStatusCache === null ) {
+    //   return this.appStatusCache;
+    // }
+
+    let querySnapshot = await this.db
+      .collection(this.config.collections.status)
+      .get();
+    
+    let data;
+    if( querySnapshot.docs.length === 0 ) {
+      data = {online: true};
+    } else {
+      data = querySnapshot.docs[0].data();
+    }
+
+    // this.appStatusCache = data;
+    // setTimeout(() => this.appStatusCache = null, 1000*60*5);
+
+    return data;
+  }
+
 }
 
 async function getQueryBatch(collectionRef, size, offset, onDocLoaded, resolve, reject) {
