@@ -37,6 +37,7 @@ class AdminUtils {
     return {
       casId : record.id,
       name : record.ucd ? record.ucd.name.dFullName : '',
+      email : record.ucd ? record.ucd.contact.email : '',
       linked : record.linked,
       orcidId : record.orcid ? record.orcid['orcid-identifier'].path : '',
       organization : employment.organization ? employment.organization.name : '',

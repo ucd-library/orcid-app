@@ -49,7 +49,7 @@ router.get('/all-employments', isAdmin, async (req, res) => {
       overview,
       {
         header : true,
-        columns: [ 'casId', 'name', 'linked', 'orcidId', 'organization', 'department', 'role', 'visibility', 'startDate' ]
+        columns: [ 'casId', 'name', 'email', 'linked', 'orcidId', 'organization', 'department', 'role', 'visibility', 'startDate' ]
       },
       (err, txt ) => res.send(txt)
     );

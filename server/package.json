@@ -17,7 +17,7 @@
   "author": "jrmerz@ucdavis.edu",
   "license": "MIT",
   "dependencies": {
-    "@google-cloud/storage": "^2.2.0",
+    "@google-cloud/storage": "^2.4.2",
     "@ucd-lib/spa-router-middleware": "^0.1.0",
     "body-parser": "^1.18.3",
     "bunyan": "^1.8.12",
@@ -27,8 +27,8 @@
     "csv-stringify": "^4.3.1",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
-    "firebase-admin": "^6.0.0",
-    "firestore-store": "^0.3.4",
+    "firebase-admin": "^7.0.0",
+    "firestore-store": "^1.0.0",
     "fs-extra": "^7.0.0",
     "request": "^2.87.0"
   },
