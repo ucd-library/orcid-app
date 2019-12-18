@@ -56,11 +56,12 @@ class AppData {
    * @returns {String} 
    */
   getUserTitle(title) {
+    if( !title ) title = '';
     return this.titles[this.cleanTitle(title)] || title;
   }
 
   cleanTitle(title='') {
-    return title.replace(/\s/g, '').toLowerCase();
+    return (title || '').replace(/\s/g, '').toLowerCase();
   }
 
 }

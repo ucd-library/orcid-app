@@ -391,7 +391,7 @@ class Users {
       }
 
       for( let dept of departmentPps ) {
-        dept.appTitle = appData.getUserTitle(dept.titleOfficialName);
+        dept.appTitle = appData.getUserTitle(dept.titleOfficialName || dept.titleDisplayName);
         // TODO: add apptBou first
         dept.division = await this.getDivisions(dept.apptBouOrgOId || dept.adminBouOrgOId || dept.bouOrgOId);
       }
